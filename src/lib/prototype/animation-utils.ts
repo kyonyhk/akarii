@@ -19,8 +19,8 @@ export function calculateTypingSpeed(
   messageType: Message['type'], 
   config: AnimationConfig = DEFAULT_ANIMATION_CONFIG
 ): number {
-  const senderConfig = SENDER_CONFIGS[sender];
-  const baseWPM = senderConfig.baseWPM;
+  const senderConfig = SENDER_CONFIGS[sender as keyof typeof SENDER_CONFIGS];
+  const baseWPM = senderConfig?.baseWPM ?? config.humanWPM;
   const typeOverride = MESSAGE_TYPE_OVERRIDES[messageType] as MessageTypeOverride;
   
   // Apply message type speed multiplier

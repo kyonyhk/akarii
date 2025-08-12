@@ -661,7 +661,7 @@ export default function PrototypeChatPage() {
                 </span>
               </div>
               {/* Thread context */}
-              <div className="app-paragraph1 text-white/50">
+              <div className="app-paragraph2 text-white/50">
                 {activeScenario.thread.title}
                 {activeScenario.thread.goal && (
                   <span className="ml-2 px-2 py-1 bg-blue-500/10 text-blue-400 rounded-[40px] app-support">
