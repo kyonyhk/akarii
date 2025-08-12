@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<examples>
+  <scenario id="1" name="Multiplayer AI Team Chat">
+    <characters>
+      <character name="Trish" role="Marketing Lead" />
+      <character name="Sam" role="CTO" />
+    </characters>
+  </scenario>
+
+  <scenario id="2" name="Intelligence Layer">
+    <characters>
+      <character name="Trish" role="Release Lead" />
+      <character name="Sam" role="CTO" />
+    </characters>
+  </scenario>
+
+  <scenario id="3" name="Emergency Strategy Call - Cognition">
+    <characters>
+      <character name="Scott Wu" role="CEO, Cognition" />
+      <character name="Walden Yan" role="Co-founder, Cognition" />
+      <character name="Steven Hao" role="Co-founder, Cognition" />
+    </characters>
+  </scenario>
+
+  <scenario id="4" name="Post-Acquisition Internal Strategy - Windsurf">
+    <characters>
+      <character name="Jeff Wang" role="CEO, Windsurf (acquired by Cognition)" />
+      <character name="Kevin Lu" role="CTO, Windsurf" />
+    </characters>
+  </scenario>
+
+  <scenario id="5" name="Launch Coordination - Anthropic">
+    <characters>
+      <character name="Mike Krieger" role="CPO, Anthropic" />
+      <character name="Daniela Amodei" role="President, Anthropic" />
+      <character name="Dario Amodei" role="CEO, Anthropic" />
+    </characters>
+  </scenario>
+
+  <scenario id="6" name="GPT-5 Launch War Room - OpenAI">
+    <characters>
+      <character name="Kevin Weil" role="CPO, OpenAI" />
+      <character name="Kate Rouch" role="Communications, OpenAI" />
+      <character name="Brad Lightcap" role="COO, OpenAI" />
+    </characters>
+  </scenario>
+</examples>

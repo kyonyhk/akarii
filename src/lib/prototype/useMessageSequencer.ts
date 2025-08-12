@@ -112,7 +112,7 @@ export function useMessageSequencer({
     
     // Determine if this message should type or appear instantly
     const shouldType = message.sender === 'Akarii'; // Only Akarii types in bubbles
-    const shouldShowInputTyping = message.sender === 'Trish'; // Trish types in input
+    const shouldShowInputTyping = message.sender === scenario.pov; // Current POV user types in input
     const shouldAppearInstantly = !shouldType && !shouldShowInputTyping; // Others appear instantly
     
     // Show typing indicator for AI messages and Sam
