@@ -4,12 +4,14 @@ interface TypingIndicatorProps {
   sender: string;
   role: 'human' | 'ai' | 'system';
   isVisible: boolean;
+  currentUser?: string;
 }
 
 export default function TypingIndicator({
   sender,
   role,
   isVisible,
+  currentUser,
 }: TypingIndicatorProps) {
   if (!isVisible) return null;
 
@@ -31,7 +33,7 @@ export default function TypingIndicator({
 
   return (
     <div
-      className={`flex ${role === 'human' && sender === 'Trish' ? 'justify-end' : 'justify-start'} mb-2`}
+      className={`flex ${role === 'human' && sender === currentUser ? 'justify-end' : 'justify-start'} mb-2`}
     >
       <div
         className={`max-w-[280px] md:max-w-md px-4 py-3 rounded-[20px] border ${getIndicatorStyle()} animate-pulse`}

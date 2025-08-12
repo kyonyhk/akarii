@@ -71,8 +71,30 @@ export type MessageTypeOverride = {
 
 // Sender-specific configurations
 export const SENDER_CONFIGS = {
+  // Original scenarios (1-2)
   Trish: { baseWPM: 58, variance: 0.1 },
   Sam: { baseWPM: 62, variance: 0.12 },
+  
+  // Scenario 3: Cognition team
+  'Scott Wu': { baseWPM: 65, variance: 0.12 },
+  'Walden Yan': { baseWPM: 60, variance: 0.11 },
+  'Steven Hao': { baseWPM: 63, variance: 0.13 },
+  
+  // Scenario 4: Windsurf team  
+  'Jeff Wang': { baseWPM: 61, variance: 0.12 },
+  'Kevin Lu': { baseWPM: 64, variance: 0.11 },
+  
+  // Scenario 5: Anthropic team
+  'Mike Krieger': { baseWPM: 67, variance: 0.10 },
+  'Daniela Amodei': { baseWPM: 59, variance: 0.11 },
+  'Dario Amodei': { baseWPM: 62, variance: 0.12 },
+  
+  // Scenario 6: OpenAI team
+  'Kevin Weil': { baseWPM: 66, variance: 0.11 },
+  'Kate Rouch': { baseWPM: 60, variance: 0.12 },
+  'Brad Lightcap': { baseWPM: 63, variance: 0.11 },
+  
+  // AI and System
   Akarii: { baseWPM: 105, variance: 0.08 },
   System: { baseWPM: 80, variance: 0.05 },
 } as const;
