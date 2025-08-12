@@ -39,6 +39,26 @@ export default function PrototypeChatPage() {
   const activeScenario =
     scenarios.find((s) => s.id === activeScenarioId) || scenarios[0];
 
+  // Get the current user name based on scenario
+  const getCurrentUserName = (scenarioId: number) => {
+    switch (scenarioId) {
+      case 1:
+        return 'Trish'; // Original scenario
+      case 2:
+        return 'Trish'; // Original scenario
+      case 3:
+        return 'Scott Wu'; // Cognition CEO
+      case 4:
+        return 'Jeff Wang'; // Windsurf CEO
+      case 5:
+        return 'Mike Krieger'; // Anthropic CPO
+      case 6:
+        return 'Kevin Weil'; // OpenAI CPO
+      default:
+        return 'Trish';
+    }
+  };
+
   // Animation system
   const {
     messages,
@@ -52,17 +72,8 @@ export default function PrototypeChatPage() {
     scenario: activeScenario,
     autoPlay: true,
     onComplete: () => {
-      console.log('Animation completed - switching scenarios or restarting');
-      // After 3-second pause, switch to next scenario or restart
-      setTimeout(() => {
-        if (activeScenarioId === 1) {
-          // Switch to scenario 2
-          handleScenarioSwitch(2);
-        } else {
-          // Switch back to scenario 1 to restart the loop
-          handleScenarioSwitch(1);
-        }
-      }, 100); // Small additional delay to ensure clean restart
+      console.log('Animation completed - staying on current scenario');
+      // No auto-switching - user must manually select channels
     },
     onMessageStart: (message, index) => {
       console.log('Message started:', message.sender, index);
@@ -144,8 +155,9 @@ export default function PrototypeChatPage() {
   }, []); // No dependencies needed as content and messageId are parameters
 
   useEffect(() => {
+    const currentUserName = getCurrentUserName(activeScenarioId);
     const currentInputTypingMessage = messages.find(
-      (m) => m.inputTyping && m.isVisible && m.sender === 'Trish'
+      (m) => m.inputTyping && m.isVisible && m.sender === currentUserName
     );
 
     console.log('🔍 Looking for input typing message:', {
@@ -205,6 +217,25 @@ export default function PrototypeChatPage() {
     }, 300);
   };
 
+  // Channel to scenario mapping
+  const getScenarioIdByChannel = (channel: string): number => {
+    const channelToScenarioMap: { [key: string]: number } = {
+      marketing: 1,
+      'release-planning': 2,
+      'exec-war-room': 3,
+      'leadership-sync': 4,
+      'launch-ops': 5,
+      'war-room': 6,
+    };
+    return channelToScenarioMap[channel] || 1;
+  };
+
+  // Handle channel click
+  const handleChannelClick = (channel: string) => {
+    const scenarioId = getScenarioIdByChannel(channel);
+    handleScenarioSwitch(scenarioId);
+  };
+
   // Scenario switching
   const handleScenarioSwitch = (scenarioId: number) => {
     if (scenarioId === activeScenarioId) return;
@@ -260,38 +291,136 @@ export default function PrototypeChatPage() {
 
   // Dynamic context content based on scenario
   const getScenarioContext = () => {
-    if (activeScenarioId === 1) {
-      return {
-        title: 'Chosen Path',
-        content: {
-          option: 'Option C - Targeted Paid Ads',
-          pros: ['Controlled spend', 'Measurable ROI', 'Quick turnaround'],
-          cons: ['Smaller audience than A', 'Requires strong creative'],
-          metric: 'Track conversion rates and cost per acquisition',
-          owners: [
-            { name: 'Sam', role: 'CTO', avatar: 'gray' },
-            { name: 'Trish', role: 'Marketing', avatar: 'gray' },
-          ],
-        },
-      };
-    } else {
-      return {
-        title: 'Decision Recap',
-        content: {
-          option: 'Option C - Staged rollout by usage tier',
-          pros: ['Risk control', 'Faster feedback', 'High-value segments'],
-          cons: ['Complex rollout', 'Monitoring overhead'],
-          metric: 'Deploy v2.1 to Production by Sept 30',
-          owners: [
-            { name: 'Sam', role: 'CTO', avatar: 'gray' },
-            { name: 'Trish', role: 'Release Lead', avatar: 'gray' },
-          ],
-        },
-      };
+    switch (activeScenarioId) {
+      case 1:
+        return {
+          title: 'Chosen Path',
+          content: {
+            option: 'Option C - Targeted Paid Ads',
+            pros: ['Controlled spend', 'Measurable ROI', 'Quick turnaround'],
+            cons: ['Smaller audience than A', 'Requires strong creative'],
+            metric: 'Track conversion rates and cost per acquisition',
+            owners: [
+              { name: 'Sam', role: 'CTO', avatar: 'gray' },
+              { name: 'Trish', role: 'Marketing', avatar: 'gray' },
+            ],
+          },
+        };
+      case 2:
+        return {
+          title: 'Decision Recap',
+          content: {
+            option: 'Option C - Staged rollout by usage tier',
+            pros: ['Risk control', 'Faster feedback', 'High-value segments'],
+            cons: ['Complex rollout', 'Monitoring overhead'],
+            metric: 'Deploy v2.1 to Production by Sept 30',
+            owners: [
+              { name: 'Sam', role: 'CTO', avatar: 'gray' },
+              { name: 'Trish', role: 'Release Lead', avatar: 'gray' },
+            ],
+          },
+        };
+      case 3:
+        return {
+          title: 'Strategic Decision',
+          content: {
+            option: 'Phased integration approach',
+            pros: [
+              'Core velocity protected',
+              'Retention packages secured',
+              'Clear metrics checkpoint',
+            ],
+            cons: [
+              'Delayed full integration',
+              'Complex dual-stream management',
+            ],
+            metric: 'Maintain Stability & Core Product Velocity',
+            owners: [
+              { name: 'Sam', role: 'CTO', avatar: 'gray' },
+              { name: 'Trish', role: 'CEO', avatar: 'gray' },
+            ],
+          },
+        };
+      case 4:
+        return {
+          title: 'Strategic Response',
+          content: {
+            option: 'Negotiate phased integration timeline',
+            pros: [
+              'Compiler expertise preserved',
+              'Reduced attrition risk',
+              'Better long-term outcomes',
+            ],
+            cons: [
+              'Slower Cognition integration',
+              'Complex coordination needed',
+            ],
+            metric: 'Protect Core Tech and Team Stability',
+            owners: [
+              { name: 'Sam', role: 'CTO', avatar: 'gray' },
+              { name: 'Trish', role: 'CEO', avatar: 'gray' },
+            ],
+          },
+        };
+      case 5:
+        return {
+          title: 'Launch Strategy',
+          content: {
+            option: 'Launch today ahead of GPT-5',
+            pros: [
+              'First-mover advantage',
+              '2-3 days dominant coverage',
+              'Set benchmark framing',
+            ],
+            cons: ['Compressed final QA', 'Risk of rushed messaging'],
+            metric: 'Maximize Claude 4.1 Opus Market Impact',
+            owners: [
+              { name: 'Sam', role: 'President', avatar: 'gray' },
+              { name: 'Trish', role: 'CPO', avatar: 'gray' },
+            ],
+          },
+        };
+      case 6:
+        return {
+          title: 'Competitive Response',
+          content: {
+            option: 'T+24h teaser, T+48h full keynote',
+            pros: [
+              'Counter Claude momentum',
+              'Preserve keynote quality',
+              'Media briefings today',
+            ],
+            cons: [
+              'Compressed timeline',
+              'Limited teaser content',
+              'Higher execution risk',
+            ],
+            metric: 'Maximize GPT-5 Launch Impact',
+            owners: [
+              { name: 'Sam', role: 'CMO', avatar: 'gray' },
+              { name: 'Trish', role: 'CPO', avatar: 'gray' },
+            ],
+          },
+        };
+      default:
+        return {
+          title: 'Chosen Path',
+          content: {
+            option: 'Option C - Targeted Paid Ads',
+            pros: ['Controlled spend', 'Measurable ROI', 'Quick turnaround'],
+            cons: ['Smaller audience than A', 'Requires strong creative'],
+            metric: 'Track conversion rates and cost per acquisition',
+            owners: [
+              { name: 'Sam', role: 'CTO', avatar: 'gray' },
+              { name: 'Trish', role: 'Marketing', avatar: 'gray' },
+            ],
+          },
+        };
     }
   };
 
   const scenarioContext = getScenarioContext();
+  const currentUserName = getCurrentUserName(activeScenarioId);
 
   return (
     <div className="h-screen bg-black overflow-hidden relative fixed inset-0">
@@ -320,7 +449,9 @@ export default function PrototypeChatPage() {
         <div className="py-2 pl-2 pr-4 bg-white/1 border border-white/5 rounded-[40px]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gray-600"></div>
-            <span className="app-subheading opacity-70">Trish Hartman</span>
+            <span className="app-subheading opacity-70">
+              {getCurrentUserName(activeScenarioId)}
+            </span>
             <div className="ml-auto">
               <SettingsIcon
                 size={20}
@@ -336,24 +467,26 @@ export default function PrototypeChatPage() {
           <div className="flex flex-col gap-4">
             <h3 className="app-subheading text-white/70 pl-2">Channels</h3>
             <div className="space-y-2">
-              <div className="px-4 py-3 rounded-[40px] bg-white/10 border border-white/20 app-paragraph2 cursor-pointer">
-                General
-              </div>
-              <div className="px-4 py-3 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5 hover:bg-white/5 hover:border-white/10 cursor-pointer">
-                Product Roadmap
-              </div>
-              <div className="px-4 py-3 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5 hover:bg-white/5 hover:border-white/10 cursor-pointer">
-                Design
-              </div>
-              <div className="px-4 py-3 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5 hover:bg-white/5 hover:border-white/10 cursor-pointer">
-                Engineering
-              </div>
-              <div className="px-4 py-3 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5 hover:bg-white/5 hover:border-white/10 cursor-pointer">
-                Growth Marketing
-              </div>
-              <div className="px-4 py-3 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5 hover:bg-white/5 hover:border-white/10 cursor-pointer">
-                Random
-              </div>
+              {[
+                'marketing',
+                'release-planning',
+                'exec-war-room',
+                'leadership-sync',
+                'launch-ops',
+                'war-room',
+              ].map((channel) => (
+                <div
+                  key={channel}
+                  onClick={() => handleChannelClick(channel)}
+                  className={`px-4 py-3 rounded-[40px] app-paragraph2 cursor-pointer transition-all ${
+                    activeScenario.thread.channel === channel
+                      ? 'bg-white/10 border border-white/20 text-white'
+                      : 'text-white/50 bg-white/1 border border-white/5 hover:bg-white/5 hover:border-white/10'
+                  }`}
+                >
+                  {channel}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -406,12 +539,12 @@ export default function PrototypeChatPage() {
             {messages.map((message) => {
               if (!message.isVisible) return null;
 
-              // Skip Trish's messages when they're in input typing mode
-              if (message.sender === 'Trish' && message.inputTyping) {
+              // Skip user's messages when they're in input typing mode
+              if (message.sender === currentUserName && message.inputTyping) {
                 return null;
               }
 
-              if (message.sender === 'Trish') {
+              if (message.sender === currentUserName) {
                 return (
                   <UserMessage
                     key={message.id}
@@ -420,6 +553,7 @@ export default function PrototypeChatPage() {
                     userMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
+                    scenarioId={activeScenarioId}
                   />
                 );
               } else if (message.sender === 'Sam') {
@@ -431,6 +565,7 @@ export default function PrototypeChatPage() {
                     participantMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
+                    scenarioId={activeScenarioId}
                   />
                 );
               } else if (message.sender === 'Akarii') {
@@ -455,6 +590,19 @@ export default function PrototypeChatPage() {
                     displayedContent={message.displayedContent}
                   />
                 );
+              } else if (message.role === 'human') {
+                // Handle other human participants
+                return (
+                  <ParticipantMessage
+                    key={message.id}
+                    username={message.sender}
+                    time={message.timestamp || ''}
+                    participantMessage={message.content}
+                    isTyping={message.isTyping}
+                    displayedContent={message.displayedContent}
+                    scenarioId={activeScenarioId}
+                  />
+                );
               }
               return null;
             })}
@@ -465,6 +613,7 @@ export default function PrototypeChatPage() {
                 sender={typingIndicator.sender}
                 role={typingIndicator.role}
                 isVisible={typingIndicator.isVisible}
+                scenarioId={activeScenarioId}
               />
             )}
           </div>
@@ -518,7 +667,7 @@ export default function PrototypeChatPage() {
               <div className="app-paragraph1 text-white/50">
                 {activeScenario.thread.title}
                 {activeScenario.thread.goal && (
-                  <span className="ml-2 px-2 py-1 bg-blue-500/10 text-blue-400 rounded app-support">
+                  <span className="ml-2 px-2 py-1 bg-blue-500/10 text-blue-400 rounded-[40px] app-support">
                     Goal: {activeScenario.thread.goal}
                   </span>
                 )}
@@ -644,7 +793,11 @@ export default function PrototypeChatPage() {
             {/* Success Metric */}
             <div>
               <h4 className="app-h3 text-white/70 mb-1">
-                {activeScenarioId === 1 ? 'Success Metric' : 'Target Goal'}
+                {activeScenarioId === 1
+                  ? 'Success Metric'
+                  : activeScenarioId === 2
+                    ? 'Target Goal'
+                    : 'Strategic Goal'}
               </h4>
               <div className="app-p text-white/50">
                 {scenarioContext.content.metric}
@@ -672,7 +825,7 @@ export default function PrototypeChatPage() {
           </div>
 
           {/* Bottom Action */}
-          <button className="w-full px-4 py-4 bg-white/5 hover:bg-white/10 rounded-[40px] app-paragraph1 text-white/50 border border-white/10 cursor-pointer">
+          <button className="w-full px-4 py-3 bg-white/5 hover:bg-white/10 rounded-[40px] app-paragraph1 text-white/50 border border-white/10 cursor-pointer">
             Create Tickets
           </button>
         </div>
@@ -698,21 +851,29 @@ export default function PrototypeChatPage() {
               <div>
                 <h3 className="app-subheading text-white/70 mb-4">Channels</h3>
                 <div className="space-y-2">
-                  <div className="px-4 py-4 rounded-[40px] bg-white/10 border border-white/20 app-paragraph2">
-                    General
-                  </div>
-                  <div className="px-4 py-4 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5">
-                    Product Roadmap
-                  </div>
-                  <div className="px-4 py-4 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5">
-                    Design
-                  </div>
-                  <div className="px-4 py-4 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5">
-                    Engineering
-                  </div>
-                  <div className="px-4 py-4 rounded-[40px] text-white/50 app-paragraph2 bg-white/1 border border-white/5">
-                    Growth Marketing
-                  </div>
+                  {[
+                    'marketing',
+                    'release-planning',
+                    'exec-war-room',
+                    'leadership-sync',
+                    'launch-ops',
+                    'war-room',
+                  ].map((channel) => (
+                    <div
+                      key={channel}
+                      onClick={() => {
+                        handleChannelClick(channel);
+                        handleMobileMenuToggle(); // Close mobile menu after selection
+                      }}
+                      className={`px-4 py-4 rounded-[40px] app-paragraph2 cursor-pointer transition-all ${
+                        activeScenario.thread.channel === channel
+                          ? 'bg-white/10 border border-white/20 text-white'
+                          : 'text-white/50 bg-white/1 border border-white/5 hover:bg-white/5 hover:border-white/10'
+                      }`}
+                    >
+                      {channel}
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -792,7 +953,11 @@ export default function PrototypeChatPage() {
 
               <div>
                 <h4 className="app-h3 text-white/70 mb-1">
-                  {activeScenarioId === 1 ? 'Success Metric' : 'Target Goal'}
+                  {activeScenarioId === 1
+                    ? 'Success Metric'
+                    : activeScenarioId === 2
+                      ? 'Target Goal'
+                      : 'Strategic Goal'}
                 </h4>
                 <div className="app-p text-white/50">
                   {scenarioContext.content.metric}
