@@ -12,7 +12,6 @@ export const metadata: Metadata = {
     'An intelligent AI workspace for AI native teams. Join the waitlist to be among the first to experience the future of team collaboration.',
   keywords: ['AI', 'workspace', 'teams', 'collaboration', 'productivity'],
   authors: [{ name: 'Akarii' }],
-  themeColor: '#766F61',
   openGraph: {
     title: 'Akarii - AI Workplace for Teams Who Move Fast',
     description: 'An intelligent AI workspace for AI native teams',

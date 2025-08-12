@@ -553,7 +553,6 @@ export default function PrototypeChatPage() {
                     userMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
-                    scenarioId={activeScenarioId}
                   />
                 );
               } else if (message.sender === 'Sam') {
@@ -565,7 +564,6 @@ export default function PrototypeChatPage() {
                     participantMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
-                    scenarioId={activeScenarioId}
                   />
                 );
               } else if (message.sender === 'Akarii') {
@@ -600,7 +598,6 @@ export default function PrototypeChatPage() {
                     participantMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
-                    scenarioId={activeScenarioId}
                   />
                 );
               }
@@ -613,7 +610,7 @@ export default function PrototypeChatPage() {
                 sender={typingIndicator.sender}
                 role={typingIndicator.role}
                 isVisible={typingIndicator.isVisible}
-                scenarioId={activeScenarioId}
+                currentUser={currentUserName}
               />
             )}
           </div>

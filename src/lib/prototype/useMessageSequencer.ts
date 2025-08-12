@@ -113,15 +113,16 @@ export function useMessageSequencer({
     // Determine if this message should type or appear instantly
     const shouldType = message.sender === 'Akarii'; // Only Akarii types in bubbles
     const shouldShowInputTyping = message.sender === scenario.pov; // Current POV user types in input
-    const shouldAppearInstantly = !shouldType && !shouldShowInputTyping; // Others appear instantly
+    const isOtherHuman = message.role === 'human' && message.sender !== scenario.pov;
+    const shouldAppearInstantly = !shouldType && !shouldShowInputTyping && !isOtherHuman; // Only system messages appear instantly
     
-    // Show typing indicator for AI messages and Sam
-    if (shouldType || message.sender === 'Sam') {
+    // Show typing indicator for AI messages and other human participants (not POV user)
+    if (shouldType || isOtherHuman) {
       showTypingIndicator(message);
     }
     
-    // Wait for typing indicator duration (show typing for Sam too)
-    const typingIndicatorDuration = (shouldType || message.sender === 'Sam') ? 500 + Math.random() * 1000 : 100;
+    // Wait for typing indicator duration (show typing for other humans too)
+    const typingIndicatorDuration = (shouldType || isOtherHuman) ? 500 + Math.random() * 1000 : 100;
     
     timeoutRef.current = setTimeout(() => {
       if (!isActiveRef.current) return;
@@ -129,7 +130,7 @@ export function useMessageSequencer({
       // Hide typing indicator and show message
       hideTypingIndicator();
       
-      // Handle instant messages (Sam, System, etc.)
+      // Handle instant messages (System only)
       if (shouldAppearInstantly) {
         setState(prevState => {
           const newMessages = [...prevState.messages];
@@ -150,8 +151,8 @@ export function useMessageSequencer({
         onMessageStart?.(message, messageIndex);
         onMessageComplete?.(message, messageIndex);
 
-        // Proceed to next message after brief pause (shorter for instant Sam messages)
-        const postDelay = message.sender === 'Sam' ? 800 : 350;
+        // Proceed to next message after brief pause
+        const postDelay = 350;
         timeoutRef.current = setTimeout(() => {
           if (isActiveRef.current) {
             const nextIndex = messageIndex + 1;
@@ -284,8 +285,50 @@ export function useMessageSequencer({
         const preDelay = message.preDelayMs || 100;
         timeoutRef.current = setTimeout(typeNextWord, preDelay);
         
+      } else if (isOtherHuman) {
+        // Other human participants: show message instantly after typing indicator
+        setState(prevState => {
+          const newMessages = [...prevState.messages];
+          newMessages[messageIndex] = {
+            ...newMessages[messageIndex],
+            isTyping: false,
+            inputTyping: false,
+            displayedContent: content,
+          };
+          
+          return {
+            ...prevState,
+            messages: newMessages,
+          };
+        });
+
+        onMessageComplete?.(message, messageIndex);
+
+        // Wait post delay, then proceed to next message
+        const postDelay = message.postDelayMs || 800;
+        timeoutRef.current = setTimeout(() => {
+          if (isActiveRef.current) {
+            const nextIndex = messageIndex + 1;
+            if (nextIndex < state.messages.length) {
+              typeMessage(nextIndex);
+            } else {
+              setState(prevState => ({
+                ...prevState,
+                isPlaying: false,
+                isComplete: true,
+              }));
+              
+              // Add 3-second pause before calling onComplete (for screen recording)
+              timeoutRef.current = setTimeout(() => {
+                isActiveRef.current = false;
+                onComplete?.();
+              }, 3000);
+            }
+          }
+        }, postDelay);
+
       } else {
-        // Character-by-character typing for humans
+        // Character-by-character typing for POV user
         let currentIndex = 0;
         const pauses = message.pauses || [];
         
@@ -309,8 +352,8 @@ export function useMessageSequencer({
 
             onMessageComplete?.(message, messageIndex);
 
-            // Wait post delay, then proceed to next message (instant for Trish)
-            const postDelay = message.sender === 'Trish' ? 50 : (message.postDelayMs || 350);
+            // Wait post delay, then proceed to next message (instant for POV user)
+            const postDelay = message.sender === scenario.pov ? 50 : (message.postDelayMs || 350);
             timeoutRef.current = setTimeout(() => {
               if (isActiveRef.current) {
                 const nextIndex = messageIndex + 1;
