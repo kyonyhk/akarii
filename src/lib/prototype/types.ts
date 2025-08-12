@@ -1,4 +1,4 @@
-export type Sender = "Trish" | "Sam" | "Akarii" | "System";
+export type Sender = "Trish" | "Sam" | "Akarii" | "System" | "Scott Wu" | "Walden Yan" | "Steven Hao" | "Jeff Wang" | "Kevin Lu" | "Mike Krieger" | "Daniela Amodei" | "Dario Amodei" | "Kevin Weil" | "Kate Rouch" | "Brad Lightcap";
 export type Role = "human" | "ai" | "system";
 export type MsgType = "text" | "rich" | "alert" | "vote" | "card" | "reaction";
 
@@ -17,7 +17,7 @@ export interface Message {
 export interface Scenario {
   id: number;
   name: string;
-  pov: "Trish";
+  pov: "Trish" | "Scott Wu" | "Jeff Wang" | "Mike Krieger" | "Kevin Weil";
   thread: { title: string; goal?: string; channel?: string; tz?: string };
   messages: Message[];
 }

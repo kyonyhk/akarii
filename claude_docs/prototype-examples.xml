@@ -45,3 +45,159 @@
     </characters>
   </scenario>
 </examples>
+=======
+<AkariiScenarios xmlns="https://akarii.app/scenarios" version="1.0" generatedAt="2025-08-12T03:30:00+08:00">
+  <!-- Scenario 1: Cognition perspective on acquiring Windsurf -->
+  <Scenario id="cognition-acquires-windsurf" title="Emergency Strategy Call" perspective="Cognition" goal="Maintain Stability & Core Product Velocity" channel="exec-war-room" tz="+08:00" user="Scott Wu">
+    <Participants>
+      <Person name="Scott Wu" role="CEO" company="Cognition"/>
+      <Person name="Steven Hao" role="CTO" company="Cognition"/>
+      <Person name="Walden Yan" role="CPO" company="Cognition"/>
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Scott Wu" role="human" type="text" time="07:42">I know it’s sudden, but we have a window to acquire Windsurf. Their core team’s on board.</Message>
+      <Message sender="Walden Yan" role="human" type="text" time="07:43">If we do this, integration starts immediately. We won’t get weeks of due diligence.</Message>
+      <Message sender="Steven Hao" role="human" type="text" time="07:43">Their compiler tech could double our code‑gen speed. We can’t let someone else grab it.</Message>
+      <Message sender="Akarii" role="ai" type="alert" unsolicited="true" time="07:44"><![CDATA[
+⚠️ **Integration Risk Alert**  
+This acquisition will absorb ~80% of Windsurf’s engineering bandwidth for at least 6 weeks, pausing their roadmap.
+
+**Risks to “Maintain Stability & Core Product Velocity”**
+• Core editor feature freeze in Q4 → potential churn among top 10% accounts.  
+• Infra-role overlap → redundancy cost ≈ **$1.8M** in first 90 days.  
+• Cultural misalignment: 3/5 Windsurf leads left within 30 days of a prior acquisition.
+
+**Recommendation**
+1) Secure retention packages for key engineers.  
+2) Delay core refactors until integration stabilizes.  
+3) Set a 14‑day integration checkpoint with velocity metrics.
+      ]]></Message>
+      <Message sender="Walden Yan" role="human" type="text" time="07:45">That’s a bigger stall than I thought. Can we isolate their compiler team so core work continues?</Message>
+      <Message sender="Akarii" role="ai" type="card" time="07:45"><![CDATA[
+**Structured Plan**  
+Split integration into **Compiler Stream (priority)** and **General Eng Stream (lower urgency)**.  
+Projected outcome: retain ~**60%** of planned Q4 feature output vs. **20%** under full‑merge.
+      ]]></Message>
+      <Message sender="Steven Hao" role="human" type="text" time="07:46">Okay, that’s workable. Let’s bake that into the integration plan.</Message>
+    </Messages>
+  </Scenario>
+
+  <!-- Scenario 2: Windsurf perspective after acquisition -->
+    <Scenario id="windsurf-after-acquisition" title="Post-Acquisition Internal Strategy" perspective="Windsurf" goal="Protect Core Tech and Team Stability" channel="leadership-sync" tz="+08:00" user="Jeff Wang">
+    <Participants>
+      <Person name="Jeff Wang" role="Interim CEO" company="Windsurf"/>
+      <Person name="Kevin Lu" role="CTO" company="Windsurf"/> <!-- updated -->
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Jeff Wang" role="human" type="text" time="10:05">Cognition moved fast — 72 hours from first call to signed deal. Now we need to align priorities.</Message>
+      <Message sender="Kevin Lu" role="human" type="text" time="10:06">My biggest worry is losing our compiler team’s focus during integration. They’re the engine behind our performance edge.</Message>
+      <Message sender="Jeff Wang" role="human" type="text" time="10:06">Cognition wants half the team on their code-gen project immediately.</Message>
+      <Message sender="Akarii" role="ai" type="alert" unsolicited="true" time="10:07"><![CDATA[
+⚠️ **Strategic Drift Alert**  
+Immediate pivot pulls **6 of 10** compiler engineers into unrelated code-gen work.
+
+**Risks to “Protect Core Tech and Team Stability”**
+• Q1 compiler optimizations delayed ≥ **3 months**.  
+• Roadmap on-time delivery drops from **92% → ~55%**.  
+• Attrition risk: 4 engineers joined specifically for compiler work.
+
+**Recommendation**
+• Negotiate **phased integration**: keep compiler sprints focused for 6 weeks.  
+• Cross-train **2 bridge engineers** instead of a full pivot.  
+• Lock a **tech governance doc** before reassigning core members.
+      ]]></Message>
+      <Message sender="Kevin Lu" role="human" type="text" time="10:08">If we ask for a phased approach, won’t that slow Cognition’s roadmap?</Message>
+      <Message sender="Akarii" role="ai" type="card" time="10:08"><![CDATA[
+**Trade-off Model**  
+A 14-day slip for Cognition preserves ~**3 months** of Windsurf compiler gains.  
+Net effect on the combined roadmap: **positive** (differentiator retained).
+      ]]></Message>
+      <Message sender="Jeff Wang" role="human" type="text" time="10:09">That’s a strong trade-off. Let’s take that to the joint planning session.</Message>
+    </Messages>
+  </Scenario>
+
+  <!-- Scenario 3: Anthropic launches Claude 4.1 Opus before GPT-5 -->
+  <Scenario id="anthropic-opus-prior-to-gpt5" title="Launch Coordination" perspective="Anthropic" goal="Maximize Claude 4.1 Opus Market Impact" channel="launch-ops" tz="+08:00" user="Mike Krieger">
+    <Participants>
+      <Person name="Dario Amodei" role="CEO" company="Anthropic"/>
+      <Person name="Daniela Amodei" role="President" company="Anthropic"/>
+      <Person name="Mike Krieger" role="Chief Product Officer" company="Anthropic"/>
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Mike Krieger" role="human" type="text" time="09:15">We’ve got Claude 4.1 Opus ready for release. Earliest drop is today.</Message>
+      <Message sender="Daniela Amodei" role="human" type="text" time="09:15">OpenAI’s GPT‑5 event is in three days. If we wait, we’ll be drowned out.</Message>
+      <Message sender="Dario Amodei" role="human" type="text" time="09:16">Benchmarks look solid — we should lead the cycle, not trail it.</Message>
+      <Message sender="Akarii" role="ai" type="alert" unsolicited="true" time="09:16"><![CDATA[
+⚠️ **Competitive Timing Opportunity**  
+Launching **today** positions Claude 4.1 Opus ahead of GPT‑5 in the news cycle.
+
+**Upside to “Maximize Claude 4.1 Opus Market Impact”**
+• 2–3 days of dominant coverage before GPT‑5 saturation.  
+• Capture developer attention while influencer focus is diffuse.  
+• Set benchmark **framing** before GPT‑5 is revealed.
+
+**Recommendation (next 6 hours)**
+1) Release window: today, early‑week media slot.  
+2) Seed benchmark teasers to key AI reporters pre‑press.  
+3) Align blog + X threads on unique Claude advantages.
+      ]]></Message>
+      <Message sender="Daniela Amodei" role="human" type="text" time="09:17">If we pull the trigger today, are the assets final?</Message>
+      <Message sender="Akarii" role="ai" type="card" time="09:17"><![CDATA[
+**Readiness Check**  
+Assets ready: **95%**. Remaining: minor copy tweaks.  
+Ops needs:  
+• Final QA on the model card (**~45 min**).  
+• DevRel sync for post‑launch Q&A sessions.
+      ]]></Message>
+      <Message sender="Mike Krieger" role="human" type="text" time="09:18">Alright — we drop today. Make sure every channel fires on the same beat.</Message>
+    </Messages>
+  </Scenario>
+
+  <!-- Scenario 4: OpenAI reacts to Anthropic’s drop -->
+	<Scenario id="openai-reacts-to-opus" title="GPT‑5 Launch War Room" perspective="OpenAI" goal="Maximize GPT‑5 Launch Impact" channel="war-room" tz="+08:00" user="Kevin Weil">
+    <Participants>
+      <Person name="Kevin Weil" role="Chief Product Officer" company="OpenAI"/>
+      <Person name="Kate Rouch" role="Chief Marketing Officer" company="OpenAI"/>
+      <Person name="Brad Lightcap" role="Chief Operating Officer" company="OpenAI"/>
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Kevin Weil" role="human" type="text" time="09:22">Anthropic just pushed Claude 4.1 Opus. Press is spinning up already.</Message>
+      <Message sender="Kate Rouch" role="human" type="text" time="09:22">Our GPT‑5 keynote is in 72 hours. Do we hold or move?</Message>
+      <Message sender="Brad Lightcap" role="human" type="text" time="09:23">Demo builds are stable, but some benchmark visuals need polishing.</Message>
+      <Message sender="Akarii" role="ai" type="alert" unsolicited="true" time="09:23"><![CDATA[
+⚠️ **Competitive Timing Risk**  
+Sticking to the current date cedes **2–3 news cycles** to Claude 4.1.
+
+**Risk to “Maximize GPT‑5 Launch Impact”**
+• Share‑of‑voice likely down **35–45%** if we wait full 72h.  
+• Influencers already orienting to Claude’s charts.  
+• Narrative risk: perceived as follow‑on, not first‑move.
+
+**Recommendation**
+• **T+24h**: “GPT‑5 Teaser” (2 strong benchmarks + 1 signature demo).  
+• **T+48h**: Full keynote (quality preserved).  
+• Seed exclusive briefings to 3 tech reporters **today**.
+      ]]></Message>
+      <Message sender="Kate Rouch" role="human" type="text" time="09:24">If we tease in 24h, what do we show without overpromising?</Message>
+      <Message sender="Akarii" role="ai" type="card" time="09:24"><![CDATA[
+**Teaser Pack**  
+• Two slices where GPT‑5 leads (code gen, long‑context QA).  
+• 15‑second live demo clip (reliable take).  
+• CTA: “Deeper dive in 48 hours.”
+      ]]></Message>
+      <Message sender="Kevin Weil" role="human" type="text" time="09:25">Can we guarantee demo stability at teaser scale?</Message>
+      <Message sender="Brad Lightcap" role="human" type="text" time="09:25">Yes — teaser demo is green; the full multi‑agent demo needs another day.</Message>
+      <Message sender="Akarii" role="ai" type="card" time="09:25"><![CDATA[
+**Guardrails**  
+• Lock teaser scope now; no new features.  
+• Overnight validation run; publish only passing charts.  
+• Two dry‑runs in a clean env; record a backup take.
+      ]]></Message>
+      <Message sender="Kate Rouch" role="human" type="text" time="09:26">Alright — teaser in 24h, full keynote in 48. I’ll start media outreach.</Message>
+    </Messages>
+  </Scenario>
+</AkariiScenarios>
