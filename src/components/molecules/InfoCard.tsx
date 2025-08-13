@@ -8,6 +8,8 @@ interface InfoCardProps {
   subheading: string;
   description: string;
   trigger?: boolean;
+  /** Ref to get access to the animation timeline */
+  timelineRef?: React.MutableRefObject<gsap.core.Timeline | null>;
 }
 
 export default function InfoCard({
@@ -15,6 +17,7 @@ export default function InfoCard({
   subheading,
   description,
   trigger = false,
+  timelineRef,
 }: InfoCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const plusRef = useRef<HTMLDivElement>(null);
@@ -25,96 +28,121 @@ export default function InfoCard({
   useEffect(() => {
     if (!cardRef.current) return;
 
+    // Immediately set initial states to prevent blinking
+    gsap.set(cardRef.current, {
+      opacity: 0,
+      y: 20,
+    });
+    gsap.set([eyebrowRef.current, headingRef.current, descriptionRef.current], {
+      opacity: 0,
+      y: 20,
+    });
+    gsap.set(plusRef.current, { scale: 0, rotation: 0 });
+
     const tl = gsap.timeline({ paused: true });
 
-    // Set initial states
-    tl.set(cardRef.current, {
-      opacity: 0,
-      y: 20
-    })
-    .set([plusRef.current, eyebrowRef.current, headingRef.current, descriptionRef.current], {
-      opacity: 0
-    })
-    .set(plusRef.current, { scale: 0, rotation: 0 })
-    .set([eyebrowRef.current, headingRef.current, descriptionRef.current], { y: 20 })
-    // Container animation: animate from bottom up with opacity fade-in
-    .to(cardRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power4.out'
-    })
-    // Plus sign animation: scale up and rotate 90deg
-    .to(plusRef.current, {
-      scale: 1,
-      rotation: 90,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power4.out'
-    }, '-=0.2')
-    // Text animations: animate from bottom with opacity fade-in
-    .to(eyebrowRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power4.out'
-    }, '-=0.4')
-    .to(headingRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power4.out'
-    }, '-=0.6')
-    .to(descriptionRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power4.out'
-    }, '-=0.4');
+    // Expose timeline to parent if ref is provided
+    if (timelineRef) {
+      timelineRef.current = tl;
+    }
 
-    // Only play animation when triggered
+    // Build timeline - container animation: animate from bottom up with opacity fade-in
+    tl.to(cardRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power4.out',
+    })
+      // Plus sign animation: scale up and rotate 90deg
+      .to(
+        plusRef.current,
+        {
+          scale: 1,
+          rotation: 90,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+        },
+        '-=0.2'
+      )
+      // Text animations: animate from bottom with opacity fade-in
+      .to(
+        eyebrowRef.current,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+        },
+        '-=0.4'
+      )
+      .to(
+        headingRef.current,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+        },
+        '-=0.6'
+      )
+      .to(
+        descriptionRef.current,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+        },
+        '-=0.4'
+      );
+
+    // Only play animation when triggered (backward compatibility)
     if (trigger) {
       tl.play();
     }
 
     return () => {
+      if (timelineRef) {
+        timelineRef.current = null;
+      }
       tl.kill();
     };
-  }, [trigger]);
+  }, [trigger, timelineRef]);
 
   return (
-    <div 
+    <div
       ref={cardRef}
       className="flex flex-col gap-6 md:gap-20 rounded-[40px] bg-white/10 backdrop-blur-sm border border-white/10 p-6"
       style={{ opacity: 0, transform: 'translateY(20px)' }}
     >
-      <div className="flex flex-col">
-        <div className="w-4 h-4 mb-2 flex items-center justify-center">
+      <div className="flex flex-col gap-2">
+        <div className="w-4 h-4 flex items-center justify-start">
           <div
             ref={plusRef}
-            className="eyebrow1 text-white/50"
+            className="eyebrow1 text-white/50 leading-none"
             style={{ opacity: 0, transform: 'scale(0)' }}
           >
             +
           </div>
         </div>
-        <div 
-          ref={eyebrowRef} 
+        <div
+          ref={eyebrowRef}
           className="eyebrow4 text-white/80"
           style={{ opacity: 0, transform: 'translateY(20px)' }}
         >
           {subheading}
         </div>
-        <div 
-          ref={headingRef} 
+        <div
+          ref={headingRef}
           className="heading3 text-white"
           style={{ opacity: 0, transform: 'translateY(20px)' }}
         >
           {heading}
         </div>
       </div>
-      <div 
-        ref={descriptionRef} 
+      <div
+        ref={descriptionRef}
         className="paragraph1 text-white/50"
         style={{ opacity: 0, transform: 'translateY(20px)' }}
       >

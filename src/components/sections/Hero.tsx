@@ -180,7 +180,7 @@ export default function Hero() {
     >
       <div
         ref={logoRef}
-        className="absolute top-12 md:top-10 left-[50%] transform -translate-x-1/2 opacity-0 invisible"
+        className="absolute top-0 md:top-10 left-[50%] transform -translate-x-1/2"
       >
         <Logo
           size={40}
@@ -215,13 +215,13 @@ export default function Hero() {
             ref={inputRef}
             placeholder="example@email.com"
             type="email"
-            className="w-full md:flex-1 opacity-0 invisible translate-y-[30px]"
+            className="w-full md:flex-1 translate-y-[30px]"
           />
 
           <Button
             ref={buttonRef1}
             icon={<ExternalLink size={16} />}
-            className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+            className="w-full md:w-auto translate-y-[30px]"
           >
             Join Waitlist
           </Button>
@@ -229,7 +229,7 @@ export default function Hero() {
           <Button
             ref={buttonRef2}
             icon={<ExternalLink size={16} />}
-            className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+            className="w-full md:w-auto translate-y-[30px]"
           >
             Talk to Founder
           </Button>
