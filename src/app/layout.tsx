@@ -33,7 +33,7 @@ export default function RootLayout({
           style={{
             background:
               'linear-gradient(to bottom, #766F61, rgba(118, 111, 97, 0))',
-            zIndex: 10,
+            zIndex: 50,
           }}
         />
 
