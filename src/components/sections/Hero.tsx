@@ -100,33 +100,55 @@ export default function Hero() {
         '-=0.3'
       );
 
-      // 4. Input and buttons with smoother stagger
+      // 4. Input animation
       tl.to(
-        [inputRef.current, buttonRef1.current, buttonRef2.current],
+        inputRef.current,
         {
           opacity: 1,
           y: 0,
           visibility: 'visible',
-          duration: 0.6,
-          stagger: 0.1,
+          duration: 0.3,
           ease: 'power4.out',
         },
-        '-=0.3'
+        '-=0.1'
       );
 
-      // 5. Demo video container - starts after buttons complete
+      // 5. First button animation
       tl.to(
-        prototypeRef.current,
+        buttonRef1.current,
         {
           opacity: 1,
           y: 0,
           visibility: 'visible',
-          duration: 0.6,
-          ease: 'power2.out',
-        }
+          duration: 0.3,
+          ease: 'power4.out',
+        },
+        '-=0.1'
       );
 
-      // 6. Images fade in with container
+      // 6. Second button animation
+      tl.to(
+        buttonRef2.current,
+        {
+          opacity: 1,
+          y: 0,
+          visibility: 'visible',
+          duration: 0.3,
+          ease: 'power4.out',
+        },
+        '-=0.1'
+      );
+
+      // 7. Demo video container - starts after buttons complete
+      tl.to(prototypeRef.current, {
+        opacity: 1,
+        y: 0,
+        visibility: 'visible',
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+
+      // 8. Images fade in with container
       tl.to(
         [mobileImageRef.current, desktopImageRef.current],
         {
@@ -138,16 +160,13 @@ export default function Hero() {
         '-=0.6'
       );
 
-      // 7. Logo fade in - final touch
-      tl.to(
-        logoRef.current,
-        {
-          opacity: 1,
-          visibility: 'visible',
-          duration: 0.6,
-          ease: 'power2.out',
-        }
-      );
+      // 9. Logo fade in - final touch
+      tl.to(logoRef.current, {
+        opacity: 1,
+        visibility: 'visible',
+        duration: 0.6,
+        ease: 'power2.out',
+      });
     }, heroRef);
 
     return () => ctx.revert();
@@ -216,7 +235,10 @@ export default function Hero() {
           </Button>
         </div>
       </div>
-      <div ref={prototypeRef} className="opacity-0 invisible translate-y-[30px]">
+      <div
+        ref={prototypeRef}
+        className="opacity-0 invisible translate-y-[30px]"
+      >
         {/* Mobile prototype */}
         <figure
           className="md:hidden h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-[40px] overflow-hidden border border-white/10"
