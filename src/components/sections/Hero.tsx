@@ -15,7 +15,7 @@ export default function Hero() {
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef1 = useRef<HTMLButtonElement>(null);
   const buttonRef2 = useRef<HTMLButtonElement>(null);
-  const prototypeRef = useRef<HTMLElement>(null);
+  const prototypeRef = useRef<HTMLDivElement>(null);
   const mobileImageRef = useRef<HTMLImageElement>(null);
   const desktopImageRef = useRef<HTMLImageElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
