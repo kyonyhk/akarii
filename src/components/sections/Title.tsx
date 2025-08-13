@@ -43,36 +43,38 @@ export default function Title() {
           gsap.set(subtitleWords, { opacity: 0, y: 20 });
           gsap.set([akariiRef.current, subtitleRef.current], { opacity: 1 });
 
-          // ScrollTrigger at 20% from bottom (80% from top)
+          // ScrollTrigger at 30% from bottom (70% from top)
+          // Create text animation timeline
+          const textTl = gsap.timeline({ paused: true });
+
+          // Akarii typing animation (same as ValueProposition)
+          textTl.to(akariiChars, {
+            opacity: 1,
+            duration: 0.05,
+            stagger: 0.08,
+            ease: 'none',
+          });
+
+          // Subtitle words animation with slight overlap
+          // Start slightly before Akarii animation completes
+          textTl.to(
+            subtitleWords,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              stagger: 0.1,
+              ease: 'power2.out',
+            },
+            '-=0.2'
+          ); // Start 0.2s before previous animation ends
+
           ScrollTrigger.create({
             trigger: headerRef.current,
-            start: 'top 80%',
-            onEnter: () => {
-              const tl = gsap.timeline();
-
-              // Akarii typing animation (same as ValueProposition)
-              tl.to(akariiChars, {
-                opacity: 1,
-                duration: 0.05,
-                stagger: 0.08,
-                ease: 'none',
-              });
-
-              // Subtitle words animation with slight overlap
-              // Start slightly before Akarii animation completes
-              tl.to(
-                subtitleWords,
-                {
-                  opacity: 1,
-                  y: 0,
-                  duration: 0.4,
-                  stagger: 0.1,
-                  ease: 'power2.out',
-                },
-                '-=0.2'
-              ); // Start 0.2s before previous animation ends
-            },
-            once: true,
+            start: 'top 85%',
+            end: 'bottom 20%',
+            animation: textTl,
+            toggleActions: 'play none none reverse',
           });
         }
       };
@@ -87,63 +89,60 @@ export default function Title() {
           opacity: 0,
         });
 
-        // Background layer animation triggered at top of viewport
+        // Create background animation timeline
+        const backgroundTl = gsap.timeline({ paused: true });
+
+        // Layer 1 animates in from left (slower)
+        backgroundTl.to(layer1Ref.current, {
+          x: '0%',
+          opacity: 1,
+          duration: 0.4,
+          ease: 'power2.out',
+        });
+
+        // Layer 2 animates in from left (staggered, slower)
+        backgroundTl.to(
+          layer2Ref.current,
+          {
+            x: '0%',
+            opacity: 1,
+            duration: 0.4,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        );
+
+        // Layer 3 animates in from left (staggered, slower)
+        backgroundTl.to(
+          layer3Ref.current,
+          {
+            x: '0%',
+            opacity: 1,
+            duration: 0.4,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        );
+
+        // After a longer pause, animate layers 1 and 2 out to the right
+        backgroundTl.to(
+          [layer1Ref.current, layer2Ref.current],
+          {
+            x: '100%',
+            opacity: 0,
+            duration: 0.5,
+            ease: 'power2.in',
+          },
+          '+=0.5'
+        );
+
+        // Background layer animation triggered at 20% from top with toggle actions
         ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: 'top 0%',
-          onEnter: () => {
-            const tl = gsap.timeline();
-
-            // Layer 1 animates in from left
-            tl.to(layer1Ref.current, {
-              x: '0%',
-              opacity: 1,
-              duration: 0.25,
-              ease: 'power2.out',
-            });
-
-            // Layer 2 animates in from left (staggered)
-            tl.to(
-              layer2Ref.current,
-              {
-                x: '0%',
-                opacity: 1,
-                duration: 0.25,
-                ease: 'power2.out',
-              },
-              '-=0.15'
-            );
-
-            // Layer 3 animates in from left (staggered)
-            tl.to(
-              layer3Ref.current,
-              {
-                x: '0%',
-                opacity: 1,
-                duration: 0.25,
-                ease: 'power2.out',
-              },
-              '-=0.15'
-            );
-
-            // After a brief pause, animate layers 1 and 2 out to the right
-            tl.to(
-              [layer1Ref.current, layer2Ref.current],
-              {
-                x: '100%',
-                opacity: 0,
-                duration: 0.3,
-                ease: 'power2.in',
-                onComplete: () => {
-                  // Remove the layers from DOM after animation
-                  if (layer1Ref.current) layer1Ref.current.remove();
-                  if (layer2Ref.current) layer2Ref.current.remove();
-                },
-              },
-              '+=0.1'
-            );
-          },
-          once: true,
+          start: 'top 20%',
+          end: 'bottom 20%',
+          animation: backgroundTl,
+          toggleActions: 'play none none reverse',
         });
       };
 
