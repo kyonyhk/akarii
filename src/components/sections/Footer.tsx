@@ -121,10 +121,10 @@ export default function Footer() {
 
         // 9. Logo fade in when page hits bottom with 1 second delay
         logoTl
-          .to({}, { duration: 2 }) // 1 second delay
+          .to({}, { duration: 0.5 }) // 1 second delay
           .to(logoContainerRef.current, {
             opacity: 1,
-            duration: 0.8,
+            duration: 2.5,
             ease: 'power4.out',
           });
 
