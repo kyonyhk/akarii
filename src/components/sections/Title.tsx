@@ -157,7 +157,7 @@ export default function Title() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex flex-col justify-end p-4 md:p-20 relative overflow-hidden"
+      className="min-h-screen flex flex-col justify-end p-4 md:py-20 md:px-50 relative overflow-hidden"
     >
       {/* Background layers */}
       <div
@@ -187,7 +187,7 @@ export default function Title() {
           ref={subtitleRef}
           className="heading1 text-white/80 opacity-0"
         >
-          an intelligent AI workspace for AI native teams
+          an intelligent workspace for AI native teams
         </p>
       </header>
     </section>
