@@ -31,7 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           'paragraph2 text-white placeholder:text-white/50',
 
           // Background and effects
-          'bg-white/5 backdrop-blur-sm',
+          'bg-white/5',
 
           // Focus states
           'focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30',

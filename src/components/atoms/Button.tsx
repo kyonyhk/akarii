@@ -84,7 +84,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       primary: cn(
         // Background & Border
         'bg-white/5 border-white/20',
-        'backdrop-blur-sm',
 
         // Text Color
         'text-white',
