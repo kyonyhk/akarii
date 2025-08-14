@@ -77,6 +77,12 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
           return 'Priya';
         case 8:
           return 'Harper';
+        case 9:
+          return 'Harper';
+        case 10:
+          return 'Dan';
+        case 11:
+          return 'Elena';
         default:
           return 'Sarah';
       }

@@ -627,7 +627,7 @@ The support FAQ references the new API endpoints that Alex's team documented yes
         pauses: [10, 18, 26, 34, 39, 44, 49, 56, 61, 67],
       },
       {
-        sender: 'Jordan',
+        sender: 'Dan',
         role: 'human',
         type: 'text',
         timestamp: '23:46',
@@ -683,7 +683,7 @@ The support FAQ references the new API endpoints that Alex's team documented yes
 **Investigation Steps:**
 
 1. Alex identified 500 errors starting 23:30
-2. Jordan confirmed payment gateway logs showed failures  
+2. Dan confirmed payment gateway logs showed failures  
 3. Sam ruled out database connectivity issues
 4. Alex discovered certificate expiration and resolved
 
@@ -936,7 +936,7 @@ Consider creating a prioritization framework that weighs:
   {
     id: 10,
     name: 'Meeting Drift Prevention',
-    pov: 'Jordan',
+    pov: 'Dan',
     thread: {
       title: 'Weekly Team Standup',
       goal: 'Review sprint progress and identify blockers',
@@ -945,7 +945,7 @@ Consider creating a prioritization framework that weighs:
     },
     messages: [
       {
-        sender: 'Jordan',
+        sender: 'Dan',
         role: 'human',
         type: 'text',
         timestamp: '09:00',
@@ -963,7 +963,7 @@ Consider creating a prioritization framework that weighs:
         pauses: [5, 14, 17, 22, 30, 33, 42, 51, 62],
       },
       {
-        sender: 'Tyler',
+        sender: 'Ryan',
         role: 'human',
         type: 'text',
         timestamp: '09:01',
@@ -971,7 +971,7 @@ Consider creating a prioritization framework that weighs:
         pauses: [4, 13, 17, 23, 27, 30, 34, 41, 47, 54, 59, 64, 68],
       },
       {
-        sender: 'Nina',
+        sender: 'Maya',
         role: 'human',
         type: 'text',
         timestamp: '09:01',
@@ -998,15 +998,15 @@ Complete current sprint updates first, then schedule separate session for design
         preDelayMs: 400,
       },
       {
-        sender: 'Jordan',
+        sender: 'Dan',
         role: 'human',
         type: 'text',
         timestamp: '09:02',
-        content: 'Right, let\'s finish sprint updates first. Nina, any blockers?',
+        content: 'Right, let\'s finish sprint updates first. Maya, any blockers?',
         pauses: [6, 12, 18, 25, 31, 38, 44, 50, 56, 62],
       },
       {
-        sender: 'Nina',
+        sender: 'Maya',
         role: 'human',
         type: 'text',
         timestamp: '09:02',
@@ -1014,7 +1014,7 @@ Complete current sprint updates first, then schedule separate session for design
         pauses: [8, 11, 19, 23, 29, 36, 44, 51],
       },
       {
-        sender: 'Tyler',
+        sender: 'Ryan',
         role: 'human',
         type: 'text',
         timestamp: '09:02',
@@ -1026,7 +1026,7 @@ Complete current sprint updates first, then schedule separate session for design
   {
     id: 11,
     name: 'Distributed Team Knowledge Sharing',
-    pov: 'Emma',
+    pov: 'Elena',
     thread: {
       title: 'Global Team Sync',
       channel: 'global-sync',
@@ -1034,7 +1034,7 @@ Complete current sprint updates first, then schedule separate session for design
     },
     messages: [
       {
-        sender: 'Emma',
+        sender: 'Elena',
         role: 'human',
         type: 'text',
         timestamp: '10:00',
@@ -1042,7 +1042,7 @@ Complete current sprint updates first, then schedule separate session for design
         pauses: [5, 12, 22, 32, 38, 44, 53, 63],
       },
       {
-        sender: 'Lars',
+        sender: 'Leo',
         role: 'human',
         type: 'text',
         timestamp: '10:00',
@@ -1050,7 +1050,7 @@ Complete current sprint updates first, then schedule separate session for design
         pauses: [9, 14, 23, 27, 35, 42, 50, 61],
       },
       {
-        sender: 'Yuki',
+        sender: 'Josh',
         role: 'human',
         type: 'text',
         timestamp: '10:01',
@@ -1058,7 +1058,7 @@ Complete current sprint updates first, then schedule separate session for design
         pauses: [6, 15, 25, 29, 37, 41, 48, 54, 60],
       },
       {
-        sender: 'Emma',
+        sender: 'Elena',
         role: 'human',
         type: 'text',
         timestamp: '10:01',
@@ -1085,7 +1085,7 @@ Complete current sprint updates first, then schedule separate session for design
         preDelayMs: 300,
       },
       {
-        sender: 'Lars',
+        sender: 'Leo',
         role: 'human',
         type: 'text',
         timestamp: '10:02',
@@ -1110,7 +1110,7 @@ Complete current sprint updates first, then schedule separate session for design
         preDelayMs: 300,
       },
       {
-        sender: 'Yuki',
+        sender: 'Josh',
         role: 'human',
         type: 'text',
         timestamp: '10:03',
@@ -1124,7 +1124,7 @@ Complete current sprint updates first, then schedule separate session for design
         timestamp: '10:03',
         content: `## Design System Update Timeline
 
-**Current Status:** 70% complete (Emma's team)
+**Current Status:** 70% complete (Elena's team)
 **Remaining Work:** Color tokens and typography for Japanese/Korean
 **ETA:** Wednesday end of day (SF time)
 **Delivery:** Components will be available in Figma library`,
@@ -1132,7 +1132,7 @@ Complete current sprint updates first, then schedule separate session for design
         preDelayMs: 300,
       },
       {
-        sender: 'Emma',
+        sender: 'Elena',
         role: 'human',
         type: 'text',
         timestamp: '10:04',
