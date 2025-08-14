@@ -289,7 +289,7 @@ export default function InfoSection({
       className={cn(
         'flex flex-row gap-4 items-start justify-start w-full text-left transition-opacity duration-300',
         'py-6 pl-0 md:pl-6 pr-6 md:pr-20', // Consistent padding
-        !isExpanded && 'opacity-50',
+        !isExpanded && 'md:opacity-50', // Only apply opacity reduction on desktop
         isExpanded ? 'cursor-default' : 'cursor-pointer', // Remove pointer cursor for active state
         className
       )}

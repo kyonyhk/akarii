@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import InfoSection from '../molecules/InfoSection';
+import ChatDemoMini from '../demo/ChatDemoMini';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -11,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Features() {
   const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState<1 | 2 | 3 | 4>(1); // First section active by default
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Refs for scroll animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -25,12 +27,119 @@ export default function Features() {
   const infoTimeline3Ref = useRef<gsap.core.Timeline | null>(null);
   const infoTimeline4Ref = useRef<gsap.core.Timeline | null>(null);
 
+  // Refs for individual demo containers
+  const demoContainer1Ref = useRef<HTMLDivElement>(null);
+  const demoContainer2Ref = useRef<HTMLDivElement>(null);
+  const demoContainer3Ref = useRef<HTMLDivElement>(null);
+  const demoContainer4Ref = useRef<HTMLDivElement>(null);
+
+  // Refs for background layers
+  const backgroundLayer1Ref = useRef<HTMLDivElement>(null);
+  const backgroundLayer2Ref = useRef<HTMLDivElement>(null);
+  const backgroundLayer3Ref = useRef<HTMLDivElement>(null);
+  const backgroundLayer4Ref = useRef<HTMLDivElement>(null);
+
   // Click handlers for section toggling (desktop only)
   const handleSectionClick = (section: 1 | 2 | 3 | 4) => {
-    if (!isMobile) {
-      setActiveSection(section);
+    if (!isMobile && section !== activeSection && !isTransitioning) {
+      setIsTransitioning(true);
+
+      // Get current and next container refs
+      const getCurrentRef = () => {
+        switch (activeSection) {
+          case 1:
+            return demoContainer1Ref.current;
+          case 2:
+            return demoContainer2Ref.current;
+          case 3:
+            return demoContainer3Ref.current;
+          case 4:
+            return demoContainer4Ref.current;
+          default:
+            return demoContainer1Ref.current;
+        }
+      };
+
+      const getNextRef = () => {
+        switch (section) {
+          case 1:
+            return demoContainer1Ref.current;
+          case 2:
+            return demoContainer2Ref.current;
+          case 3:
+            return demoContainer3Ref.current;
+          case 4:
+            return demoContainer4Ref.current;
+          default:
+            return demoContainer1Ref.current;
+        }
+      };
+
+      const currentRef = getCurrentRef();
+      const nextRef = getNextRef();
+
+      // Animate out current demo
+      if (currentRef) {
+        gsap.to(currentRef, {
+          opacity: 0,
+          y: 20,
+          duration: 0.2,
+          ease: 'power2.out',
+          onComplete: () => {
+            // Set active section
+            setActiveSection(section);
+
+            // Animate in new demo
+            if (nextRef) {
+              gsap.fromTo(
+                nextRef,
+                {
+                  opacity: 0,
+                  y: -20,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.3,
+                  ease: 'power2.out',
+                  onComplete: () => {
+                    setIsTransitioning(false);
+                    // The chat will start automatically after this completes due to the isActive prop change
+                  },
+                }
+              );
+            } else {
+              setIsTransitioning(false);
+            }
+          },
+        });
+      } else {
+        // Fallback if ref is not available
+        setActiveSection(section);
+        setIsTransitioning(false);
+      }
     }
   };
+
+  // Initialize GSAP properties for all containers
+  useEffect(() => {
+    const containers = [
+      demoContainer1Ref.current,
+      demoContainer2Ref.current,
+      demoContainer3Ref.current,
+      demoContainer4Ref.current,
+    ];
+
+    containers.forEach((container, index) => {
+      if (container) {
+        const isActive = index + 1 === activeSection;
+        gsap.set(container, {
+          opacity: isActive ? 1 : 0,
+          y: 0,
+        });
+      }
+    });
+  }, [activeSection]);
 
   // Check for mobile on mount
   useEffect(() => {
@@ -42,6 +151,113 @@ export default function Features() {
     window.addEventListener('resize', checkMobile);
 
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Background animations
+  useEffect(() => {
+    if (!sectionRef.current || !backgroundLayer1Ref.current || !backgroundLayer2Ref.current || !backgroundLayer3Ref.current || !backgroundLayer4Ref.current) return;
+
+    const ctx = gsap.context(() => {
+      // Initially hide all layers off-screen from bottom
+      gsap.set([backgroundLayer1Ref.current, backgroundLayer2Ref.current, backgroundLayer3Ref.current, backgroundLayer4Ref.current], {
+        y: '100%',
+        opacity: 0,
+      });
+
+      // Create entry animation timeline
+      const entryTl = gsap.timeline({ paused: true });
+
+      // Layer 1 animates in from bottom
+      entryTl.to(backgroundLayer1Ref.current, {
+        y: '0%',
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+
+      // Layer 2 animates in from bottom (staggered)
+      entryTl.to(
+        backgroundLayer2Ref.current,
+        {
+          y: '0%',
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        '-=0.3'
+      );
+
+      // Layer 3 animates in from bottom (staggered)
+      entryTl.to(
+        backgroundLayer3Ref.current,
+        {
+          y: '0%',
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        '-=0.3'
+      );
+
+      // Layer 4 animates in from bottom (staggered)
+      entryTl.to(
+        backgroundLayer4Ref.current,
+        {
+          y: '0%',
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        '-=0.3'
+      );
+
+      // After a pause, animate layer 4 (top layer) out to the top during entry
+      entryTl.to(
+        backgroundLayer4Ref.current,
+        {
+          y: '-100%',
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.in',
+        },
+        '+=0.5'
+      );
+
+      // Create separate exit animation timeline
+      const exitTl = gsap.timeline({ paused: true });
+
+      // All remaining layers (1, 2, 3) animate out to the top
+      exitTl.to(
+        [backgroundLayer1Ref.current, backgroundLayer2Ref.current, backgroundLayer3Ref.current],
+        {
+          y: '-100%',
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power2.in',
+          stagger: 0.1, // Small stagger for smoother exit
+        }
+      );
+
+      // Entry animation triggered when section comes into view
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 60%',
+        end: 'bottom 60%',
+        animation: entryTl,
+        toggleActions: 'play none none reverse',
+      });
+
+      // Exit animation triggered when section is leaving view
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'bottom 40%',
+        end: 'bottom 20%',
+        animation: exitTl,
+        toggleActions: 'play none none reverse',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   // ScrollTrigger animations
@@ -65,7 +281,7 @@ export default function Features() {
           if (infoTimeline1Ref.current) {
             ScrollTrigger.create({
               trigger: infoSection1Ref.current,
-              start: 'top 70%',
+              start: 'top 80%',
               end: 'bottom 50%',
               animation: infoTimeline1Ref.current,
               toggleActions: 'play none none reverse',
@@ -76,7 +292,7 @@ export default function Features() {
           if (infoTimeline2Ref.current) {
             ScrollTrigger.create({
               trigger: infoSection2Ref.current,
-              start: 'top 70%',
+              start: 'top 80%',
               end: 'bottom 50%',
               animation: infoTimeline2Ref.current,
               toggleActions: 'play none none reverse',
@@ -87,7 +303,7 @@ export default function Features() {
           if (infoTimeline3Ref.current) {
             ScrollTrigger.create({
               trigger: infoSection3Ref.current,
-              start: 'top 70%',
+              start: 'top 80%',
               end: 'bottom 50%',
               animation: infoTimeline3Ref.current,
               toggleActions: 'play none none reverse',
@@ -98,7 +314,7 @@ export default function Features() {
           if (infoTimeline4Ref.current) {
             ScrollTrigger.create({
               trigger: infoSection4Ref.current,
-              start: 'top 70%',
+              start: 'top 80%',
               end: 'bottom 50%',
               animation: infoTimeline4Ref.current,
               toggleActions: 'play none none reverse',
@@ -119,7 +335,7 @@ export default function Features() {
 
             ScrollTrigger.create({
               trigger: sectionRef.current,
-              start: 'top 70%',
+              start: 'top 80%',
               end: 'bottom 20%',
               onEnter: () => {
                 // Start first InfoSection immediately
@@ -200,58 +416,118 @@ export default function Features() {
     return () => ctx.revert();
   }, [isMobile]);
 
-  // Get placeholder content based on active section
-  const getPlaceholderContent = () => {
-    const baseClasses =
-      'h-full w-full border backdrop-blur-sm border-white/20 rounded-3xl flex items-center justify-center text-white font-mondwest text-heading4 md:text-heading3';
-
-    switch (activeSection) {
-      case 1:
-        return (
-          <div className={`${baseClasses} bg-blue-500/20`}>
-            Collaboration Demo
-          </div>
-        );
-      case 2:
-        return (
-          <div className={`${baseClasses} bg-green-500/20`}>
-            Goal Tracking Demo
-          </div>
-        );
-      case 3:
-        return (
-          <div className={`${baseClasses} bg-purple-500/20`}>
-            Decision Memory Demo
-          </div>
-        );
-      case 4:
-        return (
-          <div className={`${baseClasses} bg-orange-500/20`}>
-            AI Intelligence Demo
-          </div>
-        );
-      default:
-        return (
-          <div className={`${baseClasses} bg-white/10`}>Features Demo</div>
-        );
-    }
-  };
-
   return (
     <section
       ref={sectionRef}
       data-section="features"
       className="min-h-screen flex flex-row"
     >
-      <figure
-        className="hidden md:flex flex-1 flex-col justify-center items-center p-10"
-        aria-label="Features demonstration"
-      >
-        {getPlaceholderContent()}
-      </figure>
-      <aside className="bg-black/50 backdrop-blur-sm flex flex-1 flex-col justify-center items-center gap-10 py-10 px-4 md:px-10">
+      <div className="hidden md:flex flex-1 flex-col justify-center items-center p-10">
+        {/* Wrapper container that constrains all demo containers */}
+        <div className="relative w-full h-full">
+          {/* Demo Container 1 - Team collaboration */}
+          <div
+            ref={demoContainer1Ref}
+            className={`absolute transition-all duration-300 ${
+              activeSection === 1 ? 'opacity-100 z-40' : 'opacity-0 z-10'
+            } ${isTransitioning ? 'pointer-events-none' : ''}`}
+            style={{
+              top: '0%',
+              left: '0%',
+              right: '0%',
+              height: '60%',
+            }}
+          >
+            <ChatDemoMini
+              scenarioIndex={0}
+              isActive={activeSection === 1}
+            />
+          </div>
+
+          {/* Demo Container 2 - Goal tracking */}
+          <div
+            ref={demoContainer2Ref}
+            className={`absolute transition-all duration-300 ${
+              activeSection === 2 ? 'opacity-100 z-40' : 'opacity-0 z-20'
+            } ${isTransitioning ? 'pointer-events-none' : ''}`}
+            style={{
+              top: '10%',
+              left: '0%',
+              right: '0%',
+              height: '60%',
+            }}
+          >
+            <ChatDemoMini
+              scenarioIndex={1}
+              isActive={activeSection === 2}
+            />
+          </div>
+
+          {/* Demo Container 3 - Decision memory */}
+          <div
+            ref={demoContainer3Ref}
+            className={`absolute transition-all duration-300 ${
+              activeSection === 3 ? 'opacity-100 z-40' : 'opacity-0 z-30'
+            } ${isTransitioning ? 'pointer-events-none' : ''}`}
+            style={{
+              top: '30%',
+              left: '0%',
+              right: '0%',
+              height: '60%',
+            }}
+          >
+            <ChatDemoMini
+              scenarioIndex={2}
+              isActive={activeSection === 3}
+            />
+          </div>
+
+          {/* Demo Container 4 - AI intelligence */}
+          <div
+            ref={demoContainer4Ref}
+            className={`absolute transition-all duration-300 ${
+              activeSection === 4 ? 'opacity-100 z-40' : 'opacity-0 z-35'
+            } ${isTransitioning ? 'pointer-events-none' : ''}`}
+            style={{
+              top: '40%',
+              left: '0%',
+              right: '0%',
+              height: '60%',
+            }}
+          >
+            <ChatDemoMini
+              scenarioIndex={3}
+              isActive={activeSection === 4}
+            />
+          </div>
+        </div>
+      </div>
+      <aside className="relative flex flex-1 flex-col justify-center items-center gap-10 py-10 px-4 md:px-10 overflow-hidden">
+        {/* Background layers */}
+        <div
+          ref={backgroundLayer1Ref}
+          className="absolute inset-0 bg-black/15 backdrop-blur-sm z-10"
+        />
+        <div
+          ref={backgroundLayer2Ref}
+          className="absolute inset-0 bg-black/15 z-20"
+        />
+        <div
+          ref={backgroundLayer3Ref}
+          className="absolute inset-0 bg-black/15 z-30"
+        />
+        <div
+          ref={backgroundLayer4Ref}
+          className="absolute inset-0 bg-black/20 z-35"
+        />
+        
         <h2 className="sr-only">Product Features</h2>
-        <div ref={infoSection1Ref}>
+        <div
+          ref={infoSection1Ref}
+          className={`relative z-40 transition-opacity duration-200 ${
+            isTransitioning ? 'opacity-60 pointer-events-none' : 'opacity-100'
+          }`}
+        >
           <InfoSection
             heading="Collaborate with AI as a team"
             subheading="Humans and AI, side by side"
@@ -261,7 +537,14 @@ export default function Features() {
             onToggle={() => handleSectionClick(1)}
           />
         </div>
-        <div ref={infoSection2Ref}>
+        <div
+          ref={infoSection2Ref}
+          className={`relative z-40 md:transition-opacity md:duration-200 ${
+            isTransitioning
+              ? 'opacity-100 md:opacity-60 pointer-events-none'
+              : 'opacity-100'
+          }`}
+        >
           <InfoSection
             heading="Keep every discussion tied to goals"
             subheading="Every word with purpose"
@@ -271,7 +554,14 @@ export default function Features() {
             onToggle={() => handleSectionClick(2)}
           />
         </div>
-        <div ref={infoSection3Ref}>
+        <div
+          ref={infoSection3Ref}
+          className={`relative z-40 md:transition-opacity md:duration-200 ${
+            isTransitioning
+              ? 'opacity-100 md:opacity-60 pointer-events-none'
+              : 'opacity-100'
+          }`}
+        >
           <InfoSection
             heading="Instant decision memory"
             subheading="Decisions, remembered"
@@ -281,7 +571,14 @@ export default function Features() {
             onToggle={() => handleSectionClick(3)}
           />
         </div>
-        <div ref={infoSection4Ref}>
+        <div
+          ref={infoSection4Ref}
+          className={`relative z-40 md:transition-opacity md:duration-200 ${
+            isTransitioning
+              ? 'opacity-100 md:opacity-60 pointer-events-none'
+              : 'opacity-100'
+          }`}
+        >
           <InfoSection
             heading="Intelligence that speaks when it matters"
             subheading="Silent until it counts"

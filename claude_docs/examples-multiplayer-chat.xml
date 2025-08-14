@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiScenarios xmlns="https://akarii.app/scenarios" version="1.2" generatedAt="2025-08-13T16:40:00+08:00">
+  <!-- Campaign: Multiplayer Chat (Simulated demos. Fictionalized content. No affiliation.) -->
+  <!-- Note: Akarii is PASSIVE — only responds when explicitly @mentioned. -->
+
+  <!-- Scenario 1: Conductor – Designing a Claude Code Agent UI -->
+  <Scenario id="conductor-claude-ui" title="Designing a Claude Code Agent UI" perspective="Conductor" goal="Ship a friendly multi-agent UI" channel="product-design" tz="+08:00" user="Alex (Engineer)" simulated="true">
+    <Participants>
+      <Person name="Alex" role="Engineer" company="Conductor"/>
+      <Person name="Jamie" role="Designer" company="Conductor"/>
+      <Person name="Maya" role="Engineer" company="Conductor"/>
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Alex" role="human" type="text" time="09:00">Morning! I sketched a flow: prompt → choose agent → watch logs → code output.</Message>
+      <Message sender="Maya" role="human" type="text" time="09:01">I like it, but I’d put *tests* before output so users trust the result.</Message>
+      <Message sender="Jamie" role="human" type="text" time="09:02">If we surface tests too early we might overwhelm non‑technical folks. Maybe *optional*?</Message>
+      <Message sender="Alex" role="human" type="text" time="09:02">Let’s sanity‑check labels. @Akarii — can you map the steps and propose friendlier labels?</Message>
+      <Message sender="Akarii" role="ai" type="text" time="09:03"><![CDATA[
+### Proposed Multi‑Agent Code Flow (friendly, minimal cognitive load)
+
+**1) Ask**  
+Guidance: “Tell me what you’d like to build.”  
+- Hints: language, framework, I/O example.  
+- UX: large single‑line composer; suggestions inline (“Add tests”, “Target Node 20”).
+
+**2) Choose Agent**  
+- Agent cards with 1‑line capability tags: *API*, *Refactor*, *Tests*, *Docs*.  
+- Quick compare on hover (strengths / expected outputs / typical runtime).
+
+**3) Watch Work**  
+- Live execution log with step chips (Plan → Fetch → Generate → Test).  
+- Controls: **Pause**, **Edit Plan**, **Retry step**.
+
+**4) See Results**  
+- Syntax‑highlighted diff view; actions: **Copy**, **Rerun**, **Send to Editor**, **Create PR**.
+
+**Why this works**  
+- Action verbs front‑load control (“Ask”, “Choose”, “Watch”, “See”).  
+- Keeps experts fast while giving newcomers affordances.
+
+If useful, I can also provide microcopy + empty states.
+      ]]></Message>
+      <Message sender="Jamie" role="human" type="text" time="09:04">These labels work. I’d still like tests discoverable but not blocking.</Message>
+      <Message sender="Maya" role="human" type="text" time="09:04">Agree—maybe a “Quality checks” drawer under *See Results*.</Message>
+      <Message sender="Alex" role="human" type="text" time="09:05">@Akarii — draft tooltips for each step and suggest where that “Quality checks” fits.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="09:05"><![CDATA[
+### Tooltips + Placement
+
+**Ask**  
+*Be specific. Mention language, framework, I/O and any constraints (e.g., Node 20, ESM).*  
+
+**Choose Agent**  
+*Hover an agent to see strengths and sample outputs. You can switch agents later.*  
+
+**Watch Work**  
+*Follow the steps in real time. Pause to tweak the plan or skip a step if needed.*  
+
+**See Results**  
+*Review code and changes. Open **Quality checks** to run tests and linting.*
+
+**Quality checks (drawer in See Results)**  
+- Header: **Quality checks** — *Validate before you ship.*  
+- Buttons: **Run tests**, **Run lint**, **Open coverage**  
+- Empty: *No checks yet. Run a check to view results here.*  
+- Results list shows status chips (✅ Passed / ❌ Failed / ⏱️ Running) with collapsible logs.
+
+**Rationale**: keeps “tests” present but non‑blocking; discoverable at the moment of decision.
+      ]]></Message>
+      <Message sender="Jamie" role="human" type="text" time="09:06">Perfect. I’ll mock the drawer. Maya, can you own the tests view?</Message>
+      <Message sender="Maya" role="human" type="text" time="09:06">On it. Alex, I’ll need the execution log schema.</Message>
+      <Message sender="Alex" role="human" type="text" time="09:07">@Akarii — microcopy for the Quality checks header + empty state?</Message>
+      <Message sender="Akarii" role="ai" type="text" time="09:07"><![CDATA[
+**Header:** **Quality checks**  
+**Subhead:** *Validate before you ship.*  
+**Empty state:** *No checks yet. Run tests or lint to see results here.*  
+**Primary CTA:** **Run checks**  
+**Secondary CTA:** **Configure** (coverage thresholds, test runner)
+      ]]></Message>
+    </Messages>
+  </Scenario>
+
+  <!-- Scenario 2: Every – Live Newsletter + Product Launch Coordination -->
+  <Scenario id="every-newsletter-launch" title="Newsletter + Product Launch Sprint" perspective="Every" goal="Ship today’s newsletter and tool launch" channel="launch-room" tz="+08:00" user="Dan (Editor)" simulated="true">
+    <Participants>
+      <Person name="Dan" role="Editor" company="Every"/>
+      <Person name="Mira" role="Writer" company="Every"/>
+      <Person name="Cole" role="Engineer" company="Every"/>
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Dan" role="human" type="text" time="13:09">Deadline mode. We need a headline on human‑AI collaboration.</Message>
+      <Message sender="Mira" role="human" type="text" time="13:09">Pitch: **“When AI joins the meeting, work gets smarter.”**</Message>
+      <Message sender="Cole" role="human" type="text" time="13:10">Good, but feels safe. Our brand can go bolder.</Message>
+      <Message sender="Dan" role="human" type="text" time="13:10">@Akarii — give us 2 bold alternates, still on‑brand.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="13:10"><![CDATA[
+Here are two bold options with tone notes:
+
+1) **“The Smartest Person in the Room Isn’t a Person.”**  
+   - Tone: thought‑leadership, slightly provocative.  
+   - Subtext: AI as amplifier for group clarity, not a replacement.
+
+2) **“Your New Favorite Teammate Is Made of Code.”**  
+   - Tone: product‑forward, approachable.  
+   - Subtext: practical partnership; less hype, more utility.
+
+**Brand fit**: #1 for essays; #2 for launches. I can pair either with a pragmatic dek.
+      ]]></Message>
+      <Message sender="Mira" role="human" type="text" time="13:11">I vote #1. Cole?</Message>
+      <Message sender="Cole" role="human" type="text" time="13:11">#1, but let’s keep the dek practical.</Message>
+      <Message sender="Dan" role="human" type="text" time="13:12">@Akarii — 25‑word dek that tees up a launch blurb.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="13:12"><![CDATA[
+**Dek (25 words)**  
+How teams work is changing. We tested where AI helps (and where it doesn’t)—and we’re launching a tool that turns conversations into shared memory and momentum.
+      ]]></Message>
+      <Message sender="Cole" role="human" type="text" time="13:12">Nice. Pull 50‑word product description from the launch doc?</Message>
+      <Message sender="Mira" role="human" type="text" time="13:13">Context: assistant drafts fast, keeps context, shares memory across the team.</Message>
+      <Message sender="Cole" role="human" type="text" time="13:13">@Akarii — condense that from `/docs/launch-brief` to 50 words.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="13:13"><![CDATA[
+**Product (50 words)**  
+Our AI writing assistant brings structured creativity to your work—combining instant drafting, context awareness, and team‑shared memory so every piece you write stays aligned, consistent, and on‑message. Think faster first drafts, clearer edits, and a reusable library of decisions and references your whole team can pull from on demand.
+      ]]></Message>
+      <Message sender="Dan" role="human" type="text" time="13:14">Ship it. Mira, slot headline #1 + dek. Cole, assets?</Message>
+      <Message sender="Cole" role="human" type="text" time="13:14">@Akarii — export headline, dek, and 3 social variants to `/launch-assets`, tag “Launch Day”.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="13:14"><![CDATA[
+**Export complete →** `/launch-assets` (tag: Launch Day)
+
+**Social variants**  
+- **X (post):** The smartest person in the room isn’t a person. How we collaborate is changing—and we built for it. New tool that turns conversations into shared memory.  
+- **LinkedIn:** Meetings drift. Decisions get buried. We tested where AI helps (and where it doesn’t). Today, we’re launching a writing assistant that keeps teams on‑message—and on‑mission.  
+- **Thread opener:** Why your team’s best editor might be an AI—with a memory everyone can reuse.
+Also included: alt text pack + 1200×630 hero.
+      ]]></Message>
+    </Messages>
+  </Scenario>
+
+  <!-- Scenario 3: VC Firm – Deal Memo Deep Dive -->
+  <Scenario id="vc-deal-memo" title="Deal Memo Deep Dive" perspective="VC" goal="Decide whether to advance an AI logistics deal" channel="investment-review" tz="+08:00" user="Priya (Partner)" simulated="true">
+    <Participants>
+      <Person name="Priya" role="Partner" company="Fictional VC"/>
+      <Person name="Leo" role="Associate" company="Fictional VC"/>
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Priya" role="human" type="text" time="16:20">Gut check: is this market big enough in SEA?</Message>
+      <Message sender="Leo" role="human" type="text" time="16:20">Depends—cross‑border e‑comm and last‑mile are booming, but margins are thin.</Message>
+      <Message sender="Priya" role="human" type="text" time="16:21">@Akarii — TAM estimate for AI‑enabled logistics in SEA?</Message>
+      <Message sender="Akarii" role="ai" type="text" time="16:21"><![CDATA[
+**TAM (2024):** ≈ **$5.2B**, projected **~17% CAGR** through 2028.  
+**Drivers:** cross‑border e‑commerce, last‑mile automation, predictive routing, customs digitization.  
+**Sensitivity:** growth slows if cross‑border taxes tighten; upside if drone pilots scale.
+
+I saved sources and a country‑level split shell at `/market-research/SEA-logistics`.
+      ]]></Message>
+      <Message sender="Leo" role="human" type="text" time="16:22">Okay, healthy. Who are the top competitors by stage?</Message>
+      <Message sender="Priya" role="human" type="text" time="16:22">And note any defensible differentiators.</Message>
+      <Message sender="Leo" role="human" type="text" time="16:22">@Akarii — top 5 with stage + differentiator, please.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="16:22"><![CDATA[
+| Competitor | Stage   | Differentiator                              |
+|------------|---------|---------------------------------------------|
+| RouteIQ    | Series B| Real‑time customs clearance API             |
+| LogiBot    | Series A| Autonomous last‑mile drones                 |
+| CargoAI    | Series C| Multilingual freight marketplace            |
+| SwiftChain | Seed    | Blockchain‑based shipment tracking          |
+| OptiFleet  | Series B| Route planning latency < 10 ms             |
+
+**Landscape note:** latency and reliability (missed windows) dominate last‑mile unit economics.
+      ]]></Message>
+      <Message sender="Priya" role="human" type="text" time="16:23">Our target claims sub‑10ms urban routing. If true, that’s a wedge.</Message>
+      <Message sender="Leo" role="human" type="text" time="16:23">Let’s frame it as a reliability advantage, not just speed.</Message>
+      <Message sender="Priya" role="human" type="text" time="16:24">@Akarii — draft the **Moat** section emphasizing reliability + cost impact. Save to `/memos/ai-logistics`.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="16:24"><![CDATA[
+### Moat — Real‑Time Urban Routing (Sub‑10 ms)
+
+**Claim**  
+Adaptive routing at sub‑10 ms decision latency across dense SEA metros.
+
+**Why it matters**  
+- **Tighter delivery windows → higher first‑attempt success.**  
+- **Fewer redeliveries → lower last‑mile cost per unit.**  
+- **Stability under traffic shocks (rain, roadworks, events).**
+
+**Before/After (illustrative)**  
+- Missed window rate: **18% → 9%**  
+- Redelivery attempts/order: **0.22 → 0.11**  
+- Last‑mile cost/unit: **$3.40 → $2.85**
+
+**Defensibility**  
+- Data flywheel: metro‑specific micro‑features (road topology, curb availability).  
+- Infra: low‑latency inference + edge caches near rider clusters.  
+- Switching cost: retraining penalty for rivals is time‑ & city‑specific.
+
+Saved draft + slide to `/memos/ai-logistics`.
+      ]]></Message>
+      <Message sender="Leo" role="human" type="text" time="16:25">I’ll review and plug into the IC deck.</Message>
+    </Messages>
+  </Scenario>
+
+  <!-- Scenario 4: AI Podcast – Episode Prep -->
+  <Scenario id="ai-podcast-episode-prep" title="Episode Prep: Open‑Source vs Proprietary" perspective="Podcast" goal="Lock outline, questions, and promo copy" channel="show-run" tz="+08:00" user="Harper (Producer)" simulated="true">
+    <Participants>
+      <Person name="Harper" role="Producer" company="Fictional AI Podcast"/>
+      <Person name="Lenny" role="Host" company="Fictional AI Podcast"/>
+      <Person name="Akarii" role="AI"/>
+    </Participants>
+    <Messages markdown="true">
+      <Message sender="Lenny" role="human" type="text" time="18:04">Thinking opener: “Why do open models still matter?” Too broad?</Message>
+      <Message sender="Harper" role="human" type="text" time="18:05">Good start. Let’s outline before we wordsmith.</Message>
+      <Message sender="Harper" role="human" type="text" time="18:05">@Akarii — propose an outline (guest is CEO of a fictional AI startup). Theme: open‑source vs proprietary.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="18:05"><![CDATA[
+### Episode Outline (balanced: narrative → depth)
+
+1) **Guest intro & context** — credibility + how they’ve shipped on both sides.  
+2) **State of open‑source** — velocity, community QA, deployment friction.  
+3) **Proprietary advantages & limits** — safety tooling, eval rigor, vendor lock‑in.  
+4) **Hybrid future** — open base + proprietary adapters/guardrails.  
+5) **Audience Q&A** — practical “what should teams do now?”
+
+I can seed talking points per segment next.
+      ]]></Message>
+      <Message sender="Lenny" role="human" type="text" time="18:06">Nice. For openers, I want something opinionated.</Message>
+      <Message sender="Harper" role="human" type="text" time="18:06">@Akarii — 3 strong opener questions, punchy.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="18:06"><![CDATA[
+**Openers**  
+1) *What’s the most misunderstood thing about open‑source AI today?*  
+2) *If you had to bet on one model family for 2030, which—and why?*  
+3) *Where’s the biggest capability gap in today’s AI toolchain (and who fixes it)?*
+
+Follow‑ups ready for each based on the guest’s stance.
+      ]]></Message>
+      <Message sender="Lenny" role="human" type="text" time="18:07">#1 and #3 for sure. Harper, we’ll keep #2 in the back pocket.</Message>
+      <Message sender="Harper" role="human" type="text" time="18:07">We need a social teaser that doesn’t sound like clickbait.</Message>
+      <Message sender="Harper" role="human" type="text" time="18:07">@Akarii — write a teaser line + alt text for a 15s clip.</Message>
+      <Message sender="Akarii" role="ai" type="text" time="18:07"><![CDATA[
+**Teaser**  
+*Proprietary vs open‑source AI—where each wins, and why the future won’t be either/or. New episode with [Guest Name], dropping Friday.*
+
+**Alt text**  
+*Host and guest debate trade‑offs between open and proprietary models; quick cuts of key quotes with animated waveform overlay; logo end card with release date.*
+      ]]></Message>
+      <Message sender="Lenny" role="human" type="text" time="18:08">That lands. I’ll record a cold open around those lines.</Message>
+    </Messages>
+  </Scenario>
+</AkariiScenarios>
