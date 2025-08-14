@@ -5,6 +5,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import InfoSection from '../molecules/InfoSection';
 import ChatDemoFull from '../demo/ChatDemoFull';
+import ChatInteractionPopover from '../molecules/ChatInteractionPopover';
+import { useWaitlistInteraction } from '../hooks/useWaitlistInteraction';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -31,6 +33,9 @@ export default function Overview() {
   const [activeSection, setActiveSection] = useState<'left' | 'right'>('left');
   const [isMobile, setIsMobile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Waitlist interaction state
+  const waitlistInteraction = useWaitlistInteraction('overview');
 
   // Refs for scroll animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -422,6 +427,9 @@ export default function Overview() {
             className="h-full" 
             scenarioIndex={currentStayOnTrackScenario} 
             isActive={activeSection === 'left'}
+            enableWaitlistInteraction={true}
+            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+            source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
@@ -458,6 +466,9 @@ export default function Overview() {
             className="h-full" 
             scenarioIndex={currentSharedIntelligenceScenario} 
             isActive={activeSection === 'right'}
+            enableWaitlistInteraction={true}
+            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+            source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
@@ -490,6 +501,9 @@ export default function Overview() {
             className="w-full h-full" 
             scenarioIndex={currentStayOnTrackScenario} 
             isActive={activeSection === 'left'}
+            enableWaitlistInteraction={true}
+            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+            source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
@@ -515,6 +529,9 @@ export default function Overview() {
             className="w-full h-full" 
             scenarioIndex={currentSharedIntelligenceScenario} 
             isActive={activeSection === 'right'}
+            enableWaitlistInteraction={true}
+            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+            source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
@@ -530,6 +547,15 @@ export default function Overview() {
           />
         </div>
       </div>
+
+      {/* Waitlist Interaction Popover */}
+      <ChatInteractionPopover
+        isOpen={waitlistInteraction.isPopoverOpen}
+        onClose={waitlistInteraction.closePopover}
+        source="overview"
+        interactionType={waitlistInteraction.interactionType!}
+        variant={waitlistInteraction.variant}
+      />
     </section>
   );
 }

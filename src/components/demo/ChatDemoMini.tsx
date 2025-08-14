@@ -8,10 +8,21 @@ interface ChatDemoMiniProps {
   isActive?: boolean;
   className?: string;
   onComplete?: () => void;
+  enableWaitlistInteraction?: boolean;
+  onInteractionAttempt?: (type: 'input_click' | 'send_click' | 'file_click' | 'speech_click') => void;
+  source?: 'overview' | 'features';
 }
 
 const ChatDemoMini = forwardRef<HTMLDivElement, ChatDemoMiniProps>(
-  ({ scenarioIndex = 0, isActive = false, className = '', onComplete }, ref) => {
+  ({ 
+    scenarioIndex = 0, 
+    isActive = false, 
+    className = '', 
+    onComplete,
+    enableWaitlistInteraction,
+    onInteractionAttempt,
+    source
+  }, ref) => {
     return (
       <ChatDemoContainer
         ref={ref}
@@ -20,6 +31,9 @@ const ChatDemoMini = forwardRef<HTMLDivElement, ChatDemoMiniProps>(
         scenarioIndex={scenarioIndex}
         onComplete={onComplete}
         className={`w-full h-full ${className}`}
+        enableWaitlistInteraction={enableWaitlistInteraction}
+        onInteractionAttempt={onInteractionAttempt}
+        source={source}
       />
     );
   }

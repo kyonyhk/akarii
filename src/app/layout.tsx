@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import Image from 'next/image';
 import '../styles/globals.css';
 import ConvexClientProvider from '@/components/sections/ConvexClientProvider';
+import { PostHogAppProvider } from '@/components/providers/PostHogProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -52,7 +53,9 @@ export default function RootLayout({
 
         {/* Scrollable Content */}
         <div className="relative min-h-screen">
-          <ConvexClientProvider>{children}</ConvexClientProvider>
+          <PostHogAppProvider>
+            <ConvexClientProvider>{children}</ConvexClientProvider>
+          </PostHogAppProvider>
         </div>
       </body>
     </html>

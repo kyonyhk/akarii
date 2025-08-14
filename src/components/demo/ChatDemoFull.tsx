@@ -8,10 +8,21 @@ interface ChatDemoFullProps {
   isActive?: boolean;
   className?: string;
   onComplete?: () => void;
+  enableWaitlistInteraction?: boolean;
+  onInteractionAttempt?: (type: 'input_click' | 'send_click' | 'file_click' | 'speech_click') => void;
+  source?: 'overview' | 'features';
 }
 
 const ChatDemoFull = forwardRef<HTMLDivElement, ChatDemoFullProps>(
-  ({ scenarioIndex = 0, isActive = true, className = '', onComplete }, ref) => {
+  ({ 
+    scenarioIndex = 0, 
+    isActive = true, 
+    className = '', 
+    onComplete,
+    enableWaitlistInteraction,
+    onInteractionAttempt,
+    source
+  }, ref) => {
     return (
       <ChatDemoContainer
         ref={ref}
@@ -20,6 +31,9 @@ const ChatDemoFull = forwardRef<HTMLDivElement, ChatDemoFullProps>(
         scenarioIndex={scenarioIndex}
         onComplete={onComplete}
         className={`w-full ${className}`}
+        enableWaitlistInteraction={enableWaitlistInteraction}
+        onInteractionAttempt={onInteractionAttempt}
+        source={source}
       />
     );
   }
