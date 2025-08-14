@@ -77,6 +77,12 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
           return 'Priya';
         case 8:
           return 'Harper';
+        case 9:
+          return 'Harper';
+        case 10:
+          return 'Dan';
+        case 11:
+          return 'Elena';
         default:
           return 'Sarah';
       }
@@ -197,6 +203,14 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
         }
       }
     }, [messages, startInputTyping, currentScenarioIndex]);
+
+    // Update currentScenarioIndex when scenarioIndex prop changes
+    useEffect(() => {
+      const newIndex = scenarioIndex >= 0 && scenarioIndex < SCENARIOS.length ? scenarioIndex : 0;
+      if (newIndex !== currentScenarioIndex) {
+        setCurrentScenarioIndex(newIndex);
+      }
+    }, [scenarioIndex]); // Remove currentScenarioIndex from dependencies to prevent infinite loop
 
     // Reset all state - both sequencer and local container state
     const resetAllState = useCallback(() => {
