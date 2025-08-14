@@ -418,27 +418,26 @@ export default function Overview() {
         {/* Mobile Demo Container - Intelligence Layer */}
         <div
           ref={mobileDemoLeftRef}
-          className={`md:hidden h-[640px] w-full transition-opacity duration-300 ${
-            activeSection === 'left' ? 'opacity-100' : 'opacity-0'
-          } ${isTransitioning ? 'pointer-events-none' : ''}`}
-          style={{ opacity: 0, transform: 'translateY(40px)' }}
+          className="md:hidden h-[640px] w-full"
         >
           <ChatDemoFull 
             className="h-full" 
             scenarioIndex={currentStayOnTrackScenario} 
-            isActive={activeSection === 'left'}
+            isActive={isMobile ? true : activeSection === 'left'}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
-                if (activeSection === 'left') {
+                if (isMobile || activeSection === 'left') {
                   const nextScenario = getNextStayOnTrackScenario();
                   setCurrentStayOnTrackScenario(nextScenario);
-                  // Trigger restart by toggling isActive
-                  setActiveSection('right');
-                  setTimeout(() => setActiveSection('left'), 100);
+                  // On mobile, just restart in place. On desktop, toggle sections
+                  if (!isMobile) {
+                    setActiveSection('right');
+                    setTimeout(() => setActiveSection('left'), 100);
+                  }
                 }
               }, 2000);
             }}
@@ -457,27 +456,26 @@ export default function Overview() {
         {/* Mobile Demo Container - Multiplayer Chat */}
         <div
           ref={mobileDemoRightRef}
-          className={`md:hidden h-[640px] w-full transition-opacity duration-300 ${
-            activeSection === 'right' ? 'opacity-100' : 'opacity-0'
-          } ${isTransitioning ? 'pointer-events-none' : ''}`}
-          style={{ opacity: 0, transform: 'translateY(40px)' }}
+          className="md:hidden h-[640px] w-full"
         >
           <ChatDemoFull 
             className="h-full" 
             scenarioIndex={currentSharedIntelligenceScenario} 
-            isActive={activeSection === 'right'}
+            isActive={isMobile ? true : activeSection === 'right'}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
-                if (activeSection === 'right') {
+                if (isMobile || activeSection === 'right') {
                   const nextScenario = getNextSharedIntelligenceScenario();
                   setCurrentSharedIntelligenceScenario(nextScenario);
-                  // Trigger restart by toggling isActive
-                  setActiveSection('left');
-                  setTimeout(() => setActiveSection('right'), 100);
+                  // On mobile, just restart in place. On desktop, toggle sections
+                  if (!isMobile) {
+                    setActiveSection('left');
+                    setTimeout(() => setActiveSection('right'), 100);
+                  }
                 }
               }, 2000);
             }}
