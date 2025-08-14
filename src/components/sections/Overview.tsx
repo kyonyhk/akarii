@@ -13,6 +13,7 @@ export default function Overview() {
   // Shared state: 'left' or 'right' InfoSection is active
   const [activeSection, setActiveSection] = useState<'left' | 'right'>('left');
   const [isMobile, setIsMobile] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Refs for scroll animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -23,13 +24,116 @@ export default function Overview() {
   const mobileImageLeftRef = useRef<HTMLDivElement>(null);
   const mobileImageRightRef = useRef<HTMLDivElement>(null);
 
+  // Refs for demo containers (desktop)
+  const demoContainerLeftRef = useRef<HTMLDivElement>(null);
+  const demoContainerRightRef = useRef<HTMLDivElement>(null);
+
+  // Refs for mobile demo containers  
+  const mobileDemoLeftRef = useRef<HTMLDivElement>(null);
+  const mobileDemoRightRef = useRef<HTMLDivElement>(null);
+
   // Timeline refs for InfoSections
   const leftInfoTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const rightInfoTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const handleSectionClick = (section: 'left' | 'right') => {
-    setActiveSection(section);
+    if (!isMobile && section !== activeSection && !isTransitioning) {
+      setIsTransitioning(true);
+
+      // Get current and next container refs for desktop
+      const getCurrentDesktopRef = () => {
+        return activeSection === 'left' ? demoContainerLeftRef.current : demoContainerRightRef.current;
+      };
+
+      const getNextDesktopRef = () => {
+        return section === 'left' ? demoContainerLeftRef.current : demoContainerRightRef.current;
+      };
+
+      // Get current and next container refs for mobile
+      const getCurrentMobileRef = () => {
+        return activeSection === 'left' ? mobileDemoLeftRef.current : mobileDemoRightRef.current;
+      };
+
+      const getNextMobileRef = () => {
+        return section === 'left' ? mobileDemoLeftRef.current : mobileDemoRightRef.current;
+      };
+
+      const currentDesktopRef = getCurrentDesktopRef();
+      const nextDesktopRef = getNextDesktopRef();
+      const currentMobileRef = getCurrentMobileRef();
+      const nextMobileRef = getNextMobileRef();
+
+      // Animate out current demos
+      const animateOut = () => {
+        const targets = [currentDesktopRef, currentMobileRef].filter(Boolean);
+        
+        if (targets.length > 0) {
+          gsap.to(targets, {
+            opacity: 0,
+            y: 20,
+            duration: 0.3,
+            ease: 'power2.out',
+            onComplete: () => {
+              // Set active section
+              setActiveSection(section);
+
+              // Animate in new demos
+              const newTargets = [nextDesktopRef, nextMobileRef].filter(Boolean);
+              
+              if (newTargets.length > 0) {
+                gsap.fromTo(
+                  newTargets,
+                  {
+                    opacity: 0,
+                    y: -20,
+                  },
+                  {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                      setIsTransitioning(false);
+                    },
+                  }
+                );
+              } else {
+                setIsTransitioning(false);
+              }
+            },
+          });
+        } else {
+          // Fallback if refs are not available
+          setActiveSection(section);
+          setTimeout(() => {
+            setIsTransitioning(false);
+          }, 300);
+        }
+      };
+
+      animateOut();
+    } else if (isMobile) {
+      // For mobile, just switch without animation
+      setActiveSection(section);
+    }
   };
+
+  // Initialize GSAP properties for demo containers
+  useEffect(() => {
+    const desktopContainers = [demoContainerLeftRef.current, demoContainerRightRef.current];
+    const mobileContainers = [mobileDemoLeftRef.current, mobileDemoRightRef.current];
+
+    [...desktopContainers, ...mobileContainers].forEach((container, index) => {
+      if (container) {
+        const isLeftContainer = index % 2 === 0;
+        const isActive = (activeSection === 'left' && isLeftContainer) || (activeSection === 'right' && !isLeftContainer);
+        gsap.set(container, {
+          opacity: isActive ? 1 : 0,
+          y: 0,
+        });
+      }
+    });
+  }, [activeSection]);
 
   // Check for mobile on mount
   useEffect(() => {
@@ -43,6 +147,7 @@ export default function Overview() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+
   // ScrollTrigger animations
   useEffect(() => {
     if (
@@ -51,8 +156,8 @@ export default function Overview() {
       !infoSectionLeftRef.current ||
       !infoSectionRightRef.current ||
       !imageContainerRef.current ||
-      !mobileImageLeftRef.current ||
-      !mobileImageRightRef.current
+      !mobileDemoLeftRef.current ||
+      !mobileDemoRightRef.current
     )
       return;
 
@@ -66,7 +171,7 @@ export default function Overview() {
       // Set initial states
       gsap.set(backgroundLayerRef.current, { x: '100%' });
       gsap.set(imageContainerRef.current, { opacity: 0, y: 60 });
-      gsap.set([mobileImageLeftRef.current, mobileImageRightRef.current], {
+      gsap.set([mobileDemoLeftRef.current, mobileDemoRightRef.current], {
         opacity: 0,
         y: 40,
       });
@@ -78,14 +183,14 @@ export default function Overview() {
         ease: 'power4.out',
       });
 
-      leftImageTl.to(mobileImageLeftRef.current, {
+      leftImageTl.to(mobileDemoLeftRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         ease: 'power4.out',
       });
 
-      rightImageTl.to(mobileImageRightRef.current, {
+      rightImageTl.to(mobileDemoRightRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
@@ -135,9 +240,9 @@ export default function Overview() {
             });
           }
 
-          // Mobile image animations with toggle actions
+          // Mobile demo animations with toggle actions
           ScrollTrigger.create({
-            trigger: mobileImageLeftRef.current,
+            trigger: mobileDemoLeftRef.current,
             start: 'top 60%',
             end: 'bottom 20%',
             animation: leftImageTl,
@@ -145,7 +250,7 @@ export default function Overview() {
           });
 
           ScrollTrigger.create({
-            trigger: mobileImageRightRef.current,
+            trigger: mobileDemoRightRef.current,
             start: 'top 60%',
             end: 'bottom 20%',
             animation: rightImageTl,
@@ -244,12 +349,29 @@ export default function Overview() {
             onToggle={isMobile ? undefined : () => handleSectionClick('left')}
           />
         </div>
+        {/* Mobile Demo Container - Intelligence Layer */}
         <div
-          ref={mobileImageLeftRef}
-          className="md:hidden h-[640px] w-full"
+          ref={mobileDemoLeftRef}
+          className={`md:hidden h-[640px] w-full transition-opacity duration-300 ${
+            activeSection === 'left' ? 'opacity-100' : 'opacity-0'
+          } ${isTransitioning ? 'pointer-events-none' : ''}`}
           style={{ opacity: 0, transform: 'translateY(40px)' }}
         >
-          <ChatDemoFull className="h-full" />
+          <ChatDemoFull 
+            className="h-full" 
+            scenarioIndex={8} 
+            isActive={activeSection === 'left'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'left') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('right');
+                  setTimeout(() => setActiveSection('left'), 100);
+                }
+              }, 2000);
+            }}
+          />
         </div>
         <div ref={infoSectionRightRef}>
           <InfoSection
@@ -261,20 +383,83 @@ export default function Overview() {
             onToggle={isMobile ? undefined : () => handleSectionClick('right')}
           />
         </div>
+        {/* Mobile Demo Container - Multiplayer Chat */}
         <div
-          ref={mobileImageRightRef}
-          className="md:hidden h-[640px] w-full"
+          ref={mobileDemoRightRef}
+          className={`md:hidden h-[640px] w-full transition-opacity duration-300 ${
+            activeSection === 'right' ? 'opacity-100' : 'opacity-0'
+          } ${isTransitioning ? 'pointer-events-none' : ''}`}
           style={{ opacity: 0, transform: 'translateY(40px)' }}
         >
-          <ChatDemoFull className="h-full" />
+          <ChatDemoFull 
+            className="h-full" 
+            scenarioIndex={6} 
+            isActive={activeSection === 'right'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'right') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('left');
+                  setTimeout(() => setActiveSection('right'), 100);
+                }
+              }, 2000);
+            }}
+          />
         </div>
       </div>
+      {/* Desktop Demo Container - Wrapper */}
       <div
         ref={imageContainerRef}
         className="hidden md:flex aspect-[3/2] h-auto w-full relative z-10"
         style={{ opacity: 0, transform: 'translateY(60px)' }}
       >
-        <ChatDemoFull className="w-full h-full" />
+        {/* Desktop Demo Container - Intelligence Layer */}
+        <div
+          ref={demoContainerLeftRef}
+          className={`absolute inset-0 transition-opacity duration-300 ${
+            activeSection === 'left' ? 'opacity-100 z-20' : 'opacity-0 z-10'
+          } ${isTransitioning ? 'pointer-events-none' : ''}`}
+        >
+          <ChatDemoFull 
+            className="w-full h-full" 
+            scenarioIndex={8} 
+            isActive={activeSection === 'left'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'left') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('right');
+                  setTimeout(() => setActiveSection('left'), 100);
+                }
+              }, 2000);
+            }}
+          />
+        </div>
+        {/* Desktop Demo Container - Multiplayer Chat */}
+        <div
+          ref={demoContainerRightRef}
+          className={`absolute inset-0 transition-opacity duration-300 ${
+            activeSection === 'right' ? 'opacity-100 z-20' : 'opacity-0 z-10'
+          } ${isTransitioning ? 'pointer-events-none' : ''}`}
+        >
+          <ChatDemoFull 
+            className="w-full h-full" 
+            scenarioIndex={6} 
+            isActive={activeSection === 'right'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'right') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('left');
+                  setTimeout(() => setActiveSection('right'), 100);
+                }
+              }, 2000);
+            }}
+          />
+        </div>
       </div>
     </section>
   );

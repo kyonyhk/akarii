@@ -39,11 +39,6 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
     const [inputTypingContent, setInputTypingContent] = useState('');
     const [isSendButtonAnimating, setIsSendButtonAnimating] = useState(false);
 
-    console.log('🎬 ChatDemoContainer render:', {
-      currentScenarioIndex,
-      scenariosLength: SCENARIOS.length,
-      scenarioFound: !!SCENARIOS[currentScenarioIndex],
-    });
 
     const scenario = SCENARIOS[currentScenarioIndex];
 
@@ -79,10 +74,8 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
         case 6:
           return 'Alex';
         case 7:
-          return 'Dan';
-        case 8:
           return 'Priya';
-        case 9:
+        case 8:
           return 'Harper';
         default:
           return 'Sarah';
@@ -149,17 +142,9 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
     );
 
     // Message sequencer for handling animations - only initialize if scenario exists
-    const {
-      messages,
-      isPlaying,
-      isComplete,
-      typingIndicator,
-      start: startAnimation,
-      stop: stopAnimation,
-      reset,
-    } = useMessageSequencer({
+    const sequencer = useMessageSequencer({
       scenario: scenario!, // We know scenario exists due to the safety check above
-      autoPlay: false, // Never auto-play, we'll control this manually
+      autoPlay: false, // Never auto-play automatically, we'll control this manually based on isActive
       onComplete: () => {
         onComplete?.();
         // Auto-advance to next scenario for continuous demo
@@ -182,6 +167,13 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
       },
     });
 
+    // Extract sequencer values to avoid dependency issues
+    const { messages, typingIndicator, isPlaying, isComplete } = sequencer;
+
+    // Store sequencer ref to avoid circular dependencies
+    const sequencerRef = useRef(sequencer);
+    sequencerRef.current = sequencer;
+
     // Scroll management
     const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -197,19 +189,7 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
           currentInputTypingMessage.id.split('-')[0]
         );
 
-        console.log('🔍 Input typing check:', {
-          currentScenarioIndex,
-          messageScenarioId,
-          expectedMatch: currentScenarioIndex + 1,
-          willStartTyping: messageScenarioId === currentScenarioIndex + 1,
-          messageId: currentInputTypingMessage.id,
-        });
-
         if (messageScenarioId === currentScenarioIndex + 1) {
-          console.log(
-            '✅ Starting input typing for message:',
-            currentInputTypingMessage.id
-          );
           startInputTyping(
             currentInputTypingMessage.content,
             currentInputTypingMessage.id
@@ -218,49 +198,48 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
       }
     }, [messages, startInputTyping, currentScenarioIndex]);
 
-    // Handle active state changes - start/stop animation based on isActive
-    useEffect(() => {
-      if (isActive && autoPlay && !isPlaying && !isComplete) {
-        console.log(
-          '🎬 Starting animation for active container:',
-          currentScenarioIndex
-        );
-        // Small delay to allow container animations to complete
-        const timer = setTimeout(() => {
-          startAnimation();
-        }, 300); // 300ms delay for container entry animation
-
-        return () => clearTimeout(timer);
-      } else if (!isActive && isPlaying) {
-        console.log(
-          '🛑 Stopping animation for inactive container:',
-          currentScenarioIndex
-        );
-        stopAnimation();
-        reset();
-      }
-    }, [
-      isActive,
-      autoPlay,
-      isPlaying,
-      isComplete,
-      startAnimation,
-      stopAnimation,
-      reset,
-      currentScenarioIndex,
-    ]);
-
-    // Reset when scenario changes
-    useEffect(() => {
-      reset();
+    // Reset all state - both sequencer and local container state
+    const resetAllState = useCallback(() => {
+      // Reset sequencer state
+      sequencerRef.current.stop();
+      sequencerRef.current.reset();
+      
+      // Reset local container state
       if (inputTypingTimeoutRef.current) {
         clearTimeout(inputTypingTimeoutRef.current);
+        inputTypingTimeoutRef.current = null;
       }
       setInputTypingContent('');
       setIsSendButtonAnimating(false);
       isInputTypingActiveRef.current = false;
       lastInputMessageIdRef.current = null;
-    }, [currentScenarioIndex, reset]);
+    }, []);
+
+    // Handle active state changes - start/stop animation based on isActive
+    useEffect(() => {
+      if (isActive && autoPlay) {
+        // Always reset everything first to ensure we start from the beginning
+        resetAllState();
+        
+        // Small delay to allow reset to complete before starting
+        const timer = setTimeout(() => {
+          // Double-check we're still active before starting
+          if (isActive) {
+            sequencerRef.current.start(); // Start fresh animation
+          }
+        }, 700); // Longer delay to ensure both state systems are reset
+
+        return () => clearTimeout(timer);
+      } else if (!isActive) {
+        // Stop and reset everything when container becomes inactive
+        resetAllState();
+      }
+    }, [isActive, autoPlay, resetAllState]);
+
+    // Reset when scenario changes - use coordinated reset
+    useEffect(() => {
+      resetAllState();
+    }, [currentScenarioIndex, resetAllState]);
 
     // Cleanup
     useEffect(() => {

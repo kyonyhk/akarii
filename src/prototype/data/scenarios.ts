@@ -329,4 +329,407 @@ Consider how video content and partnerships specifically drive conversions, rath
       },
     ],
   },
+  {
+    id: 5,
+    name: 'Context Preservation Across Time',
+    pov: 'Mike Krieger',
+    thread: {
+      title: 'Mobile App Redesign',
+      channel: 'design',
+      tz: '+08:00',
+    },
+    messages: [
+      {
+        sender: 'Mike Krieger',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:00',
+        content: 'Team, let\'s pick up where we left off on the mobile redesign.',
+        pauses: [5, 11, 17, 22, 27, 32, 37, 42, 48, 53],
+      },
+      {
+        sender: 'Jessica',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:00',
+        content: 'Remind me what we decided about the navigation approach?',
+        pauses: [7, 12, 16, 21, 28, 35, 39, 49, 58],
+      },
+      {
+        sender: 'Akarii',
+        role: 'ai',
+        type: 'card',
+        timestamp: '10:01',
+        content: `## Context from Previous Sessions
+
+**Last Decision (3 days ago):** Tab-based navigation with gesture support
+
+**Key Considerations:**
+• Accessibility for thumb reach on larger screens
+• Consistency with iOS/Android platform patterns  
+• User testing showed 67% preference for bottom tabs
+
+**Outstanding Questions:**
+• Should we include a floating action button?
+• How many tabs is optimal? (currently considering 4-5)
+
+**Next:** Finalize icon set and interaction patterns`,
+        pauses: [25, 45, 65, 85, 105, 125, 145, 165, 185, 205, 225, 245, 265, 285],
+        preDelayMs: 400,
+      },
+      {
+        sender: 'Tommy',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:01',
+        content: 'Perfect context! I think we should stick with 4 tabs and add the FAB.',
+        pauses: [8, 16, 20, 25, 31, 37, 43, 49, 53, 59, 62, 67],
+      },
+      {
+        sender: 'Jessica',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:02',
+        content: 'Agreed. That user testing data really helps inform the decision.',
+        pauses: [7, 13, 18, 23, 30, 37, 42, 47, 52, 62],
+      },
+      {
+        sender: 'Mike Krieger',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:02',
+        content: 'Love how Akarii kept all that context fresh. No time wasted catching up!',
+        pauses: [5, 9, 15, 21, 26, 30, 38, 44, 49, 54, 60, 67],
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: 'Cross-Team Shared Intelligence',
+    pov: 'Kevin Weil',
+    thread: {
+      title: 'Product Launch Coordination',
+      channel: 'launch-planning',
+      tz: '+08:00',
+    },
+    messages: [
+      {
+        sender: 'Kevin Weil',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:30',
+        content: 'Final launch checklist review. Marketing, Engineering, and Support teams present?',
+        pauses: [6, 12, 19, 27, 36, 48, 54, 64, 67, 75],
+      },
+      {
+        sender: 'Lisa Chen',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:30',
+        content: 'Marketing ready! Press kit is done, social scheduled.',
+        pauses: [9, 15, 22, 27, 32, 38, 46, 54],
+      },
+      {
+        sender: 'Alex Rodriguez',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:31',
+        content: 'Engineering all set. Monitoring dashboards are live.',
+        pauses: [12, 16, 20, 31, 40, 50, 54],
+      },
+      {
+        sender: 'Kevin Weil',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:31',
+        content: 'What about support documentation? @Akarii, any gaps you\'re seeing?',
+        pauses: [5, 11, 18, 30, 40, 44, 49, 55, 60],
+      },
+      {
+        sender: 'Akarii',
+        role: 'ai',
+        type: 'rich',
+        timestamp: '14:31',
+        content: `I've been tracking progress across all teams. Here's what I'm seeing:
+
+## ✅ Complete
+• **Marketing:** Press kit, social media, email campaigns
+• **Engineering:** Deployment pipeline, monitoring, rollback procedures
+• **Legal:** Terms updates, privacy policy reviewed
+
+## ⚠️ Needs Attention
+• **Support:** FAQ update is 60% complete (Sarah working on it)
+• **Support:** Training session scheduled but materials not finalized
+• **Sales:** Demo environment needs final QA testing
+
+## 🔄 Cross-team Dependencies
+The support FAQ references the new API endpoints that Alex's team documented yesterday. They're aligned.`,
+        pauses: [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300],
+        preDelayMs: 500,
+      },
+      {
+        sender: 'Sarah Kim',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:32',
+        content: 'Just joined! I can finish the FAQ by EOD. The API docs Alex shared are perfect.',
+        pauses: [5, 12, 18, 22, 27, 32, 37, 42, 48, 52, 57, 63, 69],
+      },
+      {
+        sender: 'Kevin Weil',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:32',
+        content: 'This is exactly why shared AI context works. Everyone stays informed.',
+        pauses: [5, 9, 16, 20, 26, 32, 39, 45, 53, 62, 71],
+      },
+    ],
+  },
+  {
+    id: 7,
+    name: 'Preventing Knowledge Loss',
+    pov: 'Alex',
+    thread: {
+      title: 'Critical Bug Investigation',
+      channel: 'incident-response',
+      tz: '+08:00',
+    },
+    messages: [
+      {
+        sender: 'Alex',
+        role: 'human',
+        type: 'text',
+        timestamp: '23:45',
+        content: 'Emergency: Payment processing is down. Need all hands on deck.',
+        pauses: [10, 18, 26, 34, 39, 44, 49, 56, 61, 67],
+      },
+      {
+        sender: 'Jordan',
+        role: 'human',
+        type: 'text',
+        timestamp: '23:46',
+        content: 'I see 500 errors in the payment gateway logs. Started around 23:30.',
+        pauses: [2, 6, 10, 17, 20, 27, 35, 42, 48, 54, 61],
+      },
+      {
+        sender: 'Sam',
+        role: 'human',
+        type: 'text',
+        timestamp: '23:47',
+        content: 'Database connections look normal. Maybe the third-party API?',
+        pauses: [8, 18, 23, 29, 36, 42, 47, 56, 64],
+      },
+      {
+        sender: 'Alex',
+        role: 'human',
+        type: 'text',
+        timestamp: '23:50',
+        content: 'Fixed! It was a certificate expiration. Updating the incident report now.',
+        pauses: [6, 9, 14, 20, 31, 41, 51, 54, 64, 70, 75],
+      },
+      {
+        sender: 'System',
+        role: 'system',
+        type: 'alert',
+        timestamp: '08:30',
+        content: 'Thread archived: Critical Bug Investigation',
+        pauses: [],
+      },
+      {
+        sender: 'Dan',
+        role: 'human',
+        type: 'text',
+        timestamp: '08:35',
+        content: 'Good morning! Heard there was an incident last night. What happened?',
+        pauses: [5, 12, 20, 26, 31, 36, 41, 47, 54, 63],
+      },
+      {
+        sender: 'Akarii',
+        role: 'ai',
+        type: 'card',
+        timestamp: '08:35',
+        content: `## Incident Summary (Last Night)
+
+**Issue:** Payment processing outage (23:45 - 23:50 UTC)
+
+**Root Cause:** SSL certificate expiration in payment gateway
+
+**Investigation Steps:**
+1. Alex identified 500 errors starting 23:30
+2. Jordan confirmed payment gateway logs showed failures  
+3. Sam ruled out database connectivity issues
+4. Alex discovered certificate expiration and resolved
+
+**Resolution:** Certificate renewed, service restored
+
+**Duration:** 5 minutes total downtime
+
+**Action Items:** Set up certificate expiration monitoring`,
+        pauses: [20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300],
+        preDelayMs: 300,
+      },
+      {
+        sender: 'Dan',
+        role: 'human',
+        type: 'text',
+        timestamp: '08:36',
+        content: 'Amazing! I\'m completely caught up. This saves me from hunting through logs.',
+        pauses: [8, 14, 20, 30, 39, 46, 52, 57, 64, 70, 77],
+      },
+    ],
+  },
+  {
+    id: 8,
+    name: 'Intelligence Layer - Context Tracking',
+    pov: 'Priya',
+    thread: {
+      title: 'Feature Roadmap Planning',
+      goal: 'Define Q1 feature priorities based on user feedback',
+      channel: 'product-strategy',
+      tz: '+08:00',
+    },
+    messages: [
+      {
+        sender: 'Priya',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:00',
+        content: 'Let\'s finalize our Q1 roadmap. We need to balance user requests with technical feasibility.',
+        pauses: [6, 14, 20, 24, 30, 38, 43, 49, 55, 62, 68, 76, 84],
+      },
+      {
+        sender: 'Harper',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:01',
+        content: 'Users are asking for better search functionality and dark mode.',
+        pauses: [6, 10, 17, 21, 28, 34, 40, 52, 56, 61, 66],
+      },
+      {
+        sender: 'Leo',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:01',
+        content: 'The mobile app performance issues should be our top priority though.',
+        pauses: [4, 11, 15, 26, 34, 42, 47, 51, 55, 59, 64, 72],
+      },
+      {
+        sender: 'Akarii',
+        role: 'ai',
+        type: 'alert',
+        timestamp: '14:02',
+        content: `⚠️ **Goal Drift Detected**
+
+The discussion is expanding beyond the stated goal of "balancing user requests with technical feasibility."
+
+## Current Goal
+Define Q1 feature priorities based on user feedback
+
+## Suggested Refocus
+Consider creating a prioritization framework that weighs:
+• User impact scores from recent feedback
+• Technical implementation complexity
+• Resource requirements for Q1 timeline`,
+        pauses: [18, 35, 52, 68, 85, 102, 118, 135, 152, 168, 185, 202, 218, 235, 252],
+        preDelayMs: 400,
+      },
+      {
+        sender: 'Priya',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:02',
+        content: 'Excellent point. Let\'s score each feature request systematically.',
+        pauses: [9, 15, 21, 26, 31, 36, 43, 50, 63],
+      },
+      {
+        sender: 'Harper',
+        role: 'human',
+        type: 'text',
+        timestamp: '14:03',
+        content: 'That framework approach will help us make data-driven decisions.',
+        pauses: [5, 15, 24, 29, 34, 39, 45, 55, 68],
+      },
+    ],
+  },
+  {
+    id: 9,
+    name: 'Multiplayer Chat - Shared Context',
+    pov: 'Harper',
+    thread: {
+      title: 'Cross-functional Project Sync',
+      channel: 'project-coordination',
+      tz: '+08:00',
+    },
+    messages: [
+      {
+        sender: 'Harper',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:30',
+        content: 'Morning everyone! Need a quick sync on the new feature launch.',
+        pauses: [8, 18, 23, 27, 32, 37, 43, 46, 52, 59, 66],
+      },
+      {
+        sender: 'Cole',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:30',
+        content: 'Design is ready to go. All mockups approved by stakeholders.',
+        pauses: [7, 10, 16, 19, 22, 27, 36, 45, 48, 60],
+      },
+      {
+        sender: 'Mira',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:31',
+        content: 'Engineering side looks good. Backend APIs are deployed and tested.',
+        pauses: [12, 17, 22, 27, 39, 43, 47, 56, 60, 68],
+      },
+      {
+        sender: 'Leo',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:31',
+        content: 'Just joined from mobile team. Are we talking about the notification feature?',
+        pauses: [5, 12, 17, 24, 29, 33, 37, 45, 49, 61, 69, 77],
+      },
+      {
+        sender: 'Akarii',
+        role: 'ai',
+        type: 'rich',
+        timestamp: '10:32',
+        content: `## Project Context for Leo
+
+**Current Discussion:** New feature launch readiness check
+
+**Feature:** Advanced notification system with custom triggers
+
+**Status Update:**
+• **Design:** ✅ Complete - All mockups approved
+• **Backend:** ✅ Complete - APIs deployed and tested  
+• **Frontend:** 🔄 In progress - 85% complete (Harper leading)
+• **Mobile:** ❓ Pending your team's integration
+
+**Next Steps:** Mobile team integration timeline needed for final launch date`,
+        pauses: [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270],
+        preDelayMs: 300,
+      },
+      {
+        sender: 'Leo',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:32',
+        content: 'Perfect context! Mobile integration can be done by Thursday.',
+        pauses: [8, 16, 22, 28, 41, 45, 49, 55, 65],
+      },
+      {
+        sender: 'Harper',
+        role: 'human',
+        type: 'text',
+        timestamp: '10:33',
+        content: 'Amazing how Akarii keeps everyone instantly on the same page!',
+        pauses: [8, 12, 18, 25, 30, 39, 47, 56, 59, 64, 69],
+      },
+    ],
+  },
 ];
