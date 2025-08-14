@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
 import { SCENARIOS } from '../../prototype/data/scenarios';
 import { useMessageSequencer } from '../../prototype/hooks/useMessageSequencer';
 import { FileIcon, SpeechIcon, SendIcon } from '../../components/icons';
+import posthog from '@/lib/posthog';
 
 // Import prototype components
 import AkariiMessage from '../../prototype/components/AkariiMessage';
@@ -19,6 +20,9 @@ interface ChatDemoContainerProps {
   className?: string;
   onComplete?: () => void;
   children?: React.ReactNode;
+  enableWaitlistInteraction?: boolean;
+  onInteractionAttempt?: (type: 'input_click' | 'send_click' | 'file_click' | 'speech_click') => void;
+  source?: 'overview' | 'features';
 }
 
 const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
@@ -30,6 +34,9 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
       className = '',
       onComplete,
       children,
+      enableWaitlistInteraction = false,
+      onInteractionAttempt,
+      source = 'overview',
     },
     ref
   ) => {
@@ -38,6 +45,20 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
     );
     const [inputTypingContent, setInputTypingContent] = useState('');
     const [isSendButtonAnimating, setIsSendButtonAnimating] = useState(false);
+
+    // Interaction handlers for waitlist conversion
+    const handleInteraction = useCallback((type: 'input_click' | 'send_click' | 'file_click' | 'speech_click') => {
+      if (enableWaitlistInteraction && onInteractionAttempt) {
+        // Track the interaction attempt
+        posthog.capture('chat_demo_interaction_attempt', {
+          source,
+          interaction_type: type,
+          scenario_index: currentScenarioIndex,
+        });
+        
+        onInteractionAttempt(type);
+      }
+    }, [enableWaitlistInteraction, onInteractionAttempt, source, currentScenarioIndex]);
 
 
     const scenario = SCENARIOS[currentScenarioIndex];
@@ -391,14 +412,20 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
 
         {/* Input Area */}
         <div className="absolute bottom-0 left-0 right-0 z-20 flex items-start gap-1 md:gap-2 pointer-events-auto p-4 md:p-6">
-          <div className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 backdrop-blur-sm rounded-[40px] hover:bg-white/5 cursor-pointer">
+          <div 
+            className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 backdrop-blur-sm rounded-[40px] hover:bg-white/5 cursor-pointer"
+            onClick={() => handleInteraction('file_click')}
+          >
             <FileIcon
               size={12}
               className="opacity-50 w-5 h-5"
               color="#DBDBDB"
             />
           </div>
-          <div className="min-h-12 flex items-center flex-1 bg-white/1 backdrop-blur-sm border border-white/10 rounded-[40px] px-4 py-2">
+          <div 
+            className="min-h-12 flex items-center flex-1 bg-white/1 backdrop-blur-sm border border-white/10 rounded-[40px] px-4 py-2 cursor-text hover:bg-white/5"
+            onClick={() => handleInteraction('input_click')}
+          >
             {inputTypingContent ? (
               <div className="w-full app-paragraph2 text-white/80 leading-relaxed">
                 {inputTypingContent}
@@ -408,12 +435,16 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
               <input
                 type="text"
                 placeholder="Type a message..."
-                className="w-full bg-transparent outline-none app-paragraph2 p-0 border-none text-white/20"
+                className="w-full bg-transparent outline-none app-paragraph2 p-0 border-none text-white/20 cursor-text"
                 disabled
+                readOnly
               />
             )}
           </div>
-          <div className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 rounded-[40px] hover:bg-white/5 cursor-pointer">
+          <div 
+            className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 rounded-[40px] hover:bg-white/5 cursor-pointer"
+            onClick={() => handleInteraction('speech_click')}
+          >
             <SpeechIcon
               size={12}
               className="opacity-50 w-5 h-5"
@@ -426,6 +457,7 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                 ? 'bg-white/20 border-white/40 scale-110'
                 : 'bg-white/1 border-white/10 hover:bg-white/5'
             }`}
+            onClick={() => handleInteraction('send_click')}
           >
             <SendIcon
               size={12}

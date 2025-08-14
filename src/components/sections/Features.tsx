@@ -5,6 +5,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import InfoSection from '../molecules/InfoSection';
 import ChatDemoMini from '../demo/ChatDemoMini';
+import ChatInteractionPopover from '../molecules/ChatInteractionPopover';
+import { useWaitlistInteraction } from '../hooks/useWaitlistInteraction';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -14,6 +16,9 @@ export default function Features() {
   const [activeSection, setActiveSection] = useState<1 | 2 | 3 | 4>(1); // First section active by default
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [restartTrigger, setRestartTrigger] = useState(0); // For triggering demo restarts
+
+  // Waitlist interaction state
+  const waitlistInteraction = useWaitlistInteraction('features');
 
   // Refs for scroll animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -443,6 +448,9 @@ export default function Features() {
               scenarioIndex={4}
               isActive={activeSection === 1}
               key={`demo-1-${restartTrigger}`} // Force re-render on restart
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
@@ -472,6 +480,9 @@ export default function Features() {
               scenarioIndex={5}
               isActive={activeSection === 2}
               key={`demo-2-${restartTrigger}`} // Force re-render on restart
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
@@ -501,6 +512,9 @@ export default function Features() {
               scenarioIndex={6}
               isActive={activeSection === 3}
               key={`demo-3-${restartTrigger}`} // Force re-render on restart
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
@@ -530,6 +544,9 @@ export default function Features() {
               scenarioIndex={3}
               isActive={activeSection === 4}
               key={`demo-4-${restartTrigger}`} // Force re-render on restart
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
@@ -630,6 +647,15 @@ export default function Features() {
           />
         </div>
       </aside>
+
+      {/* Waitlist Interaction Popover */}
+      <ChatInteractionPopover
+        isOpen={waitlistInteraction.isPopoverOpen}
+        onClose={waitlistInteraction.closePopover}
+        source="features"
+        interactionType={waitlistInteraction.interactionType!}
+        variant={waitlistInteraction.variant}
+      />
     </section>
   );
 }
