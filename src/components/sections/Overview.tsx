@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import InfoSection from '../molecules/InfoSection';
-import Image from 'next/image';
+import ChatDemoFull from '../demo/ChatDemoFull';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -19,9 +19,9 @@ export default function Overview() {
   const backgroundLayerRef = useRef<HTMLDivElement>(null);
   const infoSectionLeftRef = useRef<HTMLDivElement>(null);
   const infoSectionRightRef = useRef<HTMLDivElement>(null);
-  const imageContainerRef = useRef<HTMLElement>(null);
-  const mobileImageLeftRef = useRef<HTMLElement>(null);
-  const mobileImageRightRef = useRef<HTMLElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const mobileImageLeftRef = useRef<HTMLDivElement>(null);
+  const mobileImageRightRef = useRef<HTMLDivElement>(null);
 
   // Timeline refs for InfoSections
   const leftInfoTimelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -244,20 +244,13 @@ export default function Overview() {
             onToggle={isMobile ? undefined : () => handleSectionClick('left')}
           />
         </div>
-        <figure
+        <div
           ref={mobileImageLeftRef}
-          className="md:hidden h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-[40px] overflow-hidden border border-white/10"
-          aria-label="Product demo prototype"
+          className="md:hidden h-[640px] w-full"
           style={{ opacity: 0, transform: 'translateY(40px)' }}
         >
-          <Image
-            src="/prototype1.png"
-            alt="Akarii product prototype"
-            width={800}
-            height={640}
-            className="w-full h-full object-cover object-top"
-          />
-        </figure>
+          <ChatDemoFull className="h-full" />
+        </div>
         <div ref={infoSectionRightRef}>
           <InfoSection
             heading="One AI shared by the whole team"
@@ -268,35 +261,21 @@ export default function Overview() {
             onToggle={isMobile ? undefined : () => handleSectionClick('right')}
           />
         </div>
-        <figure
+        <div
           ref={mobileImageRightRef}
-          className="md:hidden h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-[40px] overflow-hidden border border-white/10"
-          aria-label="Product demo prototype"
+          className="md:hidden h-[640px] w-full"
           style={{ opacity: 0, transform: 'translateY(40px)' }}
         >
-          <Image
-            src="/prototype1.png"
-            alt="Akarii product prototype"
-            width={800}
-            height={640}
-            className="w-full h-full object-cover object-bottom"
-          />
-        </figure>
+          <ChatDemoFull className="h-full" />
+        </div>
       </div>
-      <figure
+      <div
         ref={imageContainerRef}
-        className="hidden md:flex h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden relative z-10"
-        aria-label="Product demo prototype"
+        className="hidden md:flex aspect-[3/2] h-auto w-full relative z-10"
         style={{ opacity: 0, transform: 'translateY(60px)' }}
       >
-        <Image
-          src="/desktop-prototype1.png"
-          alt="Akarii product prototype"
-          width={800}
-          height={640}
-          className="w-full h-full object-cover"
-        />
-      </figure>
+        <ChatDemoFull className="w-full h-full" />
+      </div>
     </section>
   );
 }
