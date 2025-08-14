@@ -357,7 +357,21 @@ export default function Overview() {
           } ${isTransitioning ? 'pointer-events-none' : ''}`}
           style={{ opacity: 0, transform: 'translateY(40px)' }}
         >
-          <ChatDemoFull className="h-full" scenarioIndex={7} isActive={activeSection === 'left'} />
+          <ChatDemoFull 
+            className="h-full" 
+            scenarioIndex={8} 
+            isActive={activeSection === 'left'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'left') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('right');
+                  setTimeout(() => setActiveSection('left'), 100);
+                }
+              }, 2000);
+            }}
+          />
         </div>
         <div ref={infoSectionRightRef}>
           <InfoSection
@@ -377,7 +391,21 @@ export default function Overview() {
           } ${isTransitioning ? 'pointer-events-none' : ''}`}
           style={{ opacity: 0, transform: 'translateY(40px)' }}
         >
-          <ChatDemoFull className="h-full" scenarioIndex={8} isActive={activeSection === 'right'} />
+          <ChatDemoFull 
+            className="h-full" 
+            scenarioIndex={6} 
+            isActive={activeSection === 'right'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'right') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('left');
+                  setTimeout(() => setActiveSection('right'), 100);
+                }
+              }, 2000);
+            }}
+          />
         </div>
       </div>
       {/* Desktop Demo Container - Wrapper */}
@@ -393,7 +421,21 @@ export default function Overview() {
             activeSection === 'left' ? 'opacity-100 z-20' : 'opacity-0 z-10'
           } ${isTransitioning ? 'pointer-events-none' : ''}`}
         >
-          <ChatDemoFull className="w-full h-full" scenarioIndex={7} isActive={activeSection === 'left'} />
+          <ChatDemoFull 
+            className="w-full h-full" 
+            scenarioIndex={8} 
+            isActive={activeSection === 'left'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'left') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('right');
+                  setTimeout(() => setActiveSection('left'), 100);
+                }
+              }, 2000);
+            }}
+          />
         </div>
         {/* Desktop Demo Container - Multiplayer Chat */}
         <div
@@ -402,7 +444,21 @@ export default function Overview() {
             activeSection === 'right' ? 'opacity-100 z-20' : 'opacity-0 z-10'
           } ${isTransitioning ? 'pointer-events-none' : ''}`}
         >
-          <ChatDemoFull className="w-full h-full" scenarioIndex={8} isActive={activeSection === 'right'} />
+          <ChatDemoFull 
+            className="w-full h-full" 
+            scenarioIndex={6} 
+            isActive={activeSection === 'right'}
+            onComplete={() => {
+              // Auto-restart after 2 seconds
+              setTimeout(() => {
+                if (activeSection === 'right') {
+                  // Trigger restart by toggling isActive
+                  setActiveSection('left');
+                  setTimeout(() => setActiveSection('right'), 100);
+                }
+              }, 2000);
+            }}
+          />
         </div>
       </div>
     </section>

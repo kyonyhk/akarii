@@ -441,6 +441,16 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={4}
               isActive={activeSection === 1}
+              onComplete={() => {
+                // Auto-restart after 2 seconds if still on this section
+                setTimeout(() => {
+                  if (activeSection === 1) {
+                    // Trigger restart by briefly changing active section
+                    setActiveSection(0);
+                    setTimeout(() => setActiveSection(1), 100);
+                  }
+                }, 2000);
+              }}
             />
           </div>
 
@@ -460,6 +470,16 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={5}
               isActive={activeSection === 2}
+              onComplete={() => {
+                // Auto-restart after 2 seconds if still on this section
+                setTimeout(() => {
+                  if (activeSection === 2) {
+                    // Trigger restart by briefly changing active section
+                    setActiveSection(0);
+                    setTimeout(() => setActiveSection(2), 100);
+                  }
+                }, 2000);
+              }}
             />
           </div>
 
@@ -479,6 +499,16 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={6}
               isActive={activeSection === 3}
+              onComplete={() => {
+                // Auto-restart after 2 seconds if still on this section
+                setTimeout(() => {
+                  if (activeSection === 3) {
+                    // Trigger restart by briefly changing active section
+                    setActiveSection(0);
+                    setTimeout(() => setActiveSection(3), 100);
+                  }
+                }, 2000);
+              }}
             />
           </div>
 
@@ -498,6 +528,16 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={3}
               isActive={activeSection === 4}
+              onComplete={() => {
+                // Auto-restart after 2 seconds if still on this section
+                setTimeout(() => {
+                  if (activeSection === 4) {
+                    // Trigger restart by briefly changing active section
+                    setActiveSection(0);
+                    setTimeout(() => setActiveSection(4), 100);
+                  }
+                }, 2000);
+              }}
             />
           </div>
         </div>
