@@ -198,6 +198,14 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
       }
     }, [messages, startInputTyping, currentScenarioIndex]);
 
+    // Update currentScenarioIndex when scenarioIndex prop changes
+    useEffect(() => {
+      const newIndex = scenarioIndex >= 0 && scenarioIndex < SCENARIOS.length ? scenarioIndex : 0;
+      if (newIndex !== currentScenarioIndex) {
+        setCurrentScenarioIndex(newIndex);
+      }
+    }, [scenarioIndex]); // Remove currentScenarioIndex from dependencies to prevent infinite loop
+
     // Reset all state - both sequencer and local container state
     const resetAllState = useCallback(() => {
       // Reset sequencer state

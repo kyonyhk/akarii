@@ -9,7 +9,24 @@ import ChatDemoFull from '../demo/ChatDemoFull';
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
+// Scenario arrays for each feature - moved outside component to prevent recreation on every render
+const stayOnTrackScenarios = [7, 9]; // Scenarios 8 and 10 (Intelligence Layer, Meeting Drift Prevention)
+const sharedIntelligenceScenarios = [8, 10]; // Scenarios 9 and 11 (Multiplayer Chat, Distributed Team Knowledge)
+
 export default function Overview() {
+  
+  // Use a stable seed for SSR, random for client
+  const [randomSeed, setRandomSeed] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+  
+  // State for current scenarios - use deterministic selection based on seed
+  const [currentStayOnTrackScenario, setCurrentStayOnTrackScenario] = useState(
+    stayOnTrackScenarios[randomSeed % stayOnTrackScenarios.length]
+  );
+  const [currentSharedIntelligenceScenario, setCurrentSharedIntelligenceScenario] = useState(
+    sharedIntelligenceScenarios[randomSeed % sharedIntelligenceScenarios.length]
+  );
+  
   // Shared state: 'left' or 'right' InfoSection is active
   const [activeSection, setActiveSection] = useState<'left' | 'right'>('left');
   const [isMobile, setIsMobile] = useState(false);
@@ -36,9 +53,31 @@ export default function Overview() {
   const leftInfoTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const rightInfoTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
+  // Helper functions to cycle scenarios within the same feature
+  const getNextStayOnTrackScenario = () => {
+    const currentIndex = stayOnTrackScenarios.indexOf(currentStayOnTrackScenario);
+    const nextIndex = (currentIndex + 1) % stayOnTrackScenarios.length;
+    return stayOnTrackScenarios[nextIndex];
+  };
+
+  const getNextSharedIntelligenceScenario = () => {
+    const currentIndex = sharedIntelligenceScenarios.indexOf(currentSharedIntelligenceScenario);
+    const nextIndex = (currentIndex + 1) % sharedIntelligenceScenarios.length;
+    return sharedIntelligenceScenarios[nextIndex];
+  };
+
   const handleSectionClick = (section: 'left' | 'right') => {
     if (!isMobile && section !== activeSection && !isTransitioning) {
       setIsTransitioning(true);
+      
+      // Randomize scenario when switching sections
+      if (section === 'left') {
+        const randomScenario = stayOnTrackScenarios[Math.floor(Math.random() * stayOnTrackScenarios.length)];
+        setCurrentStayOnTrackScenario(randomScenario);
+      } else {
+        const randomScenario = sharedIntelligenceScenarios[Math.floor(Math.random() * sharedIntelligenceScenarios.length)];
+        setCurrentSharedIntelligenceScenario(randomScenario);
+      }
 
       // Get current and next container refs for desktop
       const getCurrentDesktopRef = () => {
@@ -113,7 +152,14 @@ export default function Overview() {
 
       animateOut();
     } else if (isMobile) {
-      // For mobile, just switch without animation
+      // For mobile, just switch without animation but still randomize scenarios
+      if (section === 'left') {
+        const randomScenario = stayOnTrackScenarios[Math.floor(Math.random() * stayOnTrackScenarios.length)];
+        setCurrentStayOnTrackScenario(randomScenario);
+      } else {
+        const randomScenario = sharedIntelligenceScenarios[Math.floor(Math.random() * sharedIntelligenceScenarios.length)];
+        setCurrentSharedIntelligenceScenario(randomScenario);
+      }
       setActiveSection(section);
     }
   };
@@ -135,7 +181,7 @@ export default function Overview() {
     });
   }, [activeSection]);
 
-  // Check for mobile on mount
+  // Check for mobile on mount and initialize client-side random scenarios
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -143,9 +189,24 @@ export default function Overview() {
 
     checkMobile();
     window.addEventListener('resize', checkMobile);
+    
+    // Set client flag and randomize seed on client side
+    setIsClient(true);
+    const clientSeed = Math.floor(Math.random() * 1000);
+    setRandomSeed(clientSeed);
+    
+    // Update scenarios based on new random seed
+    setCurrentStayOnTrackScenario(
+      stayOnTrackScenarios[clientSeed % stayOnTrackScenarios.length]
+    );
+    setCurrentSharedIntelligenceScenario(
+      sharedIntelligenceScenarios[clientSeed % sharedIntelligenceScenarios.length]
+    );
 
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []); // Empty dependency array since arrays are now static
 
 
   // ScrollTrigger animations
@@ -359,12 +420,14 @@ export default function Overview() {
         >
           <ChatDemoFull 
             className="h-full" 
-            scenarioIndex={8} 
+            scenarioIndex={currentStayOnTrackScenario} 
             isActive={activeSection === 'left'}
             onComplete={() => {
-              // Auto-restart after 2 seconds
+              // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
                 if (activeSection === 'left') {
+                  const nextScenario = getNextStayOnTrackScenario();
+                  setCurrentStayOnTrackScenario(nextScenario);
                   // Trigger restart by toggling isActive
                   setActiveSection('right');
                   setTimeout(() => setActiveSection('left'), 100);
@@ -393,12 +456,14 @@ export default function Overview() {
         >
           <ChatDemoFull 
             className="h-full" 
-            scenarioIndex={6} 
+            scenarioIndex={currentSharedIntelligenceScenario} 
             isActive={activeSection === 'right'}
             onComplete={() => {
-              // Auto-restart after 2 seconds
+              // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
                 if (activeSection === 'right') {
+                  const nextScenario = getNextSharedIntelligenceScenario();
+                  setCurrentSharedIntelligenceScenario(nextScenario);
                   // Trigger restart by toggling isActive
                   setActiveSection('left');
                   setTimeout(() => setActiveSection('right'), 100);
@@ -423,12 +488,14 @@ export default function Overview() {
         >
           <ChatDemoFull 
             className="w-full h-full" 
-            scenarioIndex={8} 
+            scenarioIndex={currentStayOnTrackScenario} 
             isActive={activeSection === 'left'}
             onComplete={() => {
-              // Auto-restart after 2 seconds
+              // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
                 if (activeSection === 'left') {
+                  const nextScenario = getNextStayOnTrackScenario();
+                  setCurrentStayOnTrackScenario(nextScenario);
                   // Trigger restart by toggling isActive
                   setActiveSection('right');
                   setTimeout(() => setActiveSection('left'), 100);
@@ -446,12 +513,14 @@ export default function Overview() {
         >
           <ChatDemoFull 
             className="w-full h-full" 
-            scenarioIndex={6} 
+            scenarioIndex={currentSharedIntelligenceScenario} 
             isActive={activeSection === 'right'}
             onComplete={() => {
-              // Auto-restart after 2 seconds
+              // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
                 if (activeSection === 'right') {
+                  const nextScenario = getNextSharedIntelligenceScenario();
+                  setCurrentSharedIntelligenceScenario(nextScenario);
                   // Trigger restart by toggling isActive
                   setActiveSection('left');
                   setTimeout(() => setActiveSection('right'), 100);
