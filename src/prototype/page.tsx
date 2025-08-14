@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { SCENARIOS } from '../data/scenarios';
-import { useMessageSequencer } from '../lib/prototype/useMessageSequencer';
+import { SCENARIOS } from './data/scenarios';
+import { useMessageSequencer } from './hooks/useMessageSequencer';
 import {
   SettingsIcon,
   FileIcon,
@@ -10,11 +10,11 @@ import {
   SendIcon,
   CloseIcon,
 } from '../components/icons';
-import UserMessage from '@/components/prototype/UserMessage';
-import ParticipantMessage from '@/components/prototype/ParticipantMessage';
-import AkariiMessage from '@/components/prototype/AkariiMessage';
-import SystemMessage from '@/components/prototype/SystemMessage';
-import TypingIndicator from '@/components/prototype/TypingIndicator';
+import UserMessage from './components/UserMessage';
+import ParticipantMessage from './components/ParticipantMessage';
+import AkariiMessage from './components/AkariiMessage';
+import SystemMessage from './components/SystemMessage';
+import TypingIndicator from './components/TypingIndicator';
 
 export default function PrototypeChatPage() {
   // Prevent body scroll on mobile
