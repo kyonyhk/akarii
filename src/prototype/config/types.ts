@@ -1,4 +1,4 @@
-export type Sender = "Sarah" | "Marcus" | "Elena" | "Carlos" | "Zoe" | "Lisa" | "Ryan" | "David" | "Amy" | "Josh" | "Sam" | "Akarii" | "System" | "Trish" | "Scott Wu" | "Walden Yan" | "Steven Hao" | "Jeff Wang" | "Kevin Lu" | "Mike Krieger" | "Daniela Amodei" | "Dario Amodei" | "Kevin Weil" | "Kate Rouch" | "Brad Lightcap" | "Alex" | "Jamie" | "Maya" | "Dan" | "Mira" | "Cole" | "Priya" | "Leo" | "Harper" | "Lenny";
+export type Sender = "Sarah" | "Marcus" | "Elena" | "Carlos" | "Zoe" | "Lisa" | "Ryan" | "David" | "Amy" | "Josh" | "Sam" | "Akarii" | "System" | "Trish" | "Scott Wu" | "Walden Yan" | "Steven Hao" | "Jeff Wang" | "Kevin Lu" | "Mike Krieger" | "Daniela Amodei" | "Dario Amodei" | "Kevin Weil" | "Kate Rouch" | "Brad Lightcap" | "Alex" | "Jamie" | "Maya" | "Dan" | "Mira" | "Cole" | "Priya" | "Leo" | "Harper" | "Lenny" | "Jessica" | "Tommy" | "Lisa Chen" | "Alex Rodriguez" | "Sarah Kim" | "Jordan";
 export type Role = "human" | "ai" | "system";
 export type MsgType = "text" | "rich" | "alert" | "vote" | "card" | "reaction";
 

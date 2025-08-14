@@ -425,7 +425,7 @@ export default function Features() {
       <div className="hidden md:flex flex-1 flex-col justify-center items-center p-10">
         {/* Wrapper container that constrains all demo containers */}
         <div className="relative w-full h-full">
-          {/* Demo Container 1 - Team collaboration */}
+          {/* Demo Container 1 - Context preservation across time */}
           <div
             ref={demoContainer1Ref}
             className={`absolute transition-all duration-300 ${
@@ -439,12 +439,12 @@ export default function Features() {
             }}
           >
             <ChatDemoMini
-              scenarioIndex={0}
+              scenarioIndex={4}
               isActive={activeSection === 1}
             />
           </div>
 
-          {/* Demo Container 2 - Goal tracking */}
+          {/* Demo Container 2 - Cross-team shared intelligence */}
           <div
             ref={demoContainer2Ref}
             className={`absolute transition-all duration-300 ${
@@ -458,12 +458,12 @@ export default function Features() {
             }}
           >
             <ChatDemoMini
-              scenarioIndex={1}
+              scenarioIndex={5}
               isActive={activeSection === 2}
             />
           </div>
 
-          {/* Demo Container 3 - Decision memory */}
+          {/* Demo Container 3 - Preventing knowledge loss */}
           <div
             ref={demoContainer3Ref}
             className={`absolute transition-all duration-300 ${
@@ -477,12 +477,12 @@ export default function Features() {
             }}
           >
             <ChatDemoMini
-              scenarioIndex={2}
+              scenarioIndex={6}
               isActive={activeSection === 3}
             />
           </div>
 
-          {/* Demo Container 4 - AI intelligence */}
+          {/* Demo Container 4 - Smart AI intervention */}
           <div
             ref={demoContainer4Ref}
             className={`absolute transition-all duration-300 ${
@@ -529,9 +529,9 @@ export default function Features() {
           }`}
         >
           <InfoSection
-            heading="Collaborate with AI as a team"
-            subheading="Humans and AI, side by side"
-            description="A single conversation space where teammates and AI interact together, making collaboration faster and more transparent."
+            heading="Never lose context across time"
+            subheading="Stay aligned with AI-powered context"
+            description="Akarii remembers every decision, discussion, and detail—even across days or weeks. No more time wasted catching up or reconstructing lost context."
             defaultExpanded={activeSection === 1}
             timelineRef={infoTimeline1Ref}
             onToggle={() => handleSectionClick(1)}
@@ -546,9 +546,9 @@ export default function Features() {
           }`}
         >
           <InfoSection
-            heading="Keep every discussion tied to goals"
-            subheading="Every word with purpose"
-            description="Link conversations to objectives so the AI can help keep your team on-track and call out drift when it happens."
+            heading="One AI shared by the whole team"
+            subheading="Shared intelligence across teams"
+            description="Work with AI the way you work with people—in the same space, seeing the same context. Cross-team visibility means everyone stays informed instantly."
             defaultExpanded={activeSection === 2}
             timelineRef={infoTimeline2Ref}
             onToggle={() => handleSectionClick(2)}
@@ -563,9 +563,9 @@ export default function Features() {
           }`}
         >
           <InfoSection
-            heading="Instant decision memory"
-            subheading="Decisions, remembered"
-            description="Capture and recall every key decision with context-aware search. No more lost conclusions or 'what did we agree on?' moments."
+            heading="Prevent knowledge from vanishing"
+            subheading="Critical insights, always accessible"
+            description="Late-night fixes, emergency decisions, scattered conversations—Akarii captures it all and makes it instantly searchable when you need it most."
             defaultExpanded={activeSection === 3}
             timelineRef={infoTimeline3Ref}
             onToggle={() => handleSectionClick(3)}
@@ -582,7 +582,7 @@ export default function Features() {
           <InfoSection
             heading="Intelligence that speaks when it matters"
             subheading="Silent until it counts"
-            description="Stay focused while AI listens in the background, stepping in only to flag risks, surface clarity, or point out what's missing."
+            description="Stay focused while AI monitors in the background, stepping in only to flag risks, surface critical insights, or point out what's missing."
             defaultExpanded={activeSection === 4}
             timelineRef={infoTimeline4Ref}
             onToggle={() => handleSectionClick(4)}

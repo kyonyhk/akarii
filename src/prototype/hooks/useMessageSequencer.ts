@@ -185,14 +185,6 @@ export function useMessageSequencer({
           inputTyping: shouldShowInputTyping,
         };
         
-        console.log('📝 Message update:', {
-          messageIndex,
-          sender: message.sender,
-          content: message.content.substring(0, 50) + '...',
-          shouldType,
-          shouldShowInputTyping,
-          inputTyping: shouldShowInputTyping
-        });
         
         return {
           ...prevState,
@@ -329,28 +321,13 @@ export function useMessageSequencer({
 
       } else {
         // POV user: Listen for actual send button completion event
-        console.log('🎯 POV User Message Setup - Waiting for send event:', {
-          messageIndex,
-          sender: message.sender,
-          content: content.substring(0, 30) + '...',
-          messageId: `${scenario.id}-${messageIndex}`
-        });
         
         const handleUserMessageSent = (event: CustomEvent) => {
           const { messageId: sentMessageId } = event.detail;
           const expectedMessageId = `${scenario.id}-${messageIndex}`;
           
-          console.log('🔔 UserMessageSent event received:', {
-            sentMessageId,
-            expectedMessageId,
-            matches: sentMessageId === expectedMessageId
-          });
           
           if (sentMessageId === expectedMessageId && isActiveRef.current) {
-            console.log('💬 User message bubble appearing instantly (after input cleared):', {
-              messageIndex,
-              sender: message.sender
-            });
             
             // Message appears instantly after send button animation
             setState(prevState => {
@@ -413,7 +390,9 @@ export function useMessageSequencer({
 
   // Start the sequence
   const start = useCallback(() => {
-    if (isActiveRef.current || state.messages.length === 0) return;
+    if (isActiveRef.current || state.messages.length === 0) {
+      return;
+    }
 
     isActiveRef.current = true;
     setState(prevState => ({
@@ -451,6 +430,8 @@ export function useMessageSequencer({
   // Reset to initial state
   const reset = useCallback(() => {
     stop();
+    // Ensure isActiveRef is cleared so start() can work again
+    isActiveRef.current = false;
     setState(prevState => ({
       ...prevState,
       messages: prevState.messages.map(msg => ({
