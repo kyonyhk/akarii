@@ -13,6 +13,7 @@ export default function Features() {
   const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState<1 | 2 | 3 | 4>(1); // First section active by default
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [restartTrigger, setRestartTrigger] = useState(0); // For triggering demo restarts
 
   // Refs for scroll animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -441,13 +442,13 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={4}
               isActive={activeSection === 1}
+              key={`demo-1-${restartTrigger}`} // Force re-render on restart
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 1) {
-                    // Trigger restart by briefly changing active section
-                    setActiveSection(0);
-                    setTimeout(() => setActiveSection(1), 100);
+                    // Trigger restart by incrementing trigger
+                    setRestartTrigger(prev => prev + 1);
                   }
                 }, 2000);
               }}
@@ -470,13 +471,13 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={5}
               isActive={activeSection === 2}
+              key={`demo-2-${restartTrigger}`} // Force re-render on restart
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 2) {
-                    // Trigger restart by briefly changing active section
-                    setActiveSection(0);
-                    setTimeout(() => setActiveSection(2), 100);
+                    // Trigger restart by incrementing trigger
+                    setRestartTrigger(prev => prev + 1);
                   }
                 }, 2000);
               }}
@@ -499,13 +500,13 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={6}
               isActive={activeSection === 3}
+              key={`demo-3-${restartTrigger}`} // Force re-render on restart
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 3) {
-                    // Trigger restart by briefly changing active section
-                    setActiveSection(0);
-                    setTimeout(() => setActiveSection(3), 100);
+                    // Trigger restart by incrementing trigger
+                    setRestartTrigger(prev => prev + 1);
                   }
                 }, 2000);
               }}
@@ -528,13 +529,13 @@ export default function Features() {
             <ChatDemoMini
               scenarioIndex={3}
               isActive={activeSection === 4}
+              key={`demo-4-${restartTrigger}`} // Force re-render on restart
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 4) {
-                    // Trigger restart by briefly changing active section
-                    setActiveSection(0);
-                    setTimeout(() => setActiveSection(4), 100);
+                    // Trigger restart by incrementing trigger
+                    setRestartTrigger(prev => prev + 1);
                   }
                 }, 2000);
               }}
