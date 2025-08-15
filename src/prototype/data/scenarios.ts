@@ -602,7 +602,8 @@ The support FAQ references the new API endpoints that Alex's team documented yes
         role: 'human',
         type: 'text',
         timestamp: '14:35',
-        content: "Good. Let's touch base again tomorrow morning before we go live.",
+        content:
+          "Good. Let's touch base again tomorrow morning before we go live.",
         pauses: [5, 11, 17, 22, 28, 36, 42, 47, 53, 58, 63],
       },
     ],
@@ -967,7 +968,8 @@ Consider creating a prioritization framework that weighs:
         role: 'human',
         type: 'text',
         timestamp: '09:01',
-        content: 'API endpoints are ready. By the way, should we redesign the login page?',
+        content:
+          'API endpoints are ready. By the way, should we redesign the login page?',
         pauses: [4, 13, 17, 23, 27, 30, 34, 41, 47, 54, 59, 64, 68],
       },
       {
@@ -975,7 +977,8 @@ Consider creating a prioritization framework that weighs:
         role: 'human',
         type: 'text',
         timestamp: '09:01',
-        content: 'Good idea! And maybe we should also update the onboarding flow.',
+        content:
+          'Good idea! And maybe we should also update the onboarding flow.',
         pauses: [5, 10, 16, 22, 28, 34, 39, 46, 54, 65],
       },
       {
@@ -992,9 +995,7 @@ Review sprint progress and identify blockers
 
 ## Suggested Refocus
 Complete current sprint updates first, then schedule separate session for design discussions.`,
-        pauses: [
-          18, 35, 52, 68, 85, 102, 118, 135, 152, 168, 185, 202, 218,
-        ],
+        pauses: [18, 35, 52, 68, 85, 102, 118, 135, 152, 168, 185, 202, 218],
         preDelayMs: 400,
       },
       {
@@ -1002,7 +1003,8 @@ Complete current sprint updates first, then schedule separate session for design
         role: 'human',
         type: 'text',
         timestamp: '09:02',
-        content: 'Right, let\'s finish sprint updates first. Maya, any blockers?',
+        content:
+          "Right, let's finish sprint updates first. Maya, any blockers?",
         pauses: [6, 12, 18, 25, 31, 38, 44, 50, 56, 62],
       },
       {
@@ -1062,7 +1064,8 @@ Complete current sprint updates first, then schedule separate session for design
         role: 'human',
         type: 'text',
         timestamp: '10:01',
-        content: '@Akarii, can you give us a summary of cross-team dependencies?',
+        content:
+          '@Akarii, can you give us a summary of cross-team dependencies?',
         pauses: [8, 13, 17, 22, 29, 32, 37, 42, 49, 61],
       },
       {
@@ -1089,7 +1092,8 @@ Complete current sprint updates first, then schedule separate session for design
         role: 'human',
         type: 'text',
         timestamp: '10:02',
-        content: '@Akarii, what QA test cases does SF need for payment testing?',
+        content:
+          '@Akarii, what QA test cases does SF need for payment testing?',
         pauses: [8, 13, 18, 22, 28, 32, 37, 42, 47, 52, 59, 67],
       },
       {
@@ -1136,7 +1140,8 @@ Complete current sprint updates first, then schedule separate session for design
         role: 'human',
         type: 'text',
         timestamp: '10:04',
-        content: 'Perfect coordination. This is exactly what we need for smooth handoffs.',
+        content:
+          'Perfect coordination. This is exactly what we need for smooth handoffs.',
         pauses: [8, 20, 26, 30, 35, 40, 44, 49, 56, 61, 69],
       },
     ],

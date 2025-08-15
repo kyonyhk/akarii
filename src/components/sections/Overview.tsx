@@ -28,9 +28,20 @@ export default function Overview() {
   const [currentSharedIntelligenceScenario, setCurrentSharedIntelligenceScenario] = useState(
     sharedIntelligenceScenarios[randomSeed % sharedIntelligenceScenarios.length]
   );
-  
+
   // Shared state: 'left' or 'right' InfoSection is active
   const [activeSection, setActiveSection] = useState<'left' | 'right'>('left');
+
+  // Debug logging for scenario selection
+  useEffect(() => {
+    console.log('🐛 Overview scenario selection:', {
+      currentStayOnTrackScenario,
+      currentSharedIntelligenceScenario,
+      stayOnTrackScenarios,
+      sharedIntelligenceScenarios,
+      activeSection
+    });
+  }, [currentStayOnTrackScenario, currentSharedIntelligenceScenario, activeSection]);
   const [isMobile, setIsMobile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -423,14 +434,14 @@ export default function Overview() {
           <ChatDemoFull 
             className="h-full" 
             scenarioIndex={currentStayOnTrackScenario} 
-            isActive={isMobile ? true : activeSection === 'left'}
+            isActive={activeSection === 'left'}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
-                if (isMobile || activeSection === 'left') {
+                if (activeSection === 'left') {
                   const nextScenario = getNextStayOnTrackScenario();
                   setCurrentStayOnTrackScenario(nextScenario);
                   // On mobile, just restart in place. On desktop, toggle sections
@@ -461,14 +472,14 @@ export default function Overview() {
           <ChatDemoFull 
             className="h-full" 
             scenarioIndex={currentSharedIntelligenceScenario} 
-            isActive={isMobile ? true : activeSection === 'right'}
+            isActive={activeSection === 'right'}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
-                if (isMobile || activeSection === 'right') {
+                if (activeSection === 'right') {
                   const nextScenario = getNextSharedIntelligenceScenario();
                   setCurrentSharedIntelligenceScenario(nextScenario);
                   // On mobile, just restart in place. On desktop, toggle sections

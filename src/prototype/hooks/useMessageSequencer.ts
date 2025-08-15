@@ -116,6 +116,18 @@ export function useMessageSequencer({
     const isOtherHuman = message.role === 'human' && message.sender !== scenario.pov;
     const shouldAppearInstantly = !shouldType && !shouldShowInputTyping && !isOtherHuman; // Only system messages appear instantly
     
+    // Debug logging for scenarios 10 & 11
+    if (scenario.id >= 10) {
+      console.log('🐛 Message sequencer debug for scenario', scenario.id, 'message', messageIndex, ':', {
+        sender: message.sender,
+        scenarioPov: scenario.pov,
+        shouldType,
+        shouldShowInputTyping,
+        isOtherHuman,
+        shouldAppearInstantly
+      });
+    }
+    
     // Show typing indicator for AI messages and other human participants (not POV user)
     if (shouldType || isOtherHuman) {
       showTypingIndicator(message);
@@ -326,6 +338,15 @@ export function useMessageSequencer({
           const { messageId: sentMessageId } = event.detail;
           const expectedMessageId = `${scenario.id}-${messageIndex}`;
           
+          // Debug logging for scenarios 10 & 11
+          if (scenario.id >= 10) {
+            console.log('🐛 userMessageSent event:', {
+              sentMessageId,
+              expectedMessageId,
+              isActive: isActiveRef.current,
+              match: sentMessageId === expectedMessageId
+            });
+          }
           
           if (sentMessageId === expectedMessageId && isActiveRef.current) {
             
