@@ -171,13 +171,22 @@ export default function Features() {
       });
 
       // Create entry animation timeline
-      const entryTl = gsap.timeline({ paused: true });
+      const entryTl = gsap.timeline({ 
+        paused: true,
+        onStart: () => {
+          console.log('Background animation started'); // Debug log
+        }
+      });
 
+      // Adjust timing for mobile vs desktop
+      const animationDuration = isMobile ? 0.8 : 0.6;
+      const staggerOffset = isMobile ? 0.4 : 0.3;
+      
       // Layer 1 animates in from bottom
       entryTl.to(backgroundLayer1Ref.current, {
         y: '0%',
         opacity: 1,
-        duration: 0.6,
+        duration: animationDuration,
         ease: 'power2.out',
       });
 
@@ -187,10 +196,10 @@ export default function Features() {
         {
           y: '0%',
           opacity: 1,
-          duration: 0.6,
+          duration: animationDuration,
           ease: 'power2.out',
         },
-        '-=0.3'
+        `-=${staggerOffset}`
       );
 
       // Layer 3 animates in from bottom (staggered)
@@ -199,10 +208,10 @@ export default function Features() {
         {
           y: '0%',
           opacity: 1,
-          duration: 0.6,
+          duration: animationDuration,
           ease: 'power2.out',
         },
-        '-=0.3'
+        `-=${staggerOffset}`
       );
 
       // Layer 4 animates in from bottom (staggered)
@@ -211,10 +220,10 @@ export default function Features() {
         {
           y: '0%',
           opacity: 1,
-          duration: 0.6,
+          duration: animationDuration,
           ease: 'power2.out',
         },
-        '-=0.3'
+        `-=${staggerOffset}`
       );
 
       // After a pause, animate layer 4 (top layer) out to the top during entry
@@ -230,41 +239,56 @@ export default function Features() {
       );
 
       // Create separate exit animation timeline
-      const exitTl = gsap.timeline({ paused: true });
+      const exitTl = gsap.timeline({ 
+        paused: true,
+        onComplete: () => {
+          console.log('Background animation completed'); // Debug log
+        }
+      });
 
       // All remaining layers (1, 2, 3) animate out to the top
+      const exitDuration = isMobile ? 1.0 : 0.8;
+      const exitStagger = isMobile ? 0.15 : 0.1;
+      
       exitTl.to(
         [backgroundLayer1Ref.current, backgroundLayer2Ref.current, backgroundLayer3Ref.current],
         {
           y: '-100%',
           opacity: 0,
-          duration: 0.8,
+          duration: exitDuration,
           ease: 'power2.in',
-          stagger: 0.1, // Small stagger for smoother exit
+          stagger: exitStagger, // Small stagger for smoother exit
         }
       );
 
       // Entry animation triggered when section comes into view
+      // Use different trigger points for mobile vs desktop for better visibility
+      const startTrigger = isMobile ? 'top 70%' : 'top 60%';
+      const endTrigger = isMobile ? 'bottom 70%' : 'bottom 60%';
+      
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top 60%',
-        end: 'bottom 60%',
+        start: startTrigger,
+        end: endTrigger,
         animation: entryTl,
         toggleActions: 'play none none reverse',
       });
 
       // Exit animation triggered when section is leaving view
+      const exitStartTrigger = isMobile ? 'bottom 50%' : 'bottom 40%';
+      const exitEndTrigger = isMobile ? 'bottom 30%' : 'bottom 20%';
+      
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'bottom 40%',
-        end: 'bottom 20%',
+        start: exitStartTrigger,
+        end: exitEndTrigger,
         animation: exitTl,
         toggleActions: 'play none none reverse',
       });
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]); // Re-run when mobile state changes
 
   // ScrollTrigger animations
   useEffect(() => {
@@ -426,9 +450,27 @@ export default function Features() {
     <section
       ref={sectionRef}
       data-section="features"
-      className="min-h-screen flex flex-row"
+      className="relative min-h-screen flex flex-row overflow-hidden"
     >
-      <div className="hidden md:flex flex-1 flex-col justify-center items-center p-10">
+      {/* Background layers - moved to section level for mobile */}
+      <div
+        ref={backgroundLayer1Ref}
+        className="absolute inset-0 bg-gradient-to-br from-black/25 via-black/20 to-transparent md:bg-black/15 backdrop-blur-sm z-10"
+      />
+      <div
+        ref={backgroundLayer2Ref}
+        className="absolute inset-0 bg-gradient-to-tr from-black/30 via-black/25 to-black/10 md:bg-black/15 z-20"
+      />
+      <div
+        ref={backgroundLayer3Ref}
+        className="absolute inset-0 bg-gradient-to-bl from-transparent via-black/30 to-black/25 md:bg-black/15 z-30"
+      />
+      <div
+        ref={backgroundLayer4Ref}
+        className="absolute inset-0 bg-gradient-to-tl from-black/40 via-black/35 to-black/20 md:bg-black/20 z-35"
+      />
+
+      <div className="hidden md:flex flex-1 flex-col justify-center items-center p-10 relative z-40">
         {/* Wrapper container that constrains all demo containers */}
         <div className="relative w-full h-full">
           {/* Demo Container 1 - Context preservation across time */}
@@ -560,29 +602,12 @@ export default function Features() {
           </div>
         </div>
       </div>
-      <aside className="relative flex flex-1 flex-col justify-center items-center gap-10 py-10 px-4 md:px-10 overflow-hidden">
-        {/* Background layers */}
-        <div
-          ref={backgroundLayer1Ref}
-          className="absolute inset-0 bg-black/15 backdrop-blur-sm z-10"
-        />
-        <div
-          ref={backgroundLayer2Ref}
-          className="absolute inset-0 bg-black/15 z-20"
-        />
-        <div
-          ref={backgroundLayer3Ref}
-          className="absolute inset-0 bg-black/15 z-30"
-        />
-        <div
-          ref={backgroundLayer4Ref}
-          className="absolute inset-0 bg-black/20 z-35"
-        />
+      <aside className="relative flex flex-1 flex-col justify-center items-center gap-10 py-10 px-4 md:px-10 z-40">
         
         <h2 className="sr-only">Product Features</h2>
         <div
           ref={infoSection1Ref}
-          className={`relative z-40 transition-opacity duration-200 ${
+          className={`relative z-50 transition-opacity duration-200 ${
             isTransitioning ? 'opacity-60 pointer-events-none' : 'opacity-100'
           }`}
         >
@@ -597,7 +622,7 @@ export default function Features() {
         </div>
         <div
           ref={infoSection2Ref}
-          className={`relative z-40 md:transition-opacity md:duration-200 ${
+          className={`relative z-50 md:transition-opacity md:duration-200 ${
             isTransitioning
               ? 'opacity-100 md:opacity-60 pointer-events-none'
               : 'opacity-100'
@@ -614,7 +639,7 @@ export default function Features() {
         </div>
         <div
           ref={infoSection3Ref}
-          className={`relative z-40 md:transition-opacity md:duration-200 ${
+          className={`relative z-50 md:transition-opacity md:duration-200 ${
             isTransitioning
               ? 'opacity-100 md:opacity-60 pointer-events-none'
               : 'opacity-100'
@@ -631,7 +656,7 @@ export default function Features() {
         </div>
         <div
           ref={infoSection4Ref}
-          className={`relative z-40 md:transition-opacity md:duration-200 ${
+          className={`relative z-50 md:transition-opacity md:duration-200 ${
             isTransitioning
               ? 'opacity-100 md:opacity-60 pointer-events-none'
               : 'opacity-100'
