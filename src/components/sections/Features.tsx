@@ -452,22 +452,22 @@ export default function Features() {
       data-section="features"
       className="relative min-h-screen flex flex-row overflow-hidden"
     >
-      {/* Background layers - moved to section level for mobile */}
+      {/* Background layers - mobile: full width, desktop: right side only */}
       <div
         ref={backgroundLayer1Ref}
-        className="absolute inset-0 bg-gradient-to-br from-black/25 via-black/20 to-transparent md:bg-black/15 backdrop-blur-sm z-10"
+        className="absolute inset-0 md:left-1/2 bg-gradient-to-br from-black/25 via-black/20 to-transparent md:bg-black/15 backdrop-blur-sm z-10"
       />
       <div
         ref={backgroundLayer2Ref}
-        className="absolute inset-0 bg-gradient-to-tr from-black/30 via-black/25 to-black/10 md:bg-black/15 z-20"
+        className="absolute inset-0 md:left-1/2 bg-gradient-to-tr from-black/30 via-black/25 to-black/10 md:bg-black/15 z-20"
       />
       <div
         ref={backgroundLayer3Ref}
-        className="absolute inset-0 bg-gradient-to-bl from-transparent via-black/30 to-black/25 md:bg-black/15 z-30"
+        className="absolute inset-0 md:left-1/2 bg-gradient-to-bl from-transparent via-black/30 to-black/25 md:bg-black/15 z-30"
       />
       <div
         ref={backgroundLayer4Ref}
-        className="absolute inset-0 bg-gradient-to-tl from-black/40 via-black/35 to-black/20 md:bg-black/20 z-35"
+        className="absolute inset-0 md:left-1/2 bg-gradient-to-tl from-black/40 via-black/35 to-black/20 md:bg-black/20 z-35"
       />
 
       <div className="hidden md:flex flex-1 flex-col justify-center items-center p-10 relative z-40">
