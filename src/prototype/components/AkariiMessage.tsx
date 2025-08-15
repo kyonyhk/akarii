@@ -32,13 +32,22 @@ export default function AkariiMessage({
   };
 
   // Helper function to determine alert type from full content
-  const getAlertType = (content: string): 'goal-drift' | 'sprint-check' | 'focus' | 'generic' => {
+  const getAlertType = (
+    content: string
+  ): 'goal-drift' | 'sprint-check' | 'focus' | 'generic' => {
     const lowerContent = content.toLowerCase();
-    
-    if (lowerContent.includes('goal drift') || lowerContent.includes('drift detected')) {
+
+    if (
+      lowerContent.includes('goal drift') ||
+      lowerContent.includes('drift detected')
+    ) {
       return 'goal-drift';
     }
-    if (lowerContent.includes('sprint planning') || lowerContent.includes('sprint') || lowerContent.includes('planning check')) {
+    if (
+      lowerContent.includes('sprint planning') ||
+      lowerContent.includes('sprint') ||
+      lowerContent.includes('planning check')
+    ) {
       return 'sprint-check';
     }
     if (lowerContent.includes('focus') || lowerContent.includes('standup')) {
