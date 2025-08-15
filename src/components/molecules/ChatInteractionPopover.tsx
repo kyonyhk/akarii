@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import posthog from '@/lib/posthog';
+import { Input } from '@/components/atoms/Input';
+import { Button } from '@/components/atoms/Button';
+import { ExternalLink } from '../icons';
 
 interface ChatInteractionPopoverProps {
   isOpen: boolean;
@@ -21,7 +24,9 @@ export default function ChatInteractionPopover({
   variant = 'default',
 }: ChatInteractionPopoverProps) {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   const addToWaitlist = useMutation(api.waitlist.addEmail);
@@ -36,18 +41,6 @@ export default function ChatInteractionPopover({
       });
     }
   }, [isOpen, source, interactionType, variant]);
-
-  const handleQuickJoin = () => {
-    posthog.capture('chat_demo_popover_quick_join_clicked', {
-      source,
-      interaction_type: interactionType,
-      variant,
-    });
-    
-    // Open the full waitlist form (you'll need to implement this)
-    onClose();
-    // TODO: Trigger main waitlist form
-  };
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,12 +59,13 @@ export default function ChatInteractionPopover({
         email,
         source: `chat-demo-${source}`,
         referrer: typeof window !== 'undefined' ? document.referrer : undefined,
-        userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+        userAgent:
+          typeof window !== 'undefined' ? navigator.userAgent : undefined,
       });
 
       setStatus('success');
       setEmail('');
-      
+
       posthog.capture('chat_demo_popover_conversion', {
         source,
         interaction_type: interactionType,
@@ -80,8 +74,10 @@ export default function ChatInteractionPopover({
       });
     } catch (error: any) {
       setStatus('error');
-      setErrorMessage(error.message || 'Failed to join waitlist. Please try again.');
-      
+      setErrorMessage(
+        error.message || 'Failed to join waitlist. Please try again.'
+      );
+
       posthog.capture('chat_demo_popover_error', {
         source,
         interaction_type: interactionType,
@@ -108,96 +104,127 @@ export default function ChatInteractionPopover({
     switch (variant) {
       case 'casual':
         return {
-          title: "Hey, eager to try Akarii? 👋",
-          message: "We love the enthusiasm! Join our waitlist and you'll be among the first to experience the future of AI-powered teamwork."
+          title: 'Hey, eager to try Akarii? 👋',
+          message:
+            "We love the enthusiasm! Join our waitlist and you'll be among the first to experience the future of AI-powered teamwork.",
         };
       case 'urgent':
         return {
-          title: "Ready to revolutionize your workflow?",
-          message: "You're clearly excited about what Akarii can do! Get priority access by joining our waitlist now."
+          title: 'Ready to revolutionize your workflow?',
+          message:
+            "You're clearly excited about what Akarii can do! Get priority access by joining our waitlist now.",
         };
       default:
         return {
           title: "Looks like you're eager to try Akarii!",
-          message: "Join our waitlist to be the first to get access when we launch. Your team collaboration will never be the same."
+          message:
+            'Join our waitlist to be the first to get access when we launch. Your team collaboration will never be the same.',
+        };
+    }
+  };
+
+  // Success message variants to match initial message tonality
+  const getSuccessContent = () => {
+    switch (variant) {
+      case 'casual':
+        return {
+          title: "You're all set! 🎉",
+          message:
+            "We're thrilled to have you on board! Keep an eye on your inbox. Exciting updates are coming your way.",
+        };
+      case 'urgent':
+        return {
+          title: 'Welcome to the future of teamwork!',
+          message:
+            "You're now in line for early access. Get ready to transform how your team collaborates.",
+        };
+      default:
+        return {
+          title: "You're in!",
+          message:
+            "Thanks for joining! We'll be in touch soon with exclusive updates about Akarii.",
         };
     }
   };
 
   const { title, message } = getMessageContent();
+  const { title: successTitle, message: successMessage } = getSuccessContent();
 
   return (
-    <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 max-w-xs w-full mx-3">
-      <div className="bg-[#2A2A2A]/95 backdrop-blur-md border border-white/20 rounded-xl p-3 shadow-xl animate-in slide-in-from-bottom-2 duration-300">
-        <div className="flex items-start justify-between mb-2">
-          <div className="flex-1 pr-2">
-            <h3 className="text-sm font-medium text-white mb-1">
-              {title}
-            </h3>
-            <p className="text-white/70 text-xs leading-relaxed">
-              {message}
-            </p>
-          </div>
-          <button
-            onClick={handleClose}
-            className="text-white/40 hover:text-white/70 transition-colors text-sm leading-none"
+    <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 max-w-sm w-full mx-4">
+      <div className="backdrop-blur-xs bg-[rgba(219,219,219,0.05)] border border-[rgba(219,219,219,0.2)] rounded-3xl p-6 pt-12 shadow-xl animate-in slide-in-from-bottom-2 duration-300 relative">
+        {/* Close button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 w-4 h-4 text-white/40 hover:text-white/70 transition-colors"
+        >
+          <svg
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="w-full h-full"
           >
-            ✕
-          </button>
-        </div>
+            <path
+              d="M3.5 3.5L12.5 12.5M12.5 3.5L3.5 12.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
 
         {status === 'success' ? (
-          <div className="text-center py-2">
-            <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-1">
-              <span className="text-green-400 text-sm">✓</span>
+          <div className="flex flex-col gap-6 justify-center items-center">
+            <div className="flex flex-col justify-center items-center text-center space-y-1">
+              <h4 className="heading5 text-white">{successTitle}</h4>
+              <p className="paragraph2 text-white/50">{successMessage}</p>
             </div>
-            <h4 className="text-white font-medium text-sm mb-1">You're in!</h4>
-            <p className="text-white/60 text-xs mb-2">
-              Thanks for joining! We'll be in touch soon.
-            </p>
-            <button
+            <Button
               onClick={handleClose}
-              className="px-2 py-1 bg-white/10 hover:bg-white/20 text-white rounded text-xs"
+              className="w-full"
             >
               Close
-            </button>
+            </Button>
           </div>
         ) : (
-          <div className="space-y-2">
-            <form onSubmit={handleEmailSubmit} className="space-y-2">
-              <input
+          <div className="space-y-6">
+            {/* Heading */}
+            <div className="space-y-1">
+              <h3 className="heading5 text-white">{title}</h3>
+              <p className="paragraph2 text-white/50">{message}</p>
+            </div>
+
+            <form
+              onSubmit={handleEmailSubmit}
+              className="space-y-2"
+            >
+              {/* Email Input */}
+              <Input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="w-full px-2 py-1.5 bg-white/5 border border-white/10 rounded text-white placeholder-white/40 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all text-xs"
+                placeholder="email@example.com"
                 disabled={status === 'loading'}
+                className="w-full"
               />
-              
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                disabled={status === 'loading'}
+                fullWidth
+                className="bg-white/10 border-white/20 hover:bg-white/20"
+                icon={status !== 'loading' && <ExternalLink size={16} />}
+                iconPosition="right"
+              >
+                {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
+              </Button>
+
               {status === 'error' && (
-                <div className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded p-1.5">
+                <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-2xl p-3 mt-2">
                   {errorMessage}
                 </div>
               )}
-
-              <div className="flex gap-1.5">
-                <button
-                  type="button"
-                  onClick={handleClose}
-                  className="flex-1 px-2 py-1.5 text-white/60 border border-white/10 rounded hover:bg-white/5 transition-all text-xs"
-                  disabled={status === 'loading'}
-                >
-                  Later
-                </button>
-                <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="flex-1 px-2 py-1.5 bg-white text-black rounded hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
-                >
-                  {status === 'loading' ? 'Joining...' : 'Join'}
-                </button>
-              </div>
             </form>
           </div>
         )}
