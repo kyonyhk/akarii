@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 // Add a message to the founder
 export const addFounderMessage = mutation({
@@ -27,17 +28,33 @@ export const addFounderMessage = mutation({
       throw new Error("Message is required");
     }
 
+    const timestamp = Date.now();
+
     // Add the message to the founder messages
     const messageId = await ctx.db.insert("founderMessages", {
       name: args.name.trim(),
       email: args.email.toLowerCase().trim(),
       company: args.company?.trim() || undefined,
       message: args.message.trim(),
-      timestamp: Date.now(),
+      timestamp,
       userAgent: args.userAgent,
       referrer: args.referrer,
       status: "new",
     });
+
+    // Send email notification
+    try {
+      await ctx.scheduler.runAfter(0, internal.emailNotifications.sendFounderMessageNotification, {
+        name: args.name.trim(),
+        email: args.email.toLowerCase().trim(),
+        company: args.company?.trim(),
+        message: args.message.trim(),
+        timestamp,
+      });
+    } catch (error) {
+      console.error("Failed to schedule email notification:", error);
+      // Don't fail the message insertion if email fails
+    }
 
     return messageId;
   },
