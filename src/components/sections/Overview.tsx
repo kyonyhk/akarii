@@ -189,14 +189,25 @@ export default function Overview() {
       mobileDemoRightRef.current,
     ];
 
-    [...desktopContainers, ...mobileContainers].forEach((container, index) => {
+    // Handle desktop containers - they toggle based on activeSection
+    desktopContainers.forEach((container, index) => {
       if (container) {
-        const isLeftContainer = index % 2 === 0;
+        const isLeftContainer = index === 0;
         const isActive =
           (activeSection === 'left' && isLeftContainer) ||
           (activeSection === 'right' && !isLeftContainer);
         gsap.set(container, {
           opacity: isActive ? 1 : 0,
+          y: 0,
+        });
+      }
+    });
+
+    // Handle mobile containers - both should always be visible
+    mobileContainers.forEach((container) => {
+      if (container) {
+        gsap.set(container, {
+          opacity: 1,
           y: 0,
         });
       }
@@ -439,24 +450,18 @@ export default function Overview() {
           className="md:hidden h-[640px] w-full"
         >
           <ChatDemoFull
+            key={`mobile-left-${currentStayOnTrackScenario}`}
             className="h-full"
             scenarioIndex={currentStayOnTrackScenario}
-            isActive={isMobile ? true : activeSection === 'left'}
+            isActive={true}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
-                if (activeSection === 'left') {
-                  const nextScenario = getNextStayOnTrackScenario();
-                  setCurrentStayOnTrackScenario(nextScenario);
-                  // On mobile, just restart in place. On desktop, toggle sections
-                  if (!isMobile) {
-                    setActiveSection('right');
-                    setTimeout(() => setActiveSection('left'), 100);
-                  }
-                }
+                const nextScenario = getNextStayOnTrackScenario();
+                setCurrentStayOnTrackScenario(nextScenario);
               }, 2000);
             }}
           />
@@ -477,24 +482,18 @@ export default function Overview() {
           className="md:hidden h-[640px] w-full"
         >
           <ChatDemoFull
+            key={`mobile-right-${currentSharedIntelligenceScenario}`}
             className="h-full"
             scenarioIndex={currentSharedIntelligenceScenario}
-            isActive={isMobile ? true : activeSection === 'right'}
+            isActive={true}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
             onComplete={() => {
               // Auto-restart with next scenario after 2 seconds
               setTimeout(() => {
-                if (activeSection === 'right') {
-                  const nextScenario = getNextSharedIntelligenceScenario();
-                  setCurrentSharedIntelligenceScenario(nextScenario);
-                  // On mobile, just restart in place. On desktop, toggle sections
-                  if (!isMobile) {
-                    setActiveSection('left');
-                    setTimeout(() => setActiveSection('right'), 100);
-                  }
-                }
+                const nextScenario = getNextSharedIntelligenceScenario();
+                setCurrentSharedIntelligenceScenario(nextScenario);
               }, 2000);
             }}
           />
