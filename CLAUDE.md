@@ -59,3 +59,20 @@ When working on any task or subtask:
 - **Backend**: Convex for email capture and data storage
 - **Package Manager**: Bun
 - **Design**: Figma designs accessible via MCP
+
+## Project Context Documents
+
+### Product Strategy & Timeline
+
+- **Product Roadmap**: `claude_docs/roadmap-latest.xml` - Comprehensive product vision, phases, and technical architecture for Akarii intelligence layer
+- **Master Timeline**: `claude_docs/akarii-master-timeline-risk.xml` - 12-week development timeline with milestones, risks, and mitigation strategies
+
+### Key Project Information
+
+- **Product Vision**: Intelligence layer for teamwork living inside chat
+- **Current Phase**: Phase 1 - Multiplayer Chat Foundations (Aug 2025 - Oct 2025)
+- **Key Milestones**:
+  - Private Alpha (Design Partners): Sept 6, 2025
+  - Public Waitlist + Demos: Sept 20, 2025  
+  - Open Beta (Gated): Oct 31, 2025
+- **Core Components**: ThreadMemory, InsightTracker, AgendaGoalMapping, RecallEngine

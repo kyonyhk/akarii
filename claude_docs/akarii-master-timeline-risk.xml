@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiMasterTimeline version="1.0" generatedAt="2025-08-15T09:00:00+08:00" xmlns="https://akarii.app/timeline">
+  <Metadata>
+    <ProductName>Akarii</ProductName>
+    <Timeframe start="2025-08-11" end="2025-10-31" timezone="Asia/Singapore"/>
+    <BasedOn>
+      <File path="/mnt/data/product-vision.xml"/>
+      <File path="/mnt/data/roadmap.xml"/>
+    </BasedOn>
+    <CurrentProgress>
+      <Item>Landing page ~complete (polish ongoing).</Item>
+      <Item>Coded chat prototype ready; can showcase Akarii responses.</Item>
+    </CurrentProgress>
+  </Metadata>
+
+  <Weeks>
+    <Week number="1" start="2025-08-11" end="2025-08-17" risk="Low">
+      <Development>
+        <Item>Prototype chat UI in code; basic Akarii responses ready.</Item>
+      </Development>
+      <Marketing>
+        <Item>Finalize landing page copy &amp; design.</Item>
+        <Item>Lock core messaging &amp; visual system.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>What’s missing in today’s team tools.</Theme>
+        <Theme>Behind-the-scenes prototype tease.</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="2" start="2025-08-18" end="2025-08-24" risk="Low" fallback="If ThreadMemory slips, use scripted/static demo output to simulate recall.">
+      <Development>
+        <Item>Begin integrating ThreadMemory v0.</Item>
+        <Item>Prepare recall/demo scenarios in prototype.</Item>
+      </Development>
+      <Marketing>
+        <Item>Capture teaser demo using coded prototype.</Item>
+        <Item>Begin teaser video edit; prepare landing page launch assets.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>Product-first intrigue: “Here’s what we’re working on.”</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="3" start="2025-08-25" end="2025-08-31" risk="Medium" fallback="If InsightTracker isn’t stable, hardcode chips in UI for demo purposes.">
+      <Development>
+        <Item>Integrate InsightTracker v0.</Item>
+        <Item>Add mock AgendaGoalMapping chips for demo clarity.</Item>
+      </Development>
+      <Marketing>
+        <Item>Launch landing page + teaser video/demo together.</Item>
+        <Item>Open design partner application form.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>Announce launch + share teaser.</Theme>
+        <Theme>Call for design partners.</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="4" start="2025-09-01" end="2025-09-07" risk="High" fallback="If RecallEngine not functional, preload responses in prototype and narrate flow in demo.">
+      <Development>
+        <Item>Implement RecallEngine v0.</Item>
+        <Item>Polish prototype interactions and stability.</Item>
+      </Development>
+      <Marketing>
+        <Item>Design partner recruitment push.</Item>
+        <Item>Run live founder demos using coded prototype.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>“Looking for 5–10 high-agency teams to shape Akarii.”</Theme>
+      </SocialFocus>
+      <MilestoneRefs>
+        <MilestoneRef id="P1-M1" date="2025-09-06" title="Private Alpha (Design Partners Live)"/>
+      </MilestoneRefs>
+    </Week>
+
+    <Week number="5" start="2025-09-08" end="2025-09-14" risk="High" fallback="If onboarding backend unstable, start with 1–2 partners for controlled feedback and record sessions.">
+      <Development>
+        <Item>Alpha onboarding &amp; support for design partners.</Item>
+      </Development>
+      <Marketing>
+        <Item>Capture alpha feedback moments; produce refined teaser clips.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>First alpha impressions (with permission).</Theme>
+        <Theme>Micro-reels of “magic recall.”</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="6" start="2025-09-15" end="2025-09-21" risk="Medium" fallback="If AI helpers not ready, cut helper UI from public demo — focus on recall + chat.">
+      <Development>
+        <Item>Stabilise chat performance.</Item>
+        <Item>Add basic AI helpers (TL;DR, action items).</Item>
+      </Development>
+      <Marketing>
+        <Item>Public waitlist push.</Item>
+        <Item>Release polished teaser demo to public.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>“Join to get early access.”</Theme>
+        <Theme>20–40s product moment clip.</Theme>
+      </SocialFocus>
+      <MilestoneRefs>
+        <MilestoneRef id="P1-M2" date="2025-09-20" title="Public Waitlist + Founder Demos"/>
+      </MilestoneRefs>
+    </Week>
+
+    <Week number="7" start="2025-09-22" end="2025-09-28" risk="Medium" fallback="If integrations slip, focus stories on decision clarity, not integrations.">
+      <Development>
+        <Item>Lightweight integrations: Google Drive/Docs, GitHub PR links, Linear issue unfurls.</Item>
+      </Development>
+      <Marketing>
+        <Item>Continue waitlist push.</Item>
+        <Item>Publish alpha story threads.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>Before/after decision clarity stories.</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="8" start="2025-09-29" end="2025-10-05" risk="Low">
+      <Development>
+        <Item>Admin controls &amp; foundational telemetry improvements.</Item>
+      </Development>
+      <Marketing>
+        <Item>Founder insight posts; begin case study drafts.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>Thought leadership + behind-the-scenes build culture.</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="9" start="2025-10-06" end="2025-10-12" risk="Medium" fallback="If perf target missed, focus content on capability, not speed.">
+      <Development>
+        <Item>Performance tuning (target: ≤150ms P95 message latency).</Item>
+      </Development>
+      <Marketing>
+        <Item>Release deeper product walkthroughs.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>Deep dives: “How Akarii remembers every decision.”</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="10" start="2025-10-13" end="2025-10-19" risk="Low" fallback="If polish incomplete, target smaller beta cohort for early trust.">
+      <Development>
+        <Item>Bug fixes &amp; feature polish from alpha learnings.</Item>
+      </Development>
+      <Marketing>
+        <Item>Prep beta launch assets.</Item>
+        <Item>Soft beta invite to top waitlist sign-ups.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>Beta anticipation content.</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="11" start="2025-10-20" end="2025-10-26" risk="Low" fallback="If onboarding incomplete, run guided onboarding sessions live.">
+      <Development>
+        <Item>Finalize beta onboarding flow.</Item>
+      </Development>
+      <Marketing>
+        <Item>Dry-run beta with a small group.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>Community engagement + early beta feedback.</Theme>
+      </SocialFocus>
+    </Week>
+
+    <Week number="12" start="2025-10-27" end="2025-10-31" risk="Medium" fallback="If metrics thin, highlight qualitative partner wins instead.">
+      <Development>
+        <Item>Prepare for scale &amp; support.</Item>
+      </Development>
+      <Marketing>
+        <Item>Beta launch announcement + success metrics.</Item>
+      </Marketing>
+      <SocialFocus>
+        <Theme>“Akarii Beta is live.”</Theme>
+        <Theme>Case study results.</Theme>
+      </SocialFocus>
+      <MilestoneRefs>
+        <MilestoneRef id="P1-M3" date="2025-10-31" title="Open Beta (Gated)"/>
+      </MilestoneRefs>
+    </Week>
+  </Weeks>
+
+  <Milestones>
+    <Milestone id="P1-M1" date="2025-09-06" title="Private Alpha (Design Partners Live)"/>
+    <Milestone id="P1-M2" date="2025-09-20" title="Public Waitlist + Founder Demos"/>
+    <Milestone id="P1-M3" date="2025-10-31" title="Open Beta (Gated)"/>
+  </Milestones>
+</AkariiMasterTimeline>

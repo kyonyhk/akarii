@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiRoadmap version="1.0" generatedAt="2025-08-08">
+  <ProductIdentity>
+    <Name>Akarii</Name>
+    <Positioning>
+      <Primary>Intelligence layer for teamwork — living inside chat.</Primary>
+      <TrojanHorse>Multiplayer team chat for AI‑native teams.</TrojanHorse>
+    </Positioning>
+    <NorthStar>
+      <Statement>Reduce collaboration friction by surfacing signal (assumptions, drift, bias, power asymmetry) and preserving team memory.</Statement>
+    </NorthStar>
+  </ProductIdentity>
+
+  <Phases>
+    <Phase id="1" codename="Multiplayer Chat · Foundations" windowStart="2025-08-08" windowEnd="2025-10-31">
+      <Objective>
+        Launch a blazing‑fast, multiplayer‑first chat that quietly lays the data &amp; ontology groundwork for the intelligence layer.
+      </Objective>
+      <Scope>
+        <MustHave>
+          <Item>Channels, threads, mentions, reactions, file drops</Item>
+          <Item>Fast composer with slash actions (summarize, format, extract tasks)</Item>
+          <Item>ThreadMemory v0 — persistent, structured message store</Item>
+          <Item>InsightTracker v0 — internal store for flagged moments (goals, roles, tone)</Item>
+          <Item>AgendaGoalMapping v0 — link threads to goals/initiatives</Item>
+          <Item>RecallEngine v0 — instant search across past threads</Item>
+          <Item>Identity &amp; Auth (orgs, workspaces, members, roles)</Item>
+          <Item>Privacy &amp; Controls (admin toggles, redaction, retention)</Item>
+          <Item>Foundational Telemetry (latency, usage, stability)</Item>
+        </MustHave>
+        <NiceToHave>
+          <Item>Lightweight integrations: Google Drive/Docs, GitHub PR links, Linear issue unfurls</Item>
+          <Item>Basic AI Helpers: TL;DR, action items, “highlight decision”</Item>
+        </NiceToHave>
+        <NonGoals>
+          <Item>Full “intelligence interventions” (opinions in-channel)</Item>
+          <Item>Complex workflow builder or tickets</Item>
+        </NonGoals>
+      </Scope>
+      <DataModelAndOntology>
+        <TrackingOntology version="0.1">
+          <Primitive name="ThreadMemory" purpose="Historical recall &amp; drift detection basis"/>
+          <Primitive name="InsightTracker" purpose="Bias/goal-drift/silence detection substrate"/>
+          <Primitive name="AgendaGoalMapping" purpose="Objective deviation alerts"/>
+          <Primitive name="ParticipantFingerprinting" purpose="Comms style, tone, blindspots"/>
+          <Primitive name="RecallEngine" purpose="Low-latency RAG over convo artifacts"/>
+          <Primitive name="InterventionFramework" purpose="When/how Akarii speaks up (Phase 2)"/>
+        </TrackingOntology>
+      </DataModelAndOntology>
+      <Architecture>
+        <Client>Web App (React/Next.js), multiplayer-first UI, optimistic updates</Client>
+        <Backend>
+          <Service name="Conversations" concerns="threads, messages, attachments, mentions"/>
+          <Service name="SearchAndRecall" concerns="indexing, embeddings, filters"/>
+          <Service name="InsightStore" concerns="signals, events, metrics keyed to ontology"/>
+          <Service name="AuthAndOrg" concerns="workspaces, roles, permissions"/>
+        </Backend>
+        <AI>
+          <Component name="Summarizer v0" use="TL;DR, action items"/>
+          <Component name="Indexer v0" use="semantic chunking + embeddings for RecallEngine"/>
+        </AI>
+        <ComplianceSecurity>
+          <Item>Data encryption in transit &amp; at rest</Item>
+          <Item>Org‑scoped data isolation</Item>
+          <Item>Admin data lifecycle controls (retention &amp; export)</Item>
+        </ComplianceSecurity>
+      </Architecture>
+      <Milestones>
+        <Milestone id="P1-M1" title="Private Alpha (Design Partners Live)" targetDate="2025-09-06"/>
+        <Milestone id="P1-M2" title="Public Waitlist + Founder Demos" targetDate="2025-09-20"/>
+        <Milestone id="P1-M3" title="Open Beta (Gated)" targetDate="2025-10-31"/>
+      </Milestones>
+      <KPIs>
+        <KPI name="Day-7 Retention (teams)" target="≥45%"/>
+        <KPI name="Median message latency (P95)" target="≤150ms"/>
+        <KPI name="Avg daily messages per active member" target="≥25"/>
+        <KPI name="Decision highlights created/week/org" target="≥3"/>
+        <KPI name="Insight capture coverage (threads with goals linked)" target="≥30%"/>
+      </KPIs>
+      <PricingAccess>
+        <Model>Free core chat; Pro for recall &amp; admin controls; Design partner program with lifetime discount.</Model>
+      </PricingAccess>
+      <RisksMitigations>
+        <Risk issue="Perceived as 'just another chat'">
+          <Mitigation>Use copy and UI to signal “built for AI era”; seed Decision Highlights + Recall moments.</Mitigation>
+        </Risk>
+        <Risk issue="Cold-start for ontology">
+          <Mitigation>Make goal/agenda linking effortless (inline chips, shortcuts); backfill via AI extraction.</Mitigation>
+        </Risk>
+      </RisksMitigations>
+    </Phase>
+
+    <Phase id="2" codename="Intelligence Layer · Interventions" windowStart="2025-11-01" windowEnd="2026-03-31">
+      <Objective>
+        Activate the reasoning layer that sees beyond text: detect drift/bias/power asymmetry; speak up at the right moment; make decisions &amp; context instantly recallable.
+        Introduce Reasoning Level Navigator to guide conversations toward the optimal reasoning “mode” for their context, avoiding rigid progression and enabling adaptive, context-aware collaboration.
+      </Objective>
+      <Scope>
+        <MustHave>
+          <Item>DecisionRecall v1 — who/what/why, traceable back to sources</Item>
+          <Item>DriftDetection v1 — deviation from stated goal/agenda</Item>
+          <Item>AssumptionScanner v1 — hidden premises &amp; groupthink cues</Item>
+          <Item>MissingVoices v1 — inclusion nudges based on roles &amp; context</Item>
+          <Item>SentimentTension v1 — friction meter + escalation alerts</Item>
+          <Item>InterventionFramework v1 — timing, tone, channel, confidence thresholds</Item>
+          <Item>Org Memory Graph — durable, queryable knowledge across channels</Item>
+          <!-- Reasoning Level Navigator additions -->
+          <Item>ReasoningLevelDetector v1 — classifies messages/threads into 6 reasoning levels (Observation → Self-Propagating Systems)</Item>
+          <Item>ConversationTypeClassifier v1 — detects conversation type via agenda/goals, keywords, and historical patterns</Item>
+          <Item>LevelRangeMapping v1 — maps conversation type to optimal reasoning level range</Item>
+          <Item>AdaptiveNudgeEngine v1 — suggests moving up, down, or staying based on range, time-in-level, and confidence</Item>
+          <Item>NudgeToneAdapter — adjusts language to org culture and urgency</Item>
+          <Item>Level Flow Visualization — timeline of reasoning progression stored in OrgMemoryGraph</Item>
+        </MustHave>
+        <NiceToHave>
+          <Item>Role-aware agents (PM, Scribe, Critic) with guardrails</Item>
+          <Item>Multi-modal grounding (docs, PRs, tickets) in recalls</Item>
+          <Item>Custom Level Profiles per org</Item>
+          <Item>Historical Pattern Learning for optimal ranges</Item>
+          <Item>Level Jump Recommendations when skipping intermediate levels is optimal</Item>
+        </NiceToHave>
+      </Scope>
+      <Architecture>
+        <Reasoning>
+          <Component name="SignalExtractors" inputs="threads, goals, fingerprints" outputs="typed signals (assumptions, drift, silence, reasoningLevel, conversationType)"/>
+          <Component name="PolicyEngine" inputs="signals, org rules, LevelRangeMapping" outputs="nudge decisions (up, down, stay)"/>
+          <Component name="ConfidenceCalibrator" inputs="history, outcomes" outputs="speak-up thresholds per team"/>
+        </Reasoning>
+        <Memory>
+          <Graph name="OrgMemoryGraph" nodes="decisions, goals, people, artifacts, reasoningLevels" edges="refs, authorship, evidence, levelTransitions"/>
+        </Memory>
+        <SafetyControls>
+          <Item>Human-in-the-loop confirmation for critical interventions</Item>
+          <Item>Per-channel &amp; per-user opt-outs, transparency logs</Item>
+          <Item>Red-team tests for bias &amp; false positives</Item>
+        </SafetyControls>
+      </Architecture>
+      <Milestones>
+        <Milestone id="P2-M1.1" title="ReasoningLevelDetector + ConversationTypeClassifier passive tracking" targetDate="2025-11-15"/>
+        <Milestone id="P2-M1.2" title="LevelRangeMapping integrated into PolicyEngine" targetDate="2025-11-25"/>
+        <Milestone id="P2-M1.3" title="Adaptive nudges live in closed pilot" targetDate="2025-12-10"/>
+        <Milestone id="P2-M2" title="Public Beta — Intelligence Layer" targetDate="2026-02-01"/>
+        <Milestone id="P2-M3" title="GA — Intelligence Layer" targetDate="2026-03-31"/>
+      </Milestones>
+      <KPIs>
+        <KPI name="Decision recall time (median)" target="≤3s"/>
+        <KPI name="Drift caught before escalation" target="≥60% of flagged cases"/>
+        <KPI name="False positive rate (interventions)" target="≤5%"/>
+        <KPI name="User trust (intervention helpfulness ≥4/5)" target="≥70% votes"/>
+        <KPI name="Org memory reuse (queries/week/org)" target="≥10"/>
+        <KPI name="% conversations resolved within optimal range" target="≥70%"/>
+        <KPI name="Nudge acceptance rate" target="≥50%"/>
+        <KPI name="Reduction in looped conversations" target="≥30%"/>
+        <KPI name="User trust rating for nudges ≥4/5" target="≥70% of cases"/>
+      </KPIs>
+      <Monetization>
+        <Plan>Intelligence add‑on per seat; volume discounts; security/compliance tier (audit trails, SSO, DLP).</Plan>
+      </Monetization>
+      <RisksMitigations>
+        <Risk issue="Over‑talkative AI hurts trust">
+          <Mitigation>Strict InterventionFramework with confidence gating, role routing, undo/feedback loops.</Mitigation>
+        </Risk>
+        <Risk issue="Privacy &amp; governance concerns">
+          <Mitigation>Transparent logs, per‑workspace policies, admin guardrails, regional data residency roadmap.</Mitigation>
+        </Risk>
+      </RisksMitigations>
+    </Phase>
+  </Phases>
+
+  <SharedFoundations>
+    <DesignPartners>
+      <Who>High‑agency, AI‑forward teams (5–50 seats), PM/Design/Eng heavy.</Who>
+      <Offer>Early access, pricing lock, roadmap influence, private support channel.</Offer>
+      <Cadence>Bi‑weekly sessions; structured feedback; case studies.</Cadence>
+    </DesignPartners>
+    <GTM>
+      <Narrative>“New intelligence needs new standards.” Chat as the on‑ramp; reasoning as the destination.</Narrative>
+      <Artifacts>
+        <Item>Founder demo loop + short reels of ‘magic recall’ moments</Item>
+        <Item>Design partner stories (before/after decision clarity)</Item>
+        <Item>Landing page with crisp claims + live product clips</Item>
+      </Artifacts>
+    </GTM>
+    <MetricsReview>
+      <Frequency>Weekly internal; monthly partner review</Frequency>
+      <Dashboards>Retention, latency, recall usage, intervention outcomes, trust votes</Dashboards>
+    </MetricsReview>
+    <HiringSignals>
+      <Now>Founding Frontend, Founding Backend, Product Designer (systems+motion)</Now>
+      <Later>ML Engineer (signals/extractors), Security/Compliance, Solutions</Later>
+    </HiringSignals>
+  </SharedFoundations>
+
+  <EngineeringHandoff>
+    <Interfaces>
+      <Component name="ReasoningLevelDetector" output="ReasoningLevelSignal"/>
+      <Component name="ConversationTypeClassifier" output="ConversationTypeSignal"/>
+      <Component name="AdaptiveNudgeEngine" output="NudgeDecision"/>
+      <Component name="LevelRangeMapping" output="LevelRange"/>
+    </Interfaces>
+    <SamplePayloads>
+      <NudgeDecision direction="up" confidence="0.84" reason="Stuck in Level 2 for 22 min — Strategic Planning aims for Levels 3–5."/>
+    </SamplePayloads>
+  </EngineeringHandoff>
+
+  <Phase1Enablement>
+    <DataCapture>
+      <Item>Reasoning feature tags in InsightTracker v0</Item>
+      <Item>Goal/agenda enrichment in AgendaGoalMapping v0</Item>
+      <Item>Thread timeline metadata for time-in-level</Item>
+      <Item>Passive embeddings in Indexer v0</Item>
+      <Item>ParticipantFingerprinting v0 baseline</Item>
+    </DataCapture>
+    <InternalTooling>
+      <Item>Level Flow Analytics dashboard (internal-only)</Item>
+      <Item>Reasoning-flow search in RecallEngine v0</Item>
+      <Item>Minimal labeling UI for level/type corrections</Item>
+    </InternalTooling>
+    <MoatBuilding>
+      <Item>Org-specific tuning on reasoning traces</Item>
+      <Item>Pattern library of successful reasoning flows</Item>
+      <Item>Feedback loop from nudge accept/reject</Item>
+      <Item>Lock-in via OrgMemoryGraph reasoning history</Item>
+    </MoatBuilding>
+  </Phase1Enablement>
+
+  <Appendix>
+    <Glossary>
+      <Term name="Collaboration Friction">Invisible drag from drift, bias, and lost context.</Term>
+      <Term name="Intervention">Context-aware AI message (or silent nudge) with rationale &amp; confidence.</Term>
+      <Term name="Org Memory Graph">Linked decisions, goals, people, and artifacts for recall &amp; reasoning.</Term>
+    </Glossary>
+    <NonFunctionalTargets>
+      <Item name="Uptime">≥99.9%</Item>
+      <Item name="Cold start to first message">≤60s</Item>
+      <Item name="P95 recall query latency">≤1000ms</Item>
+    </NonFunctionalTargets>
+  </Appendix>
+</AkariiRoadmap>
