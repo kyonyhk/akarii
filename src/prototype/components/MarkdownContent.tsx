@@ -33,7 +33,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
     const flushList = () => {
       if (currentList.length > 0) {
         elements.push(
-          <ul key={key++} className="mb-4 space-y-1">
+          <ul key={key++} className="mb-4 space-y-2">
             {currentList.map((item, index) => (
               <li key={index} className="app-paragraph2 text-white/80 flex items-start gap-2">
                 <span className="text-white/60 leading-none flex items-center h-[1.2em]">•</span>
@@ -146,6 +146,14 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
         return;
       }
 
+      // Numbered lists (1. text, 2. text, etc.)
+      if (/^\d+\.\s/.test(trimmedLine)) {
+        flushParagraph();
+        const listItem = trimmedLine.replace(/^\d+\.\s/, '').trim();
+        currentList.push(listItem);
+        return;
+      }
+
       // Bold heading (starts with ** and ends with **)
       if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**') && trimmedLine.length > 4) {
         flushParagraph();
@@ -158,6 +166,22 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
           >
             {renderInlineFormatting(headingText)}
           </h3>
+        );
+        return;
+      }
+
+      // Bold label at start of line (e.g., **Total:** content or **Question:** content)
+      if (trimmedLine.startsWith('**') && trimmedLine.includes('**', 2)) {
+        flushParagraph();
+        flushList();
+        // Treat the entire line as a paragraph with bold formatting
+        elements.push(
+          <p
+            key={key++}
+            className="app-paragraph2 text-white/80 mb-3 leading-relaxed"
+          >
+            {renderInlineFormatting(trimmedLine)}
+          </p>
         );
         return;
       }

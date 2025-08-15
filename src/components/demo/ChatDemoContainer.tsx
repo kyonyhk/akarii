@@ -77,32 +77,30 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
       );
     }
 
-    // Get the current user name based on scenario
-    const getCurrentUserName = (scenarioId: number) => {
-      switch (scenarioId) {
-        case 0:
+    // Get the current user name based on scenario array index
+    const getCurrentUserName = (scenarioIndex: number) => {
+      switch (scenarioIndex) {
+        case 0: // Scenario ID 1
           return 'Sarah';
-        case 1:
+        case 1: // Scenario ID 2
           return 'Marcus';
-        case 2:
+        case 2: // Scenario ID 3
           return 'Elena';
-        case 3:
+        case 3: // Scenario ID 4
           return 'David';
-        case 4:
+        case 4: // Scenario ID 5
           return 'Mike Krieger';
-        case 5:
+        case 5: // Scenario ID 6
           return 'Kevin Weil';
-        case 6:
+        case 6: // Scenario ID 7
           return 'Alex';
-        case 7:
+        case 7: // Scenario ID 8
           return 'Priya';
-        case 8:
+        case 8: // Scenario ID 9
           return 'Harper';
-        case 9:
-          return 'Harper';
-        case 10:
+        case 9: // Scenario ID 10
           return 'Dan';
-        case 11:
+        case 10: // Scenario ID 11
           return 'Elena';
         default:
           return 'Sarah';
@@ -211,10 +209,29 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
         (m) => m.inputTyping && m.isVisible && m.sender === currentUserName
       );
 
+      // Debug logging for scenarios 10 & 11
+      if (currentScenarioIndex >= 9) {
+        console.log('🐛 Debug scenario', currentScenarioIndex + 1, ':', {
+          currentScenarioIndex,
+          scenarioIndex,
+          currentUserName,
+          currentInputTypingMessage: currentInputTypingMessage ? {
+            id: currentInputTypingMessage.id,
+            sender: currentInputTypingMessage.sender,
+            inputTyping: currentInputTypingMessage.inputTyping,
+            isVisible: currentInputTypingMessage.isVisible
+          } : null,
+          isInputTypingActive: isInputTypingActiveRef.current,
+          messagesWithInputTyping: messages.filter(m => m.inputTyping).map(m => ({id: m.id, sender: m.sender, isVisible: m.isVisible}))
+        });
+      }
+
       if (currentInputTypingMessage && !isInputTypingActiveRef.current) {
         const messageScenarioId = parseInt(
           currentInputTypingMessage.id.split('-')[0]
         );
+
+        console.log('🐛 Starting input typing for message:', messageScenarioId, 'vs expected:', currentScenarioIndex + 1);
 
         if (messageScenarioId === currentScenarioIndex + 1) {
           startInputTyping(
