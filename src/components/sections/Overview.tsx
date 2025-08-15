@@ -93,7 +93,7 @@ export default function Overview() {
   };
 
   const handleSectionClick = (section: 'left' | 'right') => {
-    if (!isMobile && section !== activeSection && !isTransitioning) {
+    if (section !== activeSection && !isTransitioning) {
       setIsTransitioning(true);
 
       // Randomize scenario when switching sections
@@ -111,43 +111,31 @@ export default function Overview() {
         setCurrentSharedIntelligenceScenario(randomScenario);
       }
 
-      // Get current and next container refs for desktop
-      const getCurrentDesktopRef = () => {
-        return activeSection === 'left'
-          ? demoContainerLeftRef.current
-          : demoContainerRightRef.current;
-      };
+      if (isMobile) {
+        // For mobile, just switch sections without complex animations
+        setActiveSection(section);
+        setIsTransitioning(false);
+      } else {
+        // Desktop: Use GSAP animations
+        // Get current and next container refs for desktop
+        const getCurrentDesktopRef = () => {
+          return activeSection === 'left'
+            ? demoContainerLeftRef.current
+            : demoContainerRightRef.current;
+        };
 
-      const getNextDesktopRef = () => {
-        return section === 'left'
-          ? demoContainerLeftRef.current
-          : demoContainerRightRef.current;
-      };
+        const getNextDesktopRef = () => {
+          return section === 'left'
+            ? demoContainerLeftRef.current
+            : demoContainerRightRef.current;
+        };
 
-      // Get current and next container refs for mobile
-      const getCurrentMobileRef = () => {
-        return activeSection === 'left'
-          ? mobileDemoLeftRef.current
-          : mobileDemoRightRef.current;
-      };
+        const currentDesktopRef = getCurrentDesktopRef();
+        const nextDesktopRef = getNextDesktopRef();
 
-      const getNextMobileRef = () => {
-        return section === 'left'
-          ? mobileDemoLeftRef.current
-          : mobileDemoRightRef.current;
-      };
-
-      const currentDesktopRef = getCurrentDesktopRef();
-      const nextDesktopRef = getNextDesktopRef();
-      const currentMobileRef = getCurrentMobileRef();
-      const nextMobileRef = getNextMobileRef();
-
-      // Animate out current demos
-      const animateOut = () => {
-        const targets = [currentDesktopRef, currentMobileRef].filter(Boolean);
-
-        if (targets.length > 0) {
-          gsap.to(targets, {
+        // Animate out current demos
+        if (currentDesktopRef) {
+          gsap.to(currentDesktopRef, {
             opacity: 0,
             y: 20,
             duration: 0.3,
@@ -157,13 +145,9 @@ export default function Overview() {
               setActiveSection(section);
 
               // Animate in new demos
-              const newTargets = [nextDesktopRef, nextMobileRef].filter(
-                Boolean
-              );
-
-              if (newTargets.length > 0) {
+              if (nextDesktopRef) {
                 gsap.fromTo(
-                  newTargets,
+                  nextDesktopRef,
                   {
                     opacity: 0,
                     y: -20,
@@ -190,25 +174,7 @@ export default function Overview() {
             setIsTransitioning(false);
           }, 300);
         }
-      };
-
-      animateOut();
-    } else if (isMobile) {
-      // For mobile, just switch without animation but still randomize scenarios
-      if (section === 'left') {
-        const randomScenario =
-          stayOnTrackScenarios[
-            Math.floor(Math.random() * stayOnTrackScenarios.length)
-          ];
-        setCurrentStayOnTrackScenario(randomScenario);
-      } else {
-        const randomScenario =
-          sharedIntelligenceScenarios[
-            Math.floor(Math.random() * sharedIntelligenceScenarios.length)
-          ];
-        setCurrentSharedIntelligenceScenario(randomScenario);
       }
-      setActiveSection(section);
     }
   };
 
@@ -475,7 +441,7 @@ export default function Overview() {
           <ChatDemoFull
             className="h-full"
             scenarioIndex={currentStayOnTrackScenario}
-            isActive={activeSection === 'left'}
+            isActive={isMobile ? true : activeSection === 'left'}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
@@ -513,7 +479,7 @@ export default function Overview() {
           <ChatDemoFull
             className="h-full"
             scenarioIndex={currentSharedIntelligenceScenario}
-            isActive={activeSection === 'right'}
+            isActive={isMobile ? true : activeSection === 'right'}
             enableWaitlistInteraction={true}
             onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
             source="overview"
