@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 // Add a message to the founder
 export const addFounderMessage = mutation({
@@ -43,7 +44,7 @@ export const addFounderMessage = mutation({
 
     // Send email notification
     try {
-      await ctx.scheduler.runAfter(0, "emailNotifications:sendFounderMessageNotification", {
+      await ctx.scheduler.runAfter(0, internal.emailNotifications.sendFounderMessageNotification, {
         name: args.name.trim(),
         email: args.email.toLowerCase().trim(),
         company: args.company?.trim(),

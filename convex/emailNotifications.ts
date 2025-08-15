@@ -1,9 +1,9 @@
-import { action } from "./_generated/server";
+import { internalAction } from "./_generated/server";
 import { v } from "convex/values";
 import { Resend } from "resend";
 
 // Email notification action for new founder messages
-export const sendFounderMessageNotification = action({
+export const sendFounderMessageNotification = internalAction({
   args: {
     name: v.string(),
     email: v.string(),
@@ -76,11 +76,11 @@ export const sendFounderMessageNotification = action({
         html: emailHtml,
       });
 
-      console.log("Email notification sent successfully:", result.id);
-      return { success: true, emailId: result.id };
+      console.log("Email notification sent successfully:", result.data?.id);
+      return { success: true, emailId: result.data?.id };
     } catch (error) {
       console.error("Failed to send email notification:", error);
-      return { success: false, error: error.message };
+      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
     }
   },
 });
