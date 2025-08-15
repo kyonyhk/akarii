@@ -12,4 +12,18 @@ export default defineSchema({
   })
     .index("by_email", ["email"])
     .index("by_timestamp", ["timestamp"]),
+    
+  founderMessages: defineTable({
+    name: v.string(),
+    email: v.string(),
+    company: v.optional(v.string()),
+    message: v.string(),
+    timestamp: v.number(),
+    userAgent: v.optional(v.string()),
+    referrer: v.optional(v.string()),
+    status: v.optional(v.string()), // "new", "read", "replied"
+  })
+    .index("by_email", ["email"])
+    .index("by_timestamp", ["timestamp"])
+    .index("by_status", ["status"]),
 });
