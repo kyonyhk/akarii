@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as founderMessages from "../founderMessages.js";
 import type * as waitlist from "../waitlist.js";
 
 /**
@@ -24,6 +25,7 @@ import type * as waitlist from "../waitlist.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  founderMessages: typeof founderMessages;
   waitlist: typeof waitlist;
 }>;
 export declare const api: FilterApi<
