@@ -161,27 +161,42 @@ export default function Features() {
 
   // Background animations
   useEffect(() => {
-    if (!sectionRef.current || !backgroundLayer1Ref.current || !backgroundLayer2Ref.current || !backgroundLayer3Ref.current || !backgroundLayer4Ref.current) return;
+    if (
+      !sectionRef.current ||
+      !backgroundLayer1Ref.current ||
+      !backgroundLayer2Ref.current ||
+      !backgroundLayer3Ref.current ||
+      !backgroundLayer4Ref.current
+    )
+      return;
 
     const ctx = gsap.context(() => {
       // Initially hide all layers off-screen from bottom
-      gsap.set([backgroundLayer1Ref.current, backgroundLayer2Ref.current, backgroundLayer3Ref.current, backgroundLayer4Ref.current], {
-        y: '100%',
-        opacity: 0,
-      });
+      gsap.set(
+        [
+          backgroundLayer1Ref.current,
+          backgroundLayer2Ref.current,
+          backgroundLayer3Ref.current,
+          backgroundLayer4Ref.current,
+        ],
+        {
+          y: '100%',
+          opacity: 0,
+        }
+      );
 
       // Create entry animation timeline
-      const entryTl = gsap.timeline({ 
+      const entryTl = gsap.timeline({
         paused: true,
         onStart: () => {
           console.log('Background animation started'); // Debug log
-        }
+        },
       });
 
       // Adjust timing for mobile vs desktop
       const animationDuration = isMobile ? 0.8 : 0.6;
       const staggerOffset = isMobile ? 0.4 : 0.3;
-      
+
       // Layer 1 animates in from bottom
       entryTl.to(backgroundLayer1Ref.current, {
         y: '0%',
@@ -239,19 +254,23 @@ export default function Features() {
       );
 
       // Create separate exit animation timeline
-      const exitTl = gsap.timeline({ 
+      const exitTl = gsap.timeline({
         paused: true,
         onComplete: () => {
           console.log('Background animation completed'); // Debug log
-        }
+        },
       });
 
       // All remaining layers (1, 2, 3) animate out to the top
       const exitDuration = isMobile ? 1.0 : 0.8;
       const exitStagger = isMobile ? 0.15 : 0.1;
-      
+
       exitTl.to(
-        [backgroundLayer1Ref.current, backgroundLayer2Ref.current, backgroundLayer3Ref.current],
+        [
+          backgroundLayer1Ref.current,
+          backgroundLayer2Ref.current,
+          backgroundLayer3Ref.current,
+        ],
         {
           y: '-100%',
           opacity: 0,
@@ -265,7 +284,7 @@ export default function Features() {
       // Use different trigger points for mobile vs desktop for better visibility
       const startTrigger = isMobile ? 'top 70%' : 'top 60%';
       const endTrigger = isMobile ? 'bottom 70%' : 'bottom 60%';
-      
+
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: startTrigger,
@@ -277,7 +296,7 @@ export default function Features() {
       // Exit animation triggered when section is leaving view
       const exitStartTrigger = isMobile ? 'bottom 50%' : 'bottom 40%';
       const exitEndTrigger = isMobile ? 'bottom 30%' : 'bottom 20%';
-      
+
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: exitStartTrigger,
@@ -455,22 +474,22 @@ export default function Features() {
       {/* Background layers - mobile: full width, desktop: right side only */}
       <div
         ref={backgroundLayer1Ref}
-        className="absolute inset-0 md:left-1/2 bg-gradient-to-br from-black/25 via-black/20 to-transparent md:bg-black/15 backdrop-blur-sm z-10"
+        className="absolute inset-0 lg:left-1/2 bg-gradient-to-br from-black/25 via-black/20 to-transparent md:bg-black/15 backdrop-blur-sm z-10"
       />
       <div
         ref={backgroundLayer2Ref}
-        className="absolute inset-0 md:left-1/2 bg-gradient-to-tr from-black/30 via-black/25 to-black/10 md:bg-black/15 z-20"
+        className="absolute inset-0 lg:left-1/2 bg-gradient-to-tr from-black/30 via-black/25 to-black/10 md:bg-black/15 z-20"
       />
       <div
         ref={backgroundLayer3Ref}
-        className="absolute inset-0 md:left-1/2 bg-gradient-to-bl from-transparent via-black/30 to-black/25 md:bg-black/15 z-30"
+        className="absolute inset-0 lg:left-1/2 bg-gradient-to-bl from-transparent via-black/30 to-black/25 md:bg-black/15 z-30"
       />
       <div
         ref={backgroundLayer4Ref}
-        className="absolute inset-0 md:left-1/2 bg-gradient-to-tl from-black/40 via-black/35 to-black/20 md:bg-black/20 z-35"
+        className="absolute inset-0 lg:left-1/2 bg-gradient-to-tl from-black/40 via-black/35 to-black/20 md:bg-black/20 z-35"
       />
 
-      <div className="hidden md:flex flex-1 flex-col justify-center items-center p-10 relative z-40">
+      <div className="hidden lg:flex flex-1 flex-col justify-center items-center p-10 relative z-40">
         {/* Wrapper container that constrains all demo containers */}
         <div className="relative w-full h-full">
           {/* Demo Container 1 - Context preservation across time */}
@@ -491,14 +510,16 @@ export default function Features() {
               isActive={activeSection === 1}
               key={`demo-1-${restartTrigger}`} // Force re-render on restart
               enableWaitlistInteraction={true}
-              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
               source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 1) {
                     // Trigger restart by incrementing trigger
-                    setRestartTrigger(prev => prev + 1);
+                    setRestartTrigger((prev) => prev + 1);
                   }
                 }, 2000);
               }}
@@ -523,14 +544,16 @@ export default function Features() {
               isActive={activeSection === 2}
               key={`demo-2-${restartTrigger}`} // Force re-render on restart
               enableWaitlistInteraction={true}
-              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
               source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 2) {
                     // Trigger restart by incrementing trigger
-                    setRestartTrigger(prev => prev + 1);
+                    setRestartTrigger((prev) => prev + 1);
                   }
                 }, 2000);
               }}
@@ -555,14 +578,16 @@ export default function Features() {
               isActive={activeSection === 3}
               key={`demo-3-${restartTrigger}`} // Force re-render on restart
               enableWaitlistInteraction={true}
-              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
               source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 3) {
                     // Trigger restart by incrementing trigger
-                    setRestartTrigger(prev => prev + 1);
+                    setRestartTrigger((prev) => prev + 1);
                   }
                 }, 2000);
               }}
@@ -587,14 +612,16 @@ export default function Features() {
               isActive={activeSection === 4}
               key={`demo-4-${restartTrigger}`} // Force re-render on restart
               enableWaitlistInteraction={true}
-              onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
               source="features"
               onComplete={() => {
                 // Auto-restart after 2 seconds if still on this section
                 setTimeout(() => {
                   if (activeSection === 4) {
                     // Trigger restart by incrementing trigger
-                    setRestartTrigger(prev => prev + 1);
+                    setRestartTrigger((prev) => prev + 1);
                   }
                 }, 2000);
               }}
@@ -603,7 +630,6 @@ export default function Features() {
         </div>
       </div>
       <aside className="relative flex flex-1 flex-col justify-center items-center gap-10 py-10 px-4 md:px-10 z-40">
-        
         <h2 className="sr-only">Product Features</h2>
         <div
           ref={infoSection1Ref}

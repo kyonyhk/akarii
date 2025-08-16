@@ -40,6 +40,9 @@
   .heading-mega2 {
     @apply font-pangaia text-heading-mega2 md:text-heading-mega2-md;
   }
+  .heading-mega3 {
+    @apply font-pangaia text-heading-mega3 md:text-heading-mega3-md;
+  }
   .heading1 {
     @apply font-pangaia text-heading1 md:text-heading1-md;
   }
@@ -113,5 +116,28 @@
   }
   .app-p {
     @apply font-neue-montreal text-app-p md:text-app-p-md;
+  }
+
+  /* SplitType animation utilities */
+  .split-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  
+  .split-char {
+    display: inline-block;
+  }
+  
+  /* Better text wrapping for SplitType animations */
+  .heading-mega1,
+  .heading-mega2,
+  .heading-mega3 {
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+  
+  /* Utility class for text that should never wrap (use sparingly) */
+  .no-wrap {
+    white-space: nowrap !important;
   }
 }

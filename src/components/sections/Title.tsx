@@ -156,7 +156,7 @@ export default function Title() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex flex-col justify-end p-4 md:py-20 md:px-50 relative overflow-hidden"
+      className="min-h-screen flex flex-col items-center justify-end py-12 px-4 md:py-20 md:px-6 lg:px-10 relative overflow-hidden"
     >
       {/* Background layers */}
       <div
@@ -172,23 +172,25 @@ export default function Title() {
         className="absolute inset-0 bg-black/20 backdrop-blur-sm z-30"
       />
 
-      <header
-        className="flex flex-col gap-2 md:gap-0 relative z-40"
-        ref={headerRef}
-      >
-        <h2
-          ref={akariiRef}
-          className="heading-mega1 text-white opacity-0"
+      <div className="max-w-7xl w-full ">
+        <header
+          className="flex flex-col gap-2 md:gap-0 relative z-40"
+          ref={headerRef}
         >
-          Akarii,
-        </h2>
-        <p
-          ref={subtitleRef}
-          className="heading1 text-white/80 opacity-0"
-        >
-          an intelligent workspace for AI native teams
-        </p>
-      </header>
+          <h2
+            ref={akariiRef}
+            className="heading-mega2 md:heading-mega1 text-white opacity-0"
+          >
+            Akarii,
+          </h2>
+          <p
+            ref={subtitleRef}
+            className="heading2 md:heading1 text-white/80 opacity-0"
+          >
+            an intelligent workspace for AI native teams
+          </p>
+        </header>
+      </div>
     </section>
   );
 }

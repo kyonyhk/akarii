@@ -86,8 +86,9 @@ module.exports = {
       },
       fontSize: {
         // PP Pangaia Light - Headings (Mobile first, then desktop)
-        'heading-mega1': ['6rem', { lineHeight: '0.7', fontWeight: '300' }], // 96px mobile -> 192px desktop
-        'heading-mega2': ['4rem', { lineHeight: '1.0', fontWeight: '300' }], // 64px mobile -> 128px desktop
+        'heading-mega1': ['10rem', { lineHeight: '0.7', fontWeight: '300' }], // 96px mobile -> 192px desktop
+        'heading-mega2': ['6rem', { lineHeight: '0.7', fontWeight: '300' }], // 64px mobile -> 128px desktop
+        'heading-mega3': ['4rem', { lineHeight: '0.7', fontWeight: '300' }], // 64px mobile -> 128px desktop
         heading1: ['3rem', { lineHeight: '1.0', fontWeight: '300' }], // 48px mobile -> 60px desktop
         heading2: ['2.25em', { lineHeight: '1.0', fontWeight: '300' }], // 36px mobile -> 48px desktop
         heading3: ['1.875rem', { lineHeight: '1.0', fontWeight: '300' }], // 30px mobile -> 36px desktop
@@ -107,7 +108,8 @@ module.exports = {
 
         // Desktop sizes (to be used with md: prefix)
         'heading-mega1-md': ['12rem', { lineHeight: '0.7', fontWeight: '300' }], // 192px
-        'heading-mega2-md': ['8rem', { lineHeight: '1.0', fontWeight: '300' }], // 128px
+        'heading-mega2-md': ['10rem', { lineHeight: '0.7', fontWeight: '300' }], // 128px
+        'heading-mega3-md': ['8rem', { lineHeight: '0.7', fontWeight: '300' }], // 128px
         'heading1-md': ['3.75rem', { lineHeight: '1.0', fontWeight: '300' }], // 60px
         'heading2-md': ['3rem', { lineHeight: '1.0', fontWeight: '300' }], // 48px
         'heading3-md': ['2.25rem', { lineHeight: '1.0', fontWeight: '300' }], // 36px

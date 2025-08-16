@@ -163,7 +163,7 @@ export default function Footer() {
           </h2>
           <h2
             ref={headingLine2Ref}
-            className="heading2 md:heading1 text-white align-center opacity-0"
+            className="heading2 md:heading1 text-white text-center opacity-0"
           >
             requires new standards
           </h2>
