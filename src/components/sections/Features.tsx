@@ -640,7 +640,7 @@ export default function Features() {
           <InfoSection
             heading="Never lose context across time"
             subheading="Stay aligned with AI-powered context"
-            description="Akarii remembers every decision, discussion, and detail—even across days or weeks. No more time wasted catching up or reconstructing lost context."
+            description="Akarii remembers every decision, discussion, and detail across days or weeks. No more time wasted catching up or reconstructing lost context."
             defaultExpanded={activeSection === 1}
             timelineRef={infoTimeline1Ref}
             onToggle={() => handleSectionClick(1)}
@@ -657,7 +657,7 @@ export default function Features() {
           <InfoSection
             heading="One AI shared by the whole team"
             subheading="Shared intelligence across teams"
-            description="Work with AI the way you work with people—in the same space, seeing the same context. Cross-team visibility means everyone stays informed instantly."
+            description="Your team and Akarii in the same space and sharing the same context. Cross-team visibility means everyone stays informed instantly."
             defaultExpanded={activeSection === 2}
             timelineRef={infoTimeline2Ref}
             onToggle={() => handleSectionClick(2)}
@@ -674,7 +674,7 @@ export default function Features() {
           <InfoSection
             heading="Prevent knowledge from vanishing"
             subheading="Critical insights, always accessible"
-            description="Late-night fixes, emergency decisions, scattered conversations—Akarii captures it all and makes it instantly searchable when you need it most."
+            description="Whether it is late-night fixes, emergency decisions, scattered conversations, Akarii captures it all and makes it instantly searchable when you need it most."
             defaultExpanded={activeSection === 3}
             timelineRef={infoTimeline3Ref}
             onToggle={() => handleSectionClick(3)}
