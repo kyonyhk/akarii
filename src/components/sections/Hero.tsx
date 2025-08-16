@@ -10,7 +10,8 @@ import { Input, Button, Logo } from '../atoms';
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const subtitle1Ref = useRef<HTMLParagraphElement>(null);
+  const subtitle2Ref = useRef<HTMLParagraphElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef1 = useRef<HTMLButtonElement>(null);
@@ -27,7 +28,8 @@ export default function Hero() {
       // Set initial states - ensure buttons start completely hidden
       gsap.set(
         [
-          subtitleRef.current,
+          subtitle1Ref.current,
+          subtitle2Ref.current,
           descRef.current,
           inputRef.current,
           buttonRef1.current,
@@ -52,7 +54,9 @@ export default function Hero() {
 
       // 1. AKARII typing animation
       if (titleRef.current) {
-        const splitTitle = new SplitType(titleRef.current, { types: 'chars' });
+        const splitTitle = new SplitType(titleRef.current, {
+          types: ['words', 'chars'],
+        });
         const chars = splitTitle.chars;
 
         if (chars) {
@@ -76,7 +80,20 @@ export default function Hero() {
 
       // 2. AI Workspace subtitle (with overlap)
       tl.to(
-        subtitleRef.current,
+        subtitle1Ref.current,
+        {
+          opacity: 1,
+          y: 0,
+          visibility: 'visible',
+          duration: 0.6,
+          ease: 'power4.out',
+        },
+        '-=0.3'
+      );
+
+      // 2. AI Workspace subtitle (with overlap)
+      tl.to(
+        subtitle2Ref.current,
         {
           opacity: 1,
           y: 0,
@@ -176,98 +193,106 @@ export default function Hero() {
     <section
       ref={heroRef}
       data-section="hero"
-      className="min-h-screen flex flex-col gap-30 px-4 md:px-50 pt-30 md:pt-50 pb-0 md:pb-20"
+      className="min-h-screen flex flex-col items-center px-4 md:px-6 lg:px-10 pt-30 md:pt-40 pb-0 md:pb-20"
     >
       <div
         ref={logoRef}
-        className="absolute top-0 md:top-10 left-[50%] transform -translate-x-1/2"
+        className="absolute top-0 md:top-0 left-[50%] transform -translate-x-1/2"
       >
         <Logo
           size={40}
           desktopSize={64}
         />
       </div>
-      <div className="flex flex-col gap-10">
-        <div className="flex flex-col md:flex-row justify-start md:justify-between md:items-end gap-4 md:gap-0">
-          <div className="h-fit flex flex-col gap-0 order-2 md:order-1">
-            <p
-              ref={subtitleRef}
-              className="eyebrow1 text-white/80 opacity-0 invisible translate-y-[30px]"
+      <div className="max-w-7xl w-full flex flex-col gap-10 md:gap-20">
+        <div className="flex flex-col gap-6 md:gap-10">
+          <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-end gap-4">
+            <div className="h-fit max-w-[260px] lg:max-w-[320px] flex flex-col gap-0 order-2 lg:order-1">
+              <p
+                ref={subtitle1Ref}
+                className="eyebrow2 xl:eyebrow1 text-white/80 opacity-0 invisible translate-y-[30px]"
+              >
+                New Intelligence
+              </p>
+              <p
+                ref={subtitle2Ref}
+                className="eyebrow2 xl:eyebrow1 text-white/80 opacity-0 invisible translate-y-[30px]"
+              >
+                Needs New Standards
+              </p>
+              <p
+                ref={descRef}
+                className="paragraph1 text-white/50 opacity-0 invisible translate-y-[30px]"
+              >
+                The workspace that thinks with you
+              </p>
+            </div>
+            <h1
+              ref={titleRef}
+              className="heading-mega2 xl:heading-mega1 text-white order-1 lg:order-2 opacity-0"
             >
-              AI Workspace for Teams Who Move Fast
-            </p>
-            <p
-              ref={descRef}
-              className="paragraph1 text-white/50 opacity-0 invisible translate-y-[30px]"
-            >
-              The only team chat that's ready for AI
-            </p>
+              AKARII
+            </h1>
           </div>
-          <h1
-            ref={titleRef}
-            className="heading-mega1 text-white order-1 md:order-2 opacity-0"
-          >
-            AKARII
-          </h1>
+          <div className="flex flex-col md:flex-row gap-2">
+            <Input
+              ref={inputRef}
+              placeholder="example@email.com"
+              type="email"
+              className="w-full md:flex-1 opacity-0 invisible translate-y-[30px]"
+            />
+
+            <Button
+              ref={buttonRef1}
+              icon={<ExternalLink size={16} />}
+              className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+            >
+              Join Waitlist
+            </Button>
+
+            <Button
+              ref={buttonRef2}
+              icon={<ExternalLink size={16} />}
+              className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+            >
+              Talk to Founder
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-2">
-          <Input
-            ref={inputRef}
-            placeholder="example@email.com"
-            type="email"
-            className="w-full md:flex-1 opacity-0 invisible translate-y-[30px]"
-          />
-
-          <Button
-            ref={buttonRef1}
-            icon={<ExternalLink size={16} />}
-            className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+        <div
+          ref={prototypeRef}
+          className="opacity-0 invisible translate-y-[30px]"
+        >
+          {/* Mobile prototype */}
+          <figure
+            className="md:hidden h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-[40px] overflow-hidden border border-white/10"
+            aria-label="Product demo prototype"
           >
-            Join Waitlist
-          </Button>
+            <Image
+              ref={mobileImageRef}
+              src="/prototype1.png"
+              alt="Akarii product prototype"
+              width={800}
+              height={640}
+              className="w-full h-full object-cover opacity-0"
+            />
+          </figure>
 
-          <Button
-            ref={buttonRef2}
-            icon={<ExternalLink size={16} />}
-            className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+          {/* Desktop prototype */}
+          <figure
+            className="hidden md:flex h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden"
+            aria-label="Product demo prototype"
           >
-            Talk to Founder
-          </Button>
+            <Image
+              ref={desktopImageRef}
+              src="/desktop-prototype1.png"
+              alt="Akarii product prototype"
+              width={800}
+              height={640}
+              className="w-full h-full object-cover opacity-0"
+            />
+          </figure>
         </div>
-      </div>
-      <div
-        ref={prototypeRef}
-        className="opacity-0 invisible translate-y-[30px]"
-      >
-        {/* Mobile prototype */}
-        <figure
-          className="md:hidden h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-[40px] overflow-hidden border border-white/10"
-          aria-label="Product demo prototype"
-        >
-          <Image
-            ref={mobileImageRef}
-            src="/prototype1.png"
-            alt="Akarii product prototype"
-            width={800}
-            height={640}
-            className="w-full h-full object-cover opacity-0"
-          />
-        </figure>
-
-        {/* Desktop prototype */}
-        <figure
-          className="hidden md:flex h-[640px] w-full bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden"
-          aria-label="Product demo prototype"
-        >
-          <Image
-            ref={desktopImageRef}
-            src="/desktop-prototype1.png"
-            alt="Akarii product prototype"
-            width={800}
-            height={640}
-            className="w-full h-full object-cover opacity-0"
-          />
-        </figure>
       </div>
     </section>
   );

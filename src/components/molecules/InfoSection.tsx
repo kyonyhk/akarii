@@ -136,8 +136,9 @@ export default function InfoSection({
 
     // Only animate state changes if elements are already visible
     // Check if entry animation has played by checking if timeline exists and has progress
-    const hasEntryAnimationPlayed = entryTimelineRef.current && entryTimelineRef.current.progress() > 0;
-    
+    const hasEntryAnimationPlayed =
+      entryTimelineRef.current && entryTimelineRef.current.progress() > 0;
+
     if (!hasEntryAnimationPlayed) return; // Don't interfere with entry animation
 
     // Create independent animations for state changes
@@ -288,7 +289,7 @@ export default function InfoSection({
       onMouseLeave={handleMouseLeave}
       className={cn(
         'flex flex-row gap-4 items-start justify-start w-full text-left transition-opacity duration-300',
-        'py-6 pl-0 md:pl-6 pr-6 md:pr-20', // Consistent padding
+        'py-6 pl-0 lg:pl-6 pr-6 lg:pr-20', // Consistent padding
         !isExpanded && 'md:opacity-50', // Only apply opacity reduction on desktop
         isExpanded ? 'cursor-default' : 'cursor-pointer', // Remove pointer cursor for active state
         className

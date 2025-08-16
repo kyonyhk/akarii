@@ -402,7 +402,7 @@ export default function Overview() {
           // Image container animation with toggle actions
           ScrollTrigger.create({
             trigger: sectionRef.current,
-            start: 'top 30%',
+            start: 'top 50%',
             end: 'bottom 20%',
             animation: desktopImageTl,
             toggleActions: 'play none none reverse',
@@ -424,7 +424,7 @@ export default function Overview() {
     <section
       ref={sectionRef}
       data-section="overview"
-      className="min-h-screen flex flex-col justify-center gap-10 px-4 md:px-50 py-10 bg-black/20 backdrop-blur-sm relative overflow-hidden"
+      className="min-h-screen flex flex-col items-center justify-center gap-10 px-4 md:px-6 lg:px-10 py-10 bg-black/20 backdrop-blur-sm relative overflow-hidden"
     >
       {/* Animated background layer */}
       <div
@@ -433,133 +433,145 @@ export default function Overview() {
         style={{ transform: 'translateX(100%)' }}
       />
 
-      <div className="flex flex-col md:flex-row gap-4 md:gap-10 relative z-10">
-        <div ref={infoSectionLeftRef}>
-          <InfoSection
-            heading="Stay aligned with AI-powered context"
-            subheading="Stay on track"
-            description="Never lose the thread. Akarii tracks decisions, spots drift, and flags what's missing, so your team stays focused on what matters."
-            timelineRef={leftInfoTimelineRef}
-            defaultExpanded={isMobile ? true : activeSection === 'left'}
-            onToggle={isMobile ? undefined : () => handleSectionClick('left')}
-          />
-        </div>
-        {/* Mobile Demo Container - Intelligence Layer */}
-        <div
-          ref={mobileDemoLeftRef}
-          className="md:hidden h-[640px] w-full"
-        >
-          <ChatDemoFull
-            key={`mobile-left-${currentStayOnTrackScenario}`}
-            className="h-full"
-            scenarioIndex={currentStayOnTrackScenario}
-            isActive={true}
-            enableWaitlistInteraction={true}
-            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
-            source="overview"
-            onComplete={() => {
-              // Auto-restart with next scenario after 2 seconds
-              setTimeout(() => {
-                const nextScenario = getNextStayOnTrackScenario();
-                setCurrentStayOnTrackScenario(nextScenario);
-              }, 2000);
-            }}
-          />
-        </div>
-        <div ref={infoSectionRightRef}>
-          <InfoSection
-            heading="One AI shared by the whole team"
-            subheading="Shared intelligence"
-            description="Work with AI the way you work with people. In the same space, seeing the same context. Everyone stays on the same page, instantly."
-            timelineRef={rightInfoTimelineRef}
-            defaultExpanded={isMobile ? true : activeSection === 'right'}
-            onToggle={isMobile ? undefined : () => handleSectionClick('right')}
-          />
-        </div>
-        {/* Mobile Demo Container - Multiplayer Chat */}
-        <div
-          ref={mobileDemoRightRef}
-          className="md:hidden h-[640px] w-full"
-        >
-          <ChatDemoFull
-            key={`mobile-right-${currentSharedIntelligenceScenario}`}
-            className="h-full"
-            scenarioIndex={currentSharedIntelligenceScenario}
-            isActive={true}
-            enableWaitlistInteraction={true}
-            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
-            source="overview"
-            onComplete={() => {
-              // Auto-restart with next scenario after 2 seconds
-              setTimeout(() => {
-                const nextScenario = getNextSharedIntelligenceScenario();
-                setCurrentSharedIntelligenceScenario(nextScenario);
-              }, 2000);
-            }}
-          />
-        </div>
-      </div>
-      {/* Desktop Demo Container - Wrapper */}
-      <div
-        ref={imageContainerRef}
-        className="hidden md:flex aspect-[3/2] h-auto w-full relative z-10"
-        style={{ opacity: 0, transform: 'translateY(60px)' }}
-      >
-        {/* Desktop Demo Container - Intelligence Layer */}
-        <div
-          ref={demoContainerLeftRef}
-          className={`absolute inset-0 transition-opacity duration-300 ${
-            activeSection === 'left' ? 'opacity-100 z-20' : 'opacity-0 z-10'
-          } ${isTransitioning ? 'pointer-events-none' : ''}`}
-        >
-          <ChatDemoFull
-            className="w-full h-full"
-            scenarioIndex={currentStayOnTrackScenario}
-            isActive={activeSection === 'left'}
-            enableWaitlistInteraction={true}
-            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
-            source="overview"
-            onComplete={() => {
-              // Auto-restart with next scenario after 2 seconds
-              setTimeout(() => {
-                if (activeSection === 'left') {
+      <div className="max-w-7xl flex flex-col gap-10">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-10 relative z-10">
+          <div ref={infoSectionLeftRef}>
+            <InfoSection
+              heading="Stay aligned with AI-powered context"
+              subheading="Stay on track"
+              description="Never lose the thread. Akarii tracks decisions, spots drift, and flags what's missing, so your team stays focused on what matters."
+              timelineRef={leftInfoTimelineRef}
+              defaultExpanded={isMobile ? true : activeSection === 'left'}
+              onToggle={isMobile ? undefined : () => handleSectionClick('left')}
+            />
+          </div>
+          {/* Mobile Demo Container - Intelligence Layer */}
+          <div
+            ref={mobileDemoLeftRef}
+            className="md:hidden h-[640px] w-full"
+          >
+            <ChatDemoFull
+              key={`mobile-left-${currentStayOnTrackScenario}`}
+              className="h-full"
+              scenarioIndex={currentStayOnTrackScenario}
+              isActive={true}
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
+              source="overview"
+              onComplete={() => {
+                // Auto-restart with next scenario after 2 seconds
+                setTimeout(() => {
                   const nextScenario = getNextStayOnTrackScenario();
                   setCurrentStayOnTrackScenario(nextScenario);
-                  // Trigger restart by toggling isActive
-                  setActiveSection('right');
-                  setTimeout(() => setActiveSection('left'), 100);
-                }
-              }, 2000);
-            }}
-          />
-        </div>
-        {/* Desktop Demo Container - Multiplayer Chat */}
-        <div
-          ref={demoContainerRightRef}
-          className={`absolute inset-0 transition-opacity duration-300 ${
-            activeSection === 'right' ? 'opacity-100 z-20' : 'opacity-0 z-10'
-          } ${isTransitioning ? 'pointer-events-none' : ''}`}
-        >
-          <ChatDemoFull
-            className="w-full h-full"
-            scenarioIndex={currentSharedIntelligenceScenario}
-            isActive={activeSection === 'right'}
-            enableWaitlistInteraction={true}
-            onInteractionAttempt={waitlistInteraction.handleInteractionAttempt}
-            source="overview"
-            onComplete={() => {
-              // Auto-restart with next scenario after 2 seconds
-              setTimeout(() => {
-                if (activeSection === 'right') {
+                }, 2000);
+              }}
+            />
+          </div>
+          <div ref={infoSectionRightRef}>
+            <InfoSection
+              heading="One AI shared by the whole team"
+              subheading="Shared intelligence"
+              description="Work with AI the way you work with people. In the same space, seeing the same context. Everyone stays on the same page, instantly."
+              timelineRef={rightInfoTimelineRef}
+              defaultExpanded={isMobile ? true : activeSection === 'right'}
+              onToggle={
+                isMobile ? undefined : () => handleSectionClick('right')
+              }
+            />
+          </div>
+          {/* Mobile Demo Container - Multiplayer Chat */}
+          <div
+            ref={mobileDemoRightRef}
+            className="md:hidden h-[640px] w-full"
+          >
+            <ChatDemoFull
+              key={`mobile-right-${currentSharedIntelligenceScenario}`}
+              className="h-full"
+              scenarioIndex={currentSharedIntelligenceScenario}
+              isActive={true}
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
+              source="overview"
+              onComplete={() => {
+                // Auto-restart with next scenario after 2 seconds
+                setTimeout(() => {
                   const nextScenario = getNextSharedIntelligenceScenario();
                   setCurrentSharedIntelligenceScenario(nextScenario);
-                  // Trigger restart by toggling isActive
-                  setActiveSection('left');
-                  setTimeout(() => setActiveSection('right'), 100);
-                }
-              }, 2000);
-            }}
-          />
+                }, 2000);
+              }}
+            />
+          </div>
+        </div>
+        {/* Desktop Demo Container - Wrapper */}
+        <div
+          ref={imageContainerRef}
+          className="hidden md:flex aspect-[3/2] h-auto w-full relative z-10"
+          style={{ opacity: 0, transform: 'translateY(60px)' }}
+        >
+          {/* Desktop Demo Container - Intelligence Layer */}
+          <div
+            ref={demoContainerLeftRef}
+            className={`absolute inset-0 transition-opacity duration-300 ${
+              activeSection === 'left' ? 'opacity-100 z-20' : 'opacity-0 z-10'
+            } ${isTransitioning ? 'pointer-events-none' : ''}`}
+          >
+            <ChatDemoFull
+              className="w-full h-full"
+              scenarioIndex={currentStayOnTrackScenario}
+              isActive={activeSection === 'left'}
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
+              source="overview"
+              onComplete={() => {
+                // Auto-restart with next scenario after 2 seconds
+                setTimeout(() => {
+                  if (activeSection === 'left') {
+                    const nextScenario = getNextStayOnTrackScenario();
+                    setCurrentStayOnTrackScenario(nextScenario);
+                    // Trigger restart by toggling isActive
+                    setActiveSection('right');
+                    setTimeout(() => setActiveSection('left'), 100);
+                  }
+                }, 2000);
+              }}
+            />
+          </div>
+          {/* Desktop Demo Container - Multiplayer Chat */}
+          <div
+            ref={demoContainerRightRef}
+            className={`absolute inset-0 transition-opacity duration-300 ${
+              activeSection === 'right' ? 'opacity-100 z-20' : 'opacity-0 z-10'
+            } ${isTransitioning ? 'pointer-events-none' : ''}`}
+          >
+            <ChatDemoFull
+              className="w-full h-full"
+              scenarioIndex={currentSharedIntelligenceScenario}
+              isActive={activeSection === 'right'}
+              enableWaitlistInteraction={true}
+              onInteractionAttempt={
+                waitlistInteraction.handleInteractionAttempt
+              }
+              source="overview"
+              onComplete={() => {
+                // Auto-restart with next scenario after 2 seconds
+                setTimeout(() => {
+                  if (activeSection === 'right') {
+                    const nextScenario = getNextSharedIntelligenceScenario();
+                    setCurrentSharedIntelligenceScenario(nextScenario);
+                    // Trigger restart by toggling isActive
+                    setActiveSection('left');
+                    setTimeout(() => setActiveSection('right'), 100);
+                  }
+                }, 2000);
+              }}
+            />
+          </div>
         </div>
       </div>
 

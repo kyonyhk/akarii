@@ -50,7 +50,7 @@ export default function InfoCard({
     tl.to(cardRef.current, {
       opacity: 1,
       y: 0,
-      duration: 0.8,
+      duration: 0.4,
       ease: 'power4.out',
     })
       // Plus sign animation: scale up and rotate 90deg
@@ -60,10 +60,10 @@ export default function InfoCard({
           scale: 1,
           rotation: 90,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.4,
           ease: 'power4.out',
         },
-        '-=0.2'
+        '-=0.3'
       )
       // Text animations: animate from bottom with opacity fade-in
       .to(
@@ -71,30 +71,30 @@ export default function InfoCard({
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.4,
           ease: 'power4.out',
         },
-        '-=0.4'
+        '-=0.2'
       )
       .to(
         headingRef.current,
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.4,
           ease: 'power4.out',
         },
-        '-=0.6'
+        '-=0.1'
       )
       .to(
         descriptionRef.current,
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.4,
           ease: 'power4.out',
         },
-        '-=0.4'
+        '-=0.2'
       );
 
     // Only play animation when triggered (backward compatibility)
