@@ -165,7 +165,7 @@ export default function ValueProposition() {
           </div>
           <div ref={rightCardRef}>
             <InfoCard
-              heading="Think beyond human limits."
+              heading="Think bigger together."
               subheading="Work like humans and AI were meant to"
               description="In a shared space, AI can surface context, recall decisions, and keep goals aligned. Your team and AI see the same information, work from the same thread, and build shared understanding in real time."
               trigger={rightCardTriggered}
