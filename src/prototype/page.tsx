@@ -17,12 +17,13 @@ import SystemMessage from './components/SystemMessage';
 import TypingIndicator from './components/TypingIndicator';
 
 export default function PrototypeChatPage() {
-  // Prevent body scroll on mobile
+  // Prevent body scroll on mobile and hide scrollbars
   if (typeof window !== 'undefined') {
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
     document.body.style.width = '100%';
     document.body.style.height = '100%';
+    document.documentElement.style.overflow = 'hidden';
   }
 
   // State management
