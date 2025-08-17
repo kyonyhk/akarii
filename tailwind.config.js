@@ -299,6 +299,17 @@ module.exports = {
           /* Safari and Chrome */
           '&::-webkit-scrollbar': {
             display: 'none',
+            width: '0px',
+            height: '0px',
+          },
+          '&::-webkit-scrollbar-track': {
+            display: 'none',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            display: 'none',
+          },
+          '&::-webkit-scrollbar-corner': {
+            display: 'none',
           },
         },
       });
