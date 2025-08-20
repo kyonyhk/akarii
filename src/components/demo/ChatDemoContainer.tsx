@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
 import { SCENARIOS } from '../../prototype/data/scenarios';
 import { useMessageSequencer } from '../../prototype/hooks/useMessageSequencer';
+import { useMessageStacking } from '../../prototype/hooks/useMessageStacking';
 import { FileIcon, SpeechIcon, SendIcon } from '../../components/icons';
 import posthog from '@/lib/posthog';
 
@@ -202,6 +203,18 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
     // Scroll management
     const messagesContainerRef = useRef<HTMLDivElement>(null);
 
+    // Message stacking and animation management
+    const { observeMessage, scrollToBottom } = useMessageStacking({
+      messagesContainerRef,
+      onHeightChange: () => {
+        // Auto-scroll to bottom when message heights change during typing
+        messagesContainerRef.current?.scrollTo({
+          top: messagesContainerRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      },
+    });
+
     // Handle input typing for current user messages
     useEffect(() => {
       const currentUserName = getCurrentUserName(currentScenarioIndex);
@@ -327,9 +340,9 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
         {/* Messages Container - Full height with proper layering */}
         <div
           ref={messagesContainerRef}
-          className="absolute inset-0 overflow-y-auto scrollbar-hide"
+          className="absolute inset-0 overflow-y-auto scrollbar-hide chat-scroll-smooth"
         >
-          <div className="flex flex-col space-y-2 min-h-full justify-end px-4 md:px-6 pt-20 pb-20">
+          <div className="flex flex-col space-y-2 min-h-full justify-end px-4 md:px-6 pt-20 pb-20 message-height-transition">
             {messages.map((message) => {
               if (!message.isVisible) return null;
 
@@ -347,6 +360,8 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                     userMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
+                    messageId={message.id}
+                    onObserveMessage={observeMessage}
                   />
                 );
               } else if (message.sender === 'Sam') {
@@ -358,6 +373,8 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                     participantMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
+                    messageId={message.id}
+                    onObserveMessage={observeMessage}
                   />
                 );
               } else if (message.sender === 'Akarii') {
@@ -369,6 +386,8 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
                     messageType={message.type as 'rich' | 'card' | 'alert'}
+                    messageId={message.id}
+                    onObserveMessage={observeMessage}
                   />
                 );
               } else if (message.sender === 'System') {
@@ -391,6 +410,8 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                     participantMessage={message.content}
                     isTyping={message.isTyping}
                     displayedContent={message.displayedContent}
+                    messageId={message.id}
+                    onObserveMessage={observeMessage}
                   />
                 );
               }
