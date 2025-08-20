@@ -1,7 +1,7 @@
 import { useCallback, useRef, useEffect } from 'react';
 
 interface MessageStackingOptions {
-  messagesContainerRef: React.RefObject<HTMLDivElement>;
+  messagesContainerRef: React.RefObject<HTMLDivElement | null>;
   onHeightChange?: () => void;
 }
 
