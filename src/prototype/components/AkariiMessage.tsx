@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Logo } from '../../components/atoms';
 import MarkdownContent from './MarkdownContent';
 import AlertContainer from './AlertContainer';
@@ -8,6 +9,8 @@ interface AkariiMessageProps {
   isTyping?: boolean;
   displayedContent?: string;
   messageType?: 'rich' | 'card' | 'alert';
+  messageId?: string;
+  onObserveMessage?: (element: HTMLElement | null, messageId: string) => void;
 }
 
 export default function AkariiMessage({
@@ -16,8 +19,18 @@ export default function AkariiMessage({
   isTyping = false,
   displayedContent,
   messageType = 'rich',
+  messageId,
+  onObserveMessage,
 }: AkariiMessageProps) {
   const content = isTyping ? displayedContent || '' : akariiMessage;
+  const messageRef = useRef<HTMLDivElement>(null);
+
+  // Observe message element for height changes
+  useEffect(() => {
+    if (messageRef.current && messageId && onObserveMessage) {
+      onObserveMessage(messageRef.current, messageId);
+    }
+  }, [messageId, onObserveMessage]);
 
   // Helper function to extract body content without alert title
   const getAlertBodyContent = (content: string): string => {
@@ -67,9 +80,9 @@ export default function AkariiMessage({
   //   }
   // };
   return (
-    <div className="w-full flex flex-col items-start">
+    <div ref={messageRef} className="w-full flex flex-col items-start message-container message-slide-up">
       <div
-        className={`max-w-[500px] md:max-w-[600px] w-fit flex flex-col gap-4 p-2 border border-white/10 bg-transparent rounded-3xl`}
+        className={`max-w-[500px] md:max-w-[600px] w-fit flex flex-col gap-4 p-2 border border-white/10 bg-transparent rounded-3xl message-height-transition`}
       >
         {/* Alert Container - shown inside message container at top for alert type */}
         {messageType === 'alert' && (
