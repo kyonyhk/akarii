@@ -11,7 +11,9 @@ import { Input, Button, Logo } from '../atoms';
 
 export default function Hero() {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   const addToWaitlist = useMutation(api.waitlist.addEmail);
@@ -207,14 +209,35 @@ export default function Hero() {
         email,
         source: 'hero',
         referrer: typeof window !== 'undefined' ? document.referrer : undefined,
-        userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+        userAgent:
+          typeof window !== 'undefined' ? navigator.userAgent : undefined,
       });
 
       setStatus('success');
       setEmail('');
+
+      // Reset success state after 3 seconds
+      setTimeout(() => {
+        setStatus('idle');
+      }, 3000);
     } catch (error: any) {
       setStatus('error');
-      setErrorMessage(error.message || 'Failed to join waitlist. Please try again.');
+      // Check for specific error types and provide user-friendly messages
+      if (error.message && error.message.includes('already registered')) {
+        setErrorMessage(
+          "You're already on the list. Something special is coming."
+        );
+      } else if (error.message && error.message.includes('Invalid email')) {
+        setErrorMessage('Please enter a valid email address.');
+      } else {
+        setErrorMessage('Something went wrong. Please try again.');
+      }
+
+      // Reset error state after 5 seconds
+      setTimeout(() => {
+        setStatus('idle');
+        setErrorMessage('');
+      }, 5000);
     }
   };
 
@@ -263,48 +286,58 @@ export default function Hero() {
               AKARII
             </h1>
           </div>
-          <form onSubmit={handleEmailSubmit} className="flex flex-col md:flex-row gap-2">
-            <Input
-              ref={inputRef}
-              placeholder="example@email.com"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={status === 'loading'}
-              className="w-full md:flex-1 opacity-0 invisible translate-y-[30px]"
-            />
+          <div className="w-full flex flex-col gap-2 items-center">
+            {status === 'error' && (
+              <div className="text-red-400 paragraph2 bg-red-500/10 border border-red-500/20 rounded-[40px] py-3 px-6">
+                {errorMessage}
+              </div>
+            )}
+            {status === 'success' && (
+              <div className="w-full text-white heading5 text-center">
+                You're in. Something special is coming.
+              </div>
+            )}
 
-            <Button
-              ref={buttonRef1}
-              type="submit"
-              disabled={status === 'loading'}
-              icon={<ExternalLink size={16} />}
-              className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+            <form
+              onSubmit={handleEmailSubmit}
+              className="w-full flex flex-col md:flex-row gap-2"
             >
-              {status === 'loading' ? 'Joining...' : status === 'success' ? 'Success!' : 'Join Waitlist'}
-            </Button>
+              <Input
+                ref={inputRef}
+                placeholder="example@email.com"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={status === 'loading'}
+                className="w-full md:flex-1 opacity-0 invisible translate-y-[30px]"
+              />
 
-            <Button
-              ref={buttonRef2}
-              type="button"
-              icon={<ExternalLink size={16} />}
-              className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
-              onClick={() => window.location.href = '/contact'}
-            >
-              Talk to Founder
-            </Button>
-          </form>
-          {status === 'error' && (
-            <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3 mt-2">
-              {errorMessage}
-            </div>
-          )}
-          {status === 'success' && (
-            <div className="text-green-400 text-sm bg-green-500/10 border border-green-500/20 rounded-lg p-3 mt-2">
-              Thanks for joining! We'll be in touch soon.
-            </div>
-          )}
+              <Button
+                ref={buttonRef1}
+                type="submit"
+                disabled={status === 'loading'}
+                icon={<ExternalLink size={16} />}
+                className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+              >
+                {status === 'loading'
+                  ? 'Joining...'
+                  : status === 'success'
+                    ? 'Welcome to the future'
+                    : 'Join Waitlist'}
+              </Button>
+
+              <Button
+                ref={buttonRef2}
+                type="button"
+                icon={<ExternalLink size={16} />}
+                className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+                onClick={() => (window.location.href = '/contact')}
+              >
+                Talk to Founder
+              </Button>
+            </form>
+          </div>
         </div>
         <div
           ref={prototypeRef}
