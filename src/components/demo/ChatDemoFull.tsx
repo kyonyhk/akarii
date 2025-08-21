@@ -11,6 +11,8 @@ interface ChatDemoFullProps {
   enableWaitlistInteraction?: boolean;
   onInteractionAttempt?: (type: 'input_click' | 'send_click' | 'file_click' | 'speech_click') => void;
   source?: 'overview' | 'features';
+  userColors?: Record<string, {borderColor: string, bgColor: string}>;
+  forceMobileMode?: boolean;
 }
 
 const ChatDemoFull = forwardRef<HTMLDivElement, ChatDemoFullProps>(
@@ -21,7 +23,9 @@ const ChatDemoFull = forwardRef<HTMLDivElement, ChatDemoFullProps>(
     onComplete,
     enableWaitlistInteraction,
     onInteractionAttempt,
-    source
+    source,
+    userColors,
+    forceMobileMode
   }, ref) => {
     return (
       <ChatDemoContainer
@@ -34,6 +38,8 @@ const ChatDemoFull = forwardRef<HTMLDivElement, ChatDemoFullProps>(
         enableWaitlistInteraction={enableWaitlistInteraction}
         onInteractionAttempt={onInteractionAttempt}
         source={source}
+        userColors={userColors}
+        forceMobileMode={forceMobileMode}
       />
     );
   }

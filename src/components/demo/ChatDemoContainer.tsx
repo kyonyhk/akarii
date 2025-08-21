@@ -24,6 +24,8 @@ interface ChatDemoContainerProps {
   enableWaitlistInteraction?: boolean;
   onInteractionAttempt?: (type: 'input_click' | 'send_click' | 'file_click' | 'speech_click') => void;
   source?: 'overview' | 'features';
+  userColors?: Record<string, {borderColor: string, bgColor: string}>;
+  forceMobileMode?: boolean; // Force mobile layout regardless of window width
 }
 
 const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
@@ -38,6 +40,8 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
       enableWaitlistInteraction = false,
       onInteractionAttempt,
       source = 'overview',
+      userColors,
+      forceMobileMode,
     },
     ref
   ) => {
@@ -46,6 +50,11 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
     );
     const [inputTypingContent, setInputTypingContent] = useState('');
     const [isSendButtonAnimating, setIsSendButtonAnimating] = useState(false);
+    
+    // Smart auto-scroll state management
+    const [isAtBottom, setIsAtBottom] = useState(true);
+    const [isUserScrolling, setIsUserScrolling] = useState(false);
+    const [inputAreaHeight, setInputAreaHeight] = useState(0);
 
     // Interaction handlers for waitlist conversion
     const handleInteraction = useCallback((type: 'input_click' | 'send_click' | 'file_click' | 'speech_click') => {
@@ -186,10 +195,8 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
         }
       },
       onMessageStart: (message, index) => {
-        messagesContainerRef.current?.scrollTo({
-          top: messagesContainerRef.current.scrollHeight,
-          behavior: 'smooth',
-        });
+        // Smart auto-scroll: only scroll if user is at bottom
+        smartScrollToBottom(true);
       },
     });
 
@@ -202,16 +209,91 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
 
     // Scroll management
     const messagesContainerRef = useRef<HTMLDivElement>(null);
+    const inputAreaRef = useRef<HTMLDivElement>(null);
+    const inputElementRef = useRef<HTMLDivElement>(null);
+    
+    // Smart auto-scroll logic
+    const checkIfAtBottom = useCallback(() => {
+      if (!messagesContainerRef.current) return false;
+      const container = messagesContainerRef.current;
+      const threshold = 100; // Consider "at bottom" if within 100px of bottom
+      const isAtBottomNow = container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
+      return isAtBottomNow;
+    }, []);
+    
+    const smartScrollToBottom = useCallback((smooth: boolean = true) => {
+      if (!messagesContainerRef.current || !isAtBottom) return;
+      
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
+    }, [isAtBottom]);
+    
+    // Handle scroll events to track user scrolling behavior
+    const handleScroll = useCallback(() => {
+      if (!messagesContainerRef.current) return;
+      
+      const wasAtBottom = checkIfAtBottom();
+      setIsAtBottom(wasAtBottom);
+      
+      // If user scrolls back to bottom, re-enable auto-scroll
+      if (wasAtBottom && isUserScrolling) {
+        setIsUserScrolling(false);
+      } else if (!wasAtBottom && !isUserScrolling) {
+        setIsUserScrolling(true);
+      }
+    }, [checkIfAtBottom, isUserScrolling]);
+    
+    // Add scroll event listener
+    useEffect(() => {
+      const container = messagesContainerRef.current;
+      if (!container) return;
+      
+      container.addEventListener('scroll', handleScroll, { passive: true });
+      return () => container.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
+    
+    // Dynamic input element height measurement
+    useEffect(() => {
+      const inputElement = inputElementRef.current;
+      if (!inputElement) return;
+      
+      const updateInputHeight = () => {
+        const rect = inputElement.getBoundingClientRect();
+        console.log('🐛 Input element measurement:', { height: rect.height, width: rect.width });
+        if (rect.height > 0) {
+          setInputAreaHeight(rect.height);
+        }
+      };
+      
+      // Delay initial measurement to ensure DOM is rendered
+      const timer = setTimeout(updateInputHeight, 100);
+      
+      // ResizeObserver to track changes in the input element (for multiline)
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const height = entry.contentRect.height;
+          console.log('🐛 ResizeObserver input element height:', height);
+          if (height > 0) {
+            setInputAreaHeight(height);
+          }
+        }
+      });
+      resizeObserver.observe(inputElement);
+      
+      return () => {
+        clearTimeout(timer);
+        resizeObserver.disconnect();
+      };
+    }, []);
 
     // Message stacking and animation management
     const { observeMessage, scrollToBottom } = useMessageStacking({
       messagesContainerRef,
       onHeightChange: () => {
-        // Auto-scroll to bottom when message heights change during typing
-        messagesContainerRef.current?.scrollTo({
-          top: messagesContainerRef.current.scrollHeight,
-          behavior: 'smooth',
-        });
+        // Smart auto-scroll: only scroll if user is at bottom
+        smartScrollToBottom(true);
       },
     });
 
@@ -317,32 +399,63 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
     }, []);
 
     const currentUserName = getCurrentUserName(currentScenarioIndex);
+    
+    // Calculate dynamic bottom padding
+    // Mobile: 8px gap, Desktop: 16px gap  
+    const isMobile = forceMobileMode !== undefined ? forceMobileMode : (typeof window !== 'undefined' && window.innerWidth < 768);
+    const desiredGap = isMobile ? 8 : 16;
+    const inputAreaBottomPadding = isMobile ? 16 : 24; // p-4 md:p-6
+    
+    // Default input heights (will be replaced by actual measurements if available)
+    const defaultInputHeight = isMobile ? 40 : 48; // min-h-10 md:min-h-12
+    
+    // Use measured height if available, fallback to default
+    const actualInputHeight = inputAreaHeight > 0 ? inputAreaHeight : defaultInputHeight;
+    
+    // Total: input height + padding + desired gap
+    const dynamicPaddingBottom = actualInputHeight + inputAreaBottomPadding + desiredGap;
+    
+    // Debug logging
+    console.log('🐛 Complete padding debug:', {
+      isMobile,
+      desiredGap,
+      inputAreaBottomPadding,
+      defaultInputHeight,
+      actualInputHeight,
+      inputAreaHeight,
+      dynamicPaddingBottom,
+      breakdown: `${actualInputHeight} + ${inputAreaBottomPadding} + ${desiredGap} = ${dynamicPaddingBottom}`
+    });
 
     return (
       <div
         ref={ref}
-        className={`bg-black/20 backdrop-blur-sm rounded-[40px] overflow-hidden relative w-full h-full ${className}`}
+        className={`bg-black/20 backdrop-blur-sm rounded-[40px] relative w-full h-full ${className}`}
+        style={{ overflow: 'hidden', height: '100%' }}
       >
-        {/* Chat header */}
-        <div className="absolute top-0 left-0 right-0 z-20 pointer-events-auto p-4 md:p-6">
-          <div className="px-4 py-3 bg-white/1 border border-white/10 text-white/80 flex items-center justify-between rounded-[40px] backdrop-blur-sm">
-            <div className="flex items-center gap-2">
-              <span className="app-heading">
-                #{scenario.thread.channel || 'general'}
-              </span>
-            </div>
-            <div className="app-paragraph2 text-white/50">
-              {scenario.thread.title}
-            </div>
-          </div>
-        </div>
-
-        {/* Messages Container - Full height with proper layering */}
+        {/* Bottom Layer: Messages Container (Full Height) */}
         <div
           ref={messagesContainerRef}
-          className="absolute inset-0 overflow-y-auto scrollbar-hide chat-scroll-smooth"
+          className="absolute inset-0 chat-scroll-container"
+          id="messages-container"
+          data-lenis-prevent
+          style={{ 
+            overflowY: 'scroll',
+            overflowX: 'hidden',
+            scrollBehavior: 'smooth',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            pointerEvents: 'auto',
+            zIndex: 1,
+            height: '100%',
+            WebkitOverflowScrolling: 'touch', // Enable momentum scrolling on iOS
+          }}
         >
-          <div className="flex flex-col space-y-2 min-h-full justify-end px-4 md:px-6 pt-20 pb-20 message-height-transition">
+          <div
+            id="messages-list"
+            className="flex flex-col justify-end min-h-full space-y-2 px-4 md:px-6 pt-[140px] md:pt-20"
+            style={{ paddingBottom: `${dynamicPaddingBottom}px` }}
+          >
             {messages.map((message) => {
               if (!message.isVisible) return null;
 
@@ -362,6 +475,7 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                     displayedContent={message.displayedContent}
                     messageId={message.id}
                     onObserveMessage={observeMessage}
+                    userColors={userColors}
                   />
                 );
               } else if (message.sender === 'Sam') {
@@ -375,6 +489,7 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                     displayedContent={message.displayedContent}
                     messageId={message.id}
                     onObserveMessage={observeMessage}
+                    userColors={userColors}
                   />
                 );
               } else if (message.sender === 'Akarii') {
@@ -412,6 +527,7 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                     displayedContent={message.displayedContent}
                     messageId={message.id}
                     onObserveMessage={observeMessage}
+                    userColors={userColors}
                   />
                 );
               }
@@ -427,83 +543,106 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
                 currentUser={currentUserName}
               />
             )}
+            
           </div>
         </div>
 
-        {/* Gradient Overlays */}
-        {/* <div className="absolute inset-0 pointer-events-none z-10">
+        {/* Middle Layer: Gradient Overlays */}
+        <div className="absolute inset-0 pointer-events-none z-10" style={{ pointerEvents: 'none' }}>
+          {/* Top Gradient */}
           <div
             className="absolute top-0 left-0 right-0 h-[140px]"
             style={{
               background:
-                'linear-gradient(180deg, rgba(10, 10, 10, 0.80) 0%, rgba(10, 10, 10, 0.00) 100%)',
+                'linear-gradient(180deg, rgba(10, 10, 10, 0.80) 50%, rgba(10, 10, 10, 0.00) 100%)',
             }}
           />
+          {/* Bottom Gradient */}
           <div
-            className="absolute bottom-0 left-0 right-0 h-16"
+            className="absolute bottom-0 left-0 right-0 h-30 md:h-16"
             style={{
               background:
                 'linear-gradient(180deg, rgba(10, 10, 10, 0.00) 0%, rgba(10, 10, 10, 0.80) 100%)',
             }}
           />
-        </div> */}
+        </div>
 
-        {/* Input Area */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 flex items-start gap-1 md:gap-2 pointer-events-auto p-4 md:p-6">
-          <div 
-            className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 backdrop-blur-sm rounded-[40px] hover:bg-white/5 cursor-pointer"
-            onClick={() => handleInteraction('file_click')}
-          >
-            <FileIcon
-              size={12}
-              className="opacity-50 w-5 h-5"
-              color="#DBDBDB"
-            />
-          </div>
-          <div 
-            className="min-h-12 flex items-center flex-1 bg-white/1 backdrop-blur-sm border border-white/10 rounded-[40px] px-4 py-2 cursor-text hover:bg-white/5"
-            onClick={() => handleInteraction('input_click')}
-          >
-            {inputTypingContent ? (
-              <div className="w-full app-paragraph2 text-white/80 leading-relaxed">
-                {inputTypingContent}
-                <span className="animate-pulse ml-1">|</span>
+        {/* Top Layer: UI Elements */}
+        <div className="relative z-20 flex flex-col h-full pointer-events-none">
+          {/* Chat Header */}
+          <div className="flex items-center gap-4 pointer-events-auto p-4 md:p-6">
+            <div className="flex-1 px-4 py-3 bg-white/1 border border-white/10 text-white/80 flex items-center justify-between rounded-[40px] backdrop-blur-sm">
+              <div className="flex items-center gap-2">
+                <span className="app-heading">
+                  #{scenario.thread.channel || 'general'}
+                </span>
               </div>
-            ) : (
-              <input
-                type="text"
-                placeholder="Type a message..."
-                className="w-full bg-transparent outline-none app-paragraph2 p-0 border-none text-white/20 cursor-text"
-                disabled
-                readOnly
+              <div className="app-paragraph2 text-white/50">
+                {scenario.thread.title}
+              </div>
+            </div>
+          </div>
+
+          {/* Spacer to push input to bottom */}
+          <div className="flex-1"></div>
+
+          {/* Message Input Area */}
+          <div ref={inputAreaRef} className="flex items-start gap-1 md:gap-2 pointer-events-auto p-4 md:p-6">
+            <div 
+              className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 backdrop-blur-sm rounded-[40px] hover:bg-white/5 cursor-pointer"
+              onClick={() => handleInteraction('file_click')}
+            >
+              <FileIcon
+                size={16}
+                className="opacity-50 md:w-5 md:h-5"
+                color="#DBDBDB"
               />
-            )}
-          </div>
-          <div 
-            className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 rounded-[40px] hover:bg-white/5 cursor-pointer"
-            onClick={() => handleInteraction('speech_click')}
-          >
-            <SpeechIcon
-              size={12}
-              className="opacity-50 w-5 h-5"
-              color="#DBDBDB"
-            />
-          </div>
-          <div
-            className={`w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border rounded-[40px] cursor-pointer transition-all duration-200 ${
-              isSendButtonAnimating
-                ? 'bg-white/20 border-white/40 scale-110'
-                : 'bg-white/1 border-white/10 hover:bg-white/5'
-            }`}
-            onClick={() => handleInteraction('send_click')}
-          >
-            <SendIcon
-              size={12}
-              className={`w-5 h-5 transition-all duration-200 ${
-                isSendButtonAnimating ? 'opacity-100' : 'opacity-50'
+            </div>
+            <div 
+              ref={inputElementRef}
+              className="min-h-10 md:min-h-12 flex items-center flex-1 bg-white/1 border border-white/10 rounded-[40px] px-4 py-2 backdrop-blur-sm cursor-text hover:bg-white/5"
+              onClick={() => handleInteraction('input_click')}
+            >
+              {inputTypingContent ? (
+                <div className="w-full app-paragraph2 text-white/80 leading-relaxed">
+                  {inputTypingContent}
+                  <span className="animate-pulse ml-1">|</span>
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="Type a message..."
+                  className="w-full bg-transparent outline-none app-paragraph2 p-0 border-none text-white/50"
+                  disabled
+                />
+              )}
+            </div>
+            <div 
+              className="w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border border-white/10 bg-white/1 backdrop-blur-sm rounded-[40px] hover:bg-white/5 cursor-pointer"
+              onClick={() => handleInteraction('speech_click')}
+            >
+              <SpeechIcon
+                size={16}
+                className="opacity-50 md:w-5 md:h-5"
+                color="#DBDBDB"
+              />
+            </div>
+            <div
+              className={`w-10 md:w-12 h-10 md:h-12 flex flex-col justify-center items-center border backdrop-blur-sm rounded-[40px] cursor-pointer transition-all duration-200 ${
+                isSendButtonAnimating
+                  ? 'bg-white/20 border-white/40 scale-110'
+                  : 'bg-white/1 border-white/10 hover:bg-white/5'
               }`}
-              color={isSendButtonAnimating ? '#FFFFFF' : '#DBDBDB'}
-            />
+              onClick={() => handleInteraction('send_click')}
+            >
+              <SendIcon
+                size={16}
+                className={`md:w-5 md:h-5 transition-all duration-200 ${
+                  isSendButtonAnimating ? 'opacity-100' : 'opacity-50'
+                }`}
+                color={isSendButtonAnimating ? '#FFFFFF' : '#DBDBDB'}
+              />
+            </div>
           </div>
         </div>
 
