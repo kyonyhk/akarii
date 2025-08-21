@@ -1,13 +1,21 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import SplitType from 'split-type';
+import { useMutation } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 import { ExternalLink } from '../icons';
 import { Input, Button, Logo } from '../atoms';
 
 export default function Hero() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const addToWaitlist = useMutation(api.waitlist.addEmail);
+
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitle1Ref = useRef<HTMLParagraphElement>(null);
@@ -189,6 +197,27 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
 
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      await addToWaitlist({
+        email,
+        source: 'hero',
+        referrer: typeof window !== 'undefined' ? document.referrer : undefined,
+        userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+      });
+
+      setStatus('success');
+      setEmail('');
+    } catch (error: any) {
+      setStatus('error');
+      setErrorMessage(error.message || 'Failed to join waitlist. Please try again.');
+    }
+  };
+
   return (
     <section
       ref={heroRef}
@@ -234,31 +263,48 @@ export default function Hero() {
               AKARII
             </h1>
           </div>
-          <div className="flex flex-col md:flex-row gap-2">
+          <form onSubmit={handleEmailSubmit} className="flex flex-col md:flex-row gap-2">
             <Input
               ref={inputRef}
               placeholder="example@email.com"
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={status === 'loading'}
               className="w-full md:flex-1 opacity-0 invisible translate-y-[30px]"
             />
 
             <Button
               ref={buttonRef1}
+              type="submit"
+              disabled={status === 'loading'}
               icon={<ExternalLink size={16} />}
               className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
             >
-              Join Waitlist
+              {status === 'loading' ? 'Joining...' : status === 'success' ? 'Success!' : 'Join Waitlist'}
             </Button>
 
             <Button
               ref={buttonRef2}
+              type="button"
               icon={<ExternalLink size={16} />}
               className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
               onClick={() => window.location.href = '/contact'}
             >
               Talk to Founder
             </Button>
-          </div>
+          </form>
+          {status === 'error' && (
+            <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3 mt-2">
+              {errorMessage}
+            </div>
+          )}
+          {status === 'success' && (
+            <div className="text-green-400 text-sm bg-green-500/10 border border-green-500/20 rounded-lg p-3 mt-2">
+              Thanks for joining! We'll be in touch soon.
+            </div>
+          )}
         </div>
         <div
           ref={prototypeRef}

@@ -1,18 +1,23 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
+import { useMutation } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 import { Button, Input, Logo } from '../atoms';
 import { ExternalLink } from '../icons';
-import { useState } from 'react';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
-  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const addToWaitlist = useMutation(api.waitlist.addEmail);
 
   // Refs for animation elements
   const footerRef = useRef<HTMLElement>(null);
@@ -145,6 +150,27 @@ export default function Footer() {
     return () => ctx.revert();
   }, []);
 
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      await addToWaitlist({
+        email,
+        source: 'footer',
+        referrer: typeof window !== 'undefined' ? document.referrer : undefined,
+        userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+      });
+
+      setStatus('success');
+      setEmail('');
+    } catch (error: any) {
+      setStatus('error');
+      setErrorMessage(error.message || 'Failed to join waitlist. Please try again.');
+    }
+  };
+
   return (
     <footer
       ref={footerRef}
@@ -193,25 +219,38 @@ export default function Footer() {
             Help shape the future of team intelligence.
           </p>
         </header>
-        <form className="max-w-[640px] w-full md:w-[640px] flex flex-col gap-2 justify-center items-center">
+        <form onSubmit={handleEmailSubmit} className="max-w-[640px] w-full md:w-[640px] flex flex-col gap-2 justify-center items-center">
           <Input
             ref={inputRef}
             placeholder="example@email.com"
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full"
             aria-label="Email address"
             required
+            disabled={status === 'loading'}
           />
           <Button
             ref={buttonRef}
-            onClick={() => setIsWaitlistOpen(true)}
+            type="submit"
+            disabled={status === 'loading'}
             icon={<ExternalLink size={16} />}
             className="w-full"
-            type="submit"
           >
-            Join Waitlist
+            {status === 'loading' ? 'Joining...' : status === 'success' ? 'Success!' : 'Join Waitlist'}
           </Button>
         </form>
+        {status === 'error' && (
+          <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3 mt-2">
+            {errorMessage}
+          </div>
+        )}
+        {status === 'success' && (
+          <div className="text-green-400 text-sm bg-green-500/10 border border-green-500/20 rounded-lg p-3 mt-2">
+            Thanks for joining! We'll be in touch soon.
+          </div>
+        )}
       </div>
       <div
         ref={logoContainerRef}
