@@ -8,6 +8,7 @@ interface UserMessageProps {
   displayedContent?: string;
   messageId?: string;
   onObserveMessage?: (element: HTMLElement | null, messageId: string) => void;
+  userColors?: Record<string, { borderColor: string; bgColor: string }>;
 }
 
 export default function UserMessage({
@@ -18,9 +19,21 @@ export default function UserMessage({
   displayedContent,
   messageId,
   onObserveMessage,
+  userColors,
 }: UserMessageProps) {
   const content = isTyping ? displayedContent || '' : userMessage;
   const messageRef = useRef<HTMLDivElement>(null);
+
+  // Get user colors or use defaults
+  const userColor = userColors?.[username];
+  const avatarBorderClasses = userColor?.borderColor
+    ? userColor.borderColor
+    : 'border-white/10';
+  const avatarBgClasses = userColor?.bgColor
+    ? userColor.bgColor
+    : 'bg-white/10';
+  const borderClasses = 'border-white/10';
+  const bgClasses = 'bg-white/5';
 
   // Observe message element for height changes
   useEffect(() => {
@@ -30,10 +43,17 @@ export default function UserMessage({
   }, [messageId, onObserveMessage]);
 
   return (
-    <div ref={messageRef} className="w-full flex flex-col items-end message-container message-slide-up">
-      <div className="max-w-[300px] md:max-w-[400px] w-fit flex flex-col gap-1 p-4 border border-white/10 bg-white/10 rounded-3xl message-height-transition">
+    <div
+      ref={messageRef}
+      className="w-full flex flex-col items-end message-container message-slide-up"
+    >
+      <div
+        className={`max-w-[300px] md:max-w-[400px] w-fit flex flex-col gap-1 p-4 border ${borderClasses} ${bgClasses} rounded-3xl message-height-transition`}
+      >
         <div className="flex flex-row gap-2">
-          <div className="w-4 md:w-6 h-4 md:h-6 bg-red-500 rounded-[40px]"></div>
+          <div
+            className={`w-4 md:w-6 h-4 md:h-6 border ${avatarBorderClasses} ${avatarBgClasses} rounded-[40px]`}
+          ></div>
           <div className="flex flex-1 flex-row justify-between items-center gap-10">
             <div className="app-subheading text-white">{username}</div>
             <div className="app-eyebrow text-white/50">{time}</div>
