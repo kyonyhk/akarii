@@ -569,8 +569,9 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
 
         {/* Top Layer: UI Elements */}
         <div className="relative z-20 flex flex-col h-full pointer-events-none">
-          {/* Chat Header */}
-          <div className="flex items-center gap-4 pointer-events-auto p-4 md:p-6">
+          {/* Chat Header - Hidden on mobile since we have separate mobile header */}
+          {!isMobile && (
+            <div className="flex items-center gap-4 pointer-events-auto p-4 md:p-6">
             <div className="flex-1 px-4 py-3 bg-white/1 border border-white/10 text-white/80 flex items-center justify-between rounded-[40px] backdrop-blur-sm">
               <div className="flex items-center gap-2">
                 <span className="app-heading">
@@ -582,6 +583,7 @@ const ChatDemoContainer = forwardRef<HTMLDivElement, ChatDemoContainerProps>(
               </div>
             </div>
           </div>
+          )}
 
           {/* Spacer to push input to bottom */}
           <div className="flex-1"></div>
