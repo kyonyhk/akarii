@@ -14,7 +14,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   const addToWaitlist = useMutation(api.waitlist.addEmail);
@@ -160,14 +162,35 @@ export default function Footer() {
         email,
         source: 'footer',
         referrer: typeof window !== 'undefined' ? document.referrer : undefined,
-        userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+        userAgent:
+          typeof window !== 'undefined' ? navigator.userAgent : undefined,
       });
 
       setStatus('success');
       setEmail('');
+
+      // Reset success state after 3 seconds
+      setTimeout(() => {
+        setStatus('idle');
+      }, 3000);
     } catch (error: any) {
       setStatus('error');
-      setErrorMessage(error.message || 'Failed to join waitlist. Please try again.');
+      // Check for specific error types and provide user-friendly messages
+      if (error.message && error.message.includes('already registered')) {
+        setErrorMessage(
+          "You're already on the list. Something special is coming."
+        );
+      } else if (error.message && error.message.includes('Invalid email')) {
+        setErrorMessage('Please enter a valid email address.');
+      } else {
+        setErrorMessage('Something went wrong. Please try again.');
+      }
+
+      // Reset error state after 5 seconds
+      setTimeout(() => {
+        setStatus('idle');
+        setErrorMessage('');
+      }, 5000);
     }
   };
 
@@ -219,38 +242,47 @@ export default function Footer() {
             Help shape the future of team intelligence.
           </p>
         </header>
-        <form onSubmit={handleEmailSubmit} className="max-w-[640px] w-full md:w-[640px] flex flex-col gap-2 justify-center items-center">
-          <Input
-            ref={inputRef}
-            placeholder="example@email.com"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full"
-            aria-label="Email address"
-            required
-            disabled={status === 'loading'}
-          />
-          <Button
-            ref={buttonRef}
-            type="submit"
-            disabled={status === 'loading'}
-            icon={<ExternalLink size={16} />}
-            className="w-full"
+        <div className="flex flex-col gap-2 items-center">
+          {status === 'error' && (
+            <div className="text-red-400 paragraph2 bg-red-500/10 border border-red-500/20 rounded-[40px] py-3 px-6">
+              {errorMessage}
+            </div>
+          )}
+          {status === 'success' && (
+            <div className="w-full text-white heading5 text-center">
+              You're in. Something special is coming.
+            </div>
+          )}
+          <form
+            onSubmit={handleEmailSubmit}
+            className="max-w-[640px] w-full md:w-[640px] flex flex-col gap-2 justify-center items-center"
           >
-            {status === 'loading' ? 'Joining...' : status === 'success' ? 'Success!' : 'Join Waitlist'}
-          </Button>
-        </form>
-        {status === 'error' && (
-          <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3 mt-2">
-            {errorMessage}
-          </div>
-        )}
-        {status === 'success' && (
-          <div className="text-green-400 text-sm bg-green-500/10 border border-green-500/20 rounded-lg p-3 mt-2">
-            Thanks for joining! We'll be in touch soon.
-          </div>
-        )}
+            <Input
+              ref={inputRef}
+              placeholder="example@email.com"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full"
+              aria-label="Email address"
+              required
+              disabled={status === 'loading'}
+            />
+            <Button
+              ref={buttonRef}
+              type="submit"
+              disabled={status === 'loading'}
+              icon={<ExternalLink size={16} />}
+              className="w-full"
+            >
+              {status === 'loading'
+                ? 'Joining...'
+                : status === 'success'
+                  ? 'Welcome to the future'
+                  : 'Join Waitlist'}
+            </Button>
+          </form>
+        </div>
       </div>
       <div
         ref={logoContainerRef}
