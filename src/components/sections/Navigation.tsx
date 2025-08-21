@@ -26,7 +26,10 @@ export default function Navigation() {
             >
               Join Waitlist
             </button>
-            <button className="text-text-secondary hover:text-text-primary transition-colors text-body-sm">
+            <button 
+              onClick={() => window.location.href = '/contact'}
+              className="text-text-secondary hover:text-text-primary transition-colors text-body-sm"
+            >
               Talk to Founder
             </button>
           </div>

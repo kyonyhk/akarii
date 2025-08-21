@@ -254,6 +254,7 @@ export default function Hero() {
               ref={buttonRef2}
               icon={<ExternalLink size={16} />}
               className="w-full md:w-auto opacity-0 invisible translate-y-[30px]"
+              onClick={() => window.location.href = '/contact'}
             >
               Talk to Founder
             </Button>
