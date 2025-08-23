@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiBrandDirection version="1.0" generatedAt="2025-08-23T01:39:34+08:00" xmlns="https://akarii.app/brand">
+  <BrandEssence>
+    Akarii upgrades how humans think, talk, and work together.
+    It transforms everyday team communication into higher-quality decisions, sharper thinking, and lasting clarity — all without slowing you down.
+  </BrandEssence>
+
+  <CorePromise>
+    The next level of human teamwork — powered by intelligence that understands what you’re saying, how you’re thinking, and what your team needs to move forward.
+  </CorePromise>
+
+  <Positioning>
+    <Primary>Intelligence layer for teamwork — living inside chat.</Primary>
+    <TrojanHorse>Multiplayer team chat for AI-native teams.</TrojanHorse>
+    <NorthStar>Reduce collaboration friction and elevate the quality of reasoning, so teams achieve more in less time.</NorthStar>
+  </Positioning>
+
+  <Narrative>
+    <Problem>
+      <Point>Ideas get lost in the noise.</Point>
+      <Point>Conversations drift away from their purpose.</Point>
+      <Point>No one remembers why decisions were made.</Point>
+      <Point>Thinking stays stuck at the wrong “altitude” — too detailed, too abstract, or jumping around.</Point>
+    </Problem>
+    <Promise>
+      Akarii makes your team smarter together. It listens, remembers, and helps guide conversations toward better decisions — making the invisible process of thinking visible and actionable.
+    </Promise>
+    <BigShift>From “just another chat tool” to a thinking-quality platform that helps humans collaborate at a level we’ve never seen before.</BigShift>
+  </Narrative>
+
+  <Pillars>
+    <Pillar id="1" name="Clearer Thinking">
+      See how your team is reasoning and get gentle nudges to stay in the most productive mode for the moment.
+    </Pillar>
+    <Pillar id="2" name="Shared Memory">
+      Every decision, goal, and insight is instantly findable and tied to its context.
+    </Pillar>
+    <Pillar id="3" name="Smarter Collaboration">
+      AI that keeps you focused, aligned, and moving toward outcomes — without interrupting flow.
+    </Pillar>
+  </Pillars>
+
+  <SignatureCapabilities>
+    <Capability id="reasoning-level-navigator" name="Reasoning Level Navigator">
+      <Description>Shows how your conversation is unfolding and helps you think at the right altitude.</Description>
+    </Capability>
+    <Capability id="instant-recall" name="Instant Recall">
+      <Description>Ask Akarii what was decided, why, and who was involved — answers in seconds.</Description>
+    </Capability>
+    <Capability id="signal-detection" name="Signal Detection">
+      <Description>Quietly notices when the team is going off-track, missing voices, or stuck in loops.</Description>
+    </Capability>
+  </SignatureCapabilities>
+
+  <ToneOfVoice>
+    <Trait>Confident — Speak with authority but without arrogance.</Trait>
+    <Trait>Clear — No jargon unless necessary, and always with explanation.</Trait>
+    <Trait>Human — Warm, conversational, and approachable.</Trait>
+    <Trait>Provocative — Challenge the status quo of teamwork and communication.</Trait>
+  </ToneOfVoice>
+
+  <TaglineDirections>
+    <Tagline>Think better. Decide faster. Remember forever.</Tagline>
+    <Tagline>The next level of human teamwork.</Tagline>
+    <Tagline>Smarter conversations. Stronger outcomes.</Tagline>
+    <Tagline>Where human + AI collaboration reaches its full potential.</Tagline>
+  </TaglineDirections>
+
+  <TargetAudience>
+    <Now>High-agency, AI-forward teams (PM/design/engineering heavy).</Now>
+    <Next>Broader knowledge work market.</Next>
+  </TargetAudience>
+
+  <WhyWeExist>
+    Because the future of work isn’t just about faster tools — it’s about better thinking.
+    Akarii is here to raise the ceiling on human collaboration by combining human nuance with AI reasoning.
+  </WhyWeExist>
+</AkariiBrandDirection>
