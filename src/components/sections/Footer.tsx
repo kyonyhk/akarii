@@ -242,7 +242,7 @@ export default function Footer() {
             Help shape the future of team intelligence.
           </p>
         </header>
-        <div className="flex flex-col gap-2 items-center">
+        <div className="w-full flex flex-col gap-2 items-center">
           {status === 'error' && (
             <div className="text-red-400 paragraph2 bg-red-500/10 border border-red-500/20 rounded-[40px] py-3 px-6">
               {errorMessage}
