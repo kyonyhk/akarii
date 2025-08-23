@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiMasterTimeline version="1.1" generatedAt="2025-08-22T17:35:49.046831" xmlns="https://akarii.app/timeline">
+  <Metadata>
+    <ProductName>Akarii</ProductName>
+    <Timeframe start="2025-08-18" end="2025-11-07" timezone="Asia/Singapore"/>
+    <Tracks>
+      <Track id="build" title="Build Track"/>
+      <Track id="marketing" title="Marketing & Outreach Track"/>
+    </Tracks>
+    <Milestones>
+      <Milestone id="P1-M1" date="2025-09-06" title="Private Alpha (Design Partners Live)"/>
+      <Milestone id="P1-M2" date="2025-09-20" title="Public Waitlist + Founder Demos"/>
+      <Milestone id="P1-M3" date="2025-10-31" title="Open Beta (Gated)"/>
+    </Milestones>
+  </Metadata>
+
+  <Weeks>
+    <Week number="2" start="2025-08-18" end="2025-08-24" risk="Low">
+      <Build>
+        <Item>Multiplayer chat baseline (realtime, presence, optimistic sends).</Item>
+        <Item>Scaffold AI hook (@Akarii mention → job enqueue).</Item>
+      </Build>
+      <Marketing>
+        <Item>Internal prep only (teaser edit, landing page assets).</Item>
+        <Item>No social posts yet.</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="3" start="2025-08-25" end="2025-08-31" risk="Medium">
+      <Build>
+        <Item>AI replies + ThreadMemory v0 (ai_jobs, ai_runs, persistent threads).</Item>
+        <Item>Minimal prompt assembly (last 50 messages + chips).</Item>
+      </Build>
+      <Marketing>
+        <Item>Launch landing page + teaser demo.</Item>
+        <Item>First social announcement.</Item>
+        <Item>Open design partner application form.</Item>
+        <Item>Build target list of 20–30 teams.</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="4" start="2025-09-01" end="2025-09-07" risk="High">
+      <Build>
+        <Item>RecallEngine v0 (search index + API).</Item>
+        <Item>Stability + connection recovery.</Item>
+      </Build>
+      <Marketing>
+        <Item>Recruit design partners via outreach.</Item>
+        <Item>Founder demos with coded prototype.</Item>
+        <Item>Social push: “Looking for 5–10 high-agency teams.”</Item>
+      </Marketing>
+      <MilestoneRefs>
+        <MilestoneRef id="P1-M1" date="2025-09-06" title="Private Alpha (Design Partners Live)"/>
+      </MilestoneRefs>
+    </Week>
+
+    <Week number="5" start="2025-09-08" end="2025-09-14" risk="High">
+      <Build>
+        <Item>Alpha onboarding &amp; support.</Item>
+        <Item>Logging/telemetry for latency + AI jobs.</Item>
+      </Build>
+      <Marketing>
+        <Item>Capture alpha feedback moments.</Item>
+        <Item>Produce reels of “magic recall.”</Item>
+        <Item>Social: share first impressions.</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="6" start="2025-09-15" end="2025-09-21" risk="Medium">
+      <Build>
+        <Item>AI Helpers (TL;DR, tasks, highlight decisions).</Item>
+      </Build>
+      <Marketing>
+        <Item>Public waitlist push.</Item>
+        <Item>Release polished teaser demo.</Item>
+        <Item>Founder demos for inbound leads.</Item>
+        <Item>Social: 20–40s product moment clips.</Item>
+      </Marketing>
+      <MilestoneRefs>
+        <MilestoneRef id="P1-M2" date="2025-09-20" title="Public Waitlist + Founder Demos"/>
+      </MilestoneRefs>
+    </Week>
+
+    <Week number="7" start="2025-09-22" end="2025-09-28" risk="Medium">
+      <Build>
+        <Item>Lightweight integrations (Drive/Docs, GitHub PRs, Linear issues).</Item>
+      </Build>
+      <Marketing>
+        <Item>Publish alpha partner stories.</Item>
+        <Item>Social: before/after decision clarity.</Item>
+        <Item>Continue waitlist growth.</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="8" start="2025-09-29" end="2025-10-05" risk="Low">
+      <Build>
+        <Item>Admin controls + telemetry dashboard.</Item>
+        <Item>Privacy features (retention, redaction basics).</Item>
+      </Build>
+      <Marketing>
+        <Item>Founder thought leadership posts.</Item>
+        <Item>Draft case studies.</Item>
+        <Item>Social: behind-the-scenes content.</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="9" start="2025-10-06" end="2025-10-12" risk="Medium">
+      <Build>
+        <Item>Performance tuning (≤150ms latency target).</Item>
+        <Item>Scale RecallEngine indexing.</Item>
+      </Build>
+      <Marketing>
+        <Item>Deep product walkthroughs.</Item>
+        <Item>Social: “How Akarii remembers every decision.”</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="10" start="2025-10-13" end="2025-10-19" risk="Low">
+      <Build>
+        <Item>Bug fixes + polish from alpha.</Item>
+        <Item>UX improvements (reactions, file drops).</Item>
+      </Build>
+      <Marketing>
+        <Item>Prep beta launch assets.</Item>
+        <Item>Invite top waitlist sign-ups to soft beta.</Item>
+        <Item>Social: Beta anticipation posts.</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="11" start="2025-10-20" end="2025-10-26" risk="Low">
+      <Build>
+        <Item>Finalize beta onboarding flow.</Item>
+        <Item>Dry-run beta with small group.</Item>
+      </Build>
+      <Marketing>
+        <Item>Capture early beta feedback + testimonials.</Item>
+        <Item>Social: community engagement + early reactions.</Item>
+      </Marketing>
+    </Week>
+
+    <Week number="12" start="2025-10-27" end="2025-11-02" risk="Medium">
+      <Build>
+        <Item>Infra prep for scale.</Item>
+        <Item>Beta announcement.</Item>
+      </Build>
+      <Marketing>
+        <Item>Public Beta announcement.</Item>
+        <Item>Publish early metrics + case studies.</Item>
+        <Item>Social: “Akarii Beta is live.”</Item>
+      </Marketing>
+      <MilestoneRefs>
+        <MilestoneRef id="P1-M3" date="2025-10-31" title="Open Beta (Gated)"/>
+      </MilestoneRefs>
+    </Week>
+
+    <Week number="13" start="2025-11-03" end="2025-11-07" risk="Low">
+      <Build>
+        <Item>Stabilize + support scaling users.</Item>
+        <Item>Collect telemetry for Phase 2 planning.</Item>
+      </Build>
+      <Marketing>
+        <Item>Publish deeper case studies.</Item>
+        <Item>Share community wins.</Item>
+        <Item>Highlight roadmap toward Phase 2.</Item>
+      </Marketing>
+    </Week>
+  </Weeks>
+</AkariiMasterTimeline>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiPhase1BrandDirection version="1.0" generatedAt="2025-08-23T01:40:29+08:00" xmlns="https://akarii.app/brand/phase1">
+  <Essence>
+    Akarii is the AI workspace for teams who want more than messaging.
+    Phase 1 delivers a blazing-fast, multiplayer-first workspace where conversations, context, and light AI come together — helping your team stay aligned, move faster, and work smarter from day one.
+  </Essence>
+
+  <CorePromise>
+    One place where your team can think, decide, and remember — together.
+  </CorePromise>
+
+  <TaglineFramework>
+    <MasterTagline>New Intelligence Needs New Standards</MasterTagline>
+    <SubTagline>The workspace that thinks with you</SubTagline>
+  </TaglineFramework>
+
+  <Positioning>
+    <Primary>Multiplayer workspace for AI-native teams.</Primary>
+    <Supporting>Built for speed, designed for intelligence.</Supporting>
+    <TrojanHorseRole>The foundation for the intelligence layer that will redefine how teams think and work together.</TrojanHorseRole>
+  </Positioning>
+
+  <Narrative>
+    <WhyNow>
+      AI is here, but most teams aren’t ready. Their tools are outdated, disconnected, and can’t keep up with how work is changing.
+    </WhyNow>
+    <Problem>
+      Context gets lost. Discussions drift. Decisions aren’t remembered.
+      AI, when used, often feels bolted-on instead of woven into the workflow.
+    </Problem>
+    <Solution>
+      <Summary>
+        Start with a multiplayer workspace that’s fast enough for real-time collaboration, smart enough to track goals, decisions, and action items, and designed to become more intelligent over time.
+      </Summary>
+      <Properties>
+        <Property>Fast enough for real-time collaboration.</Property>
+        <Property>Smart enough to track goals, decisions, and action items.</Property>
+        <Property>Designed to become more intelligent over time.</Property>
+      </Properties>
+    </Solution>
+    <BigPictureTieIn>
+      This isn’t the endgame — it’s the launchpad for the intelligence layer that will take teamwork to the next level.
+    </BigPictureTieIn>
+  </Narrative>
+
+  <Pillars>
+    <Pillar id="1" name="Stay Aligned">
+      Every goal, decision, and action item is captured and easy to find.
+    </Pillar>
+    <Pillar id="2" name="Work at Speed">
+      Blazing-fast experience with no lag, no friction, and instant responsiveness.
+    </Pillar>
+    <Pillar id="3" name="Shared AI Context">
+      One intelligence layer for the whole team, making information and insights easier to surface.
+    </Pillar>
+  </Pillars>
+
+  <SignatureCapabilities>
+    <Capability id="threadmemory-v0" name="ThreadMemory v0">
+      <Description>Persistent, structured record of your conversations.</Description>
+    </Capability>
+    <Capability id="recallengine-v0" name="RecallEngine v0">
+      <Description>Instant search across every message, decision, and goal.</Description>
+    </Capability>
+    <Capability id="insighttracker-v0" name="InsightTracker v0">
+      <Description>Tag and highlight key items in real time.</Description>
+    </Capability>
+    <Capability id="ai-helpers" name="AI Helpers">
+      <Description>Summaries, action item extraction, decision highlights.</Description>
+    </Capability>
+  </SignatureCapabilities>
+
+  <ToneOfVoice>
+    <Trait>Clear and Direct — Speak plainly about what the workspace can do now.</Trait>
+    <Trait>Confident — Built for teams that expect more from their tools.</Trait>
+    <Trait>Forward-Looking — Hints at the intelligence layer without overpromising.</Trait>
+  </ToneOfVoice>
+
+  <SupportingTaglines>
+    <Tagline>Stay aligned. Move faster.</Tagline>
+    <Tagline>One workspace, shared intelligence.</Tagline>
+    <Tagline>Your conversations, made actionable.</Tagline>
+    <Tagline>Work that remembers and responds.</Tagline>
+  </SupportingTaglines>
+
+  <TargetAudience>
+    <Now>High-agency, AI-forward teams in PM, design, and engineering (5–50 people).</Now>
+    <Profile>Early adopters who want speed, memory, and actionable insights.</Profile>
+  </TargetAudience>
+
+  <WhyThisMattersNow>
+    Before you can have smarter reasoning, you need the right foundation — a place where all team communication and context live together, remembered and made useful. Phase 1 gives teams that foundation.
+  </WhyThisMattersNow>
+
+  <CrossReferences>
+    <Document href="product-vision.xml" rel="vision"/>
+    <Document href="roadmap-latest.xml" rel="roadmap"/>
+    <Document href="akarii-master-timeline-updated.xml" rel="timeline"/>
+    <Document href="akarii-brand-direction.xml" rel="brand-direction-master"/>
+  </CrossReferences>
+</AkariiPhase1BrandDirection>
