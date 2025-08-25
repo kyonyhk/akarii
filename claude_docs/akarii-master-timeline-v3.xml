@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='utf-8'?>
+<AkariiMasterTimeline version="1.2" generatedAt="2025-08-25T17:05:40.572389" xmlns="https://akarii.app/timeline">
+  <Metadata>
+    <ProductName>Akarii</ProductName>
+    <Timeframe start="2025-08-25" end="2025-11-02" timezone="Asia/Singapore" />
+    <Tracks>
+      <Track id="build" title="Build Track" />
+      <Track id="marketing" title="Marketing &amp; Outreach Track" />
+      <Track id="admin" title="Admin / Infra Track" />
+    </Tracks>
+    <Milestones>
+      <Milestone id="P1-M1" date="2025-09-14" title="Private Alpha (Design Partners Live)" />
+      <Milestone id="P1-M2" date="2025-09-21" title="Public Waitlist + Founder Demos" />
+      <Milestone id="P1-M3" date="2025-11-02" title="Open Beta (Gated)" />
+    </Milestones>
+  </Metadata>
+  <Week number="3" start="2025-08-25" end="2025-08-31" risk="Medium">
+    <Build>
+      <Item>Multiplayer Chat Baseline</Item>
+      <Item>Scaffold AI hook</Item>
+    </Build>
+    <Marketing>
+      <Item>Landing Page live</Item>
+      <Item>Teaser Video published</Item>
+      <Item>Mini social teasers (BTS + one-liners)</Item>
+    </Marketing>
+  </Week>
+  <Week number="4" start="2025-09-01" end="2025-09-07" risk="High">
+    <Build>
+      <Item>ThreadMemory v0</Item>
+      <Item>Minimal AI replies</Item>
+      <Item>Identity &amp; Auth (start: login + workspace create)</Item>
+    </Build>
+    <Marketing>
+      <Item>Design Partner Outreach (start)</Item>
+      <Item>Founder Demo Loop (kick-off)</Item>
+      <Item>Social: call for design partners</Item>
+    </Marketing>
+    <Admin>
+      <Item>Org Setup MVP (roles + invites)</Item>
+    </Admin>
+  </Week>
+  <Week number="5" start="2025-09-08" end="2025-09-14" risk="High">
+    <Build>
+      <Item>RecallEngine v0</Item>
+      <Item>Stability &amp; connection recovery</Item>
+      <Item>Finish Org Setup MVP</Item>
+    </Build>
+    <Marketing>
+      <Item>Recruit &amp; onboard design partners</Item>
+      <Item>Company Manifesto (blog)</Item>
+      <Item>Social: manifesto snippets</Item>
+      <Item>Founder demos with prototype</Item>
+    </Marketing>
+    <MilestoneRefs>
+      <MilestoneRef id="P1-M1" date="2025-09-14" title="Private Alpha (Design Partners Live)" />
+    </MilestoneRefs>
+  </Week>
+  <Week number="6" start="2025-09-15" end="2025-09-21" risk="Medium">
+    <Build>
+      <Item>AI Helpers (basic TL;DR + action items)</Item>
+    </Build>
+    <Marketing>
+      <Item>Public Waitlist Campaign</Item>
+      <Item>Teaser clips (short form)</Item>
+      <Item>Founder demos (inbound)</Item>
+    </Marketing>
+    <MilestoneRefs>
+      <MilestoneRef id="P1-M2" date="2025-09-21" title="Public Waitlist + Founder Demos" />
+    </MilestoneRefs>
+  </Week>
+  <Week number="7" start="2025-09-22" end="2025-09-28" risk="Medium">
+    <Build>
+      <Item>Lightweight integrations (Drive/Docs, GitHub PRs, Linear)</Item>
+    </Build>
+    <Marketing>
+      <Item>Alpha Partner Stories (publish)</Item>
+      <Item>Social: before/after clarity</Item>
+      <Item>Waitlist growth</Item>
+    </Marketing>
+  </Week>
+  <Week number="8" start="2025-09-29" end="2025-10-05" risk="Low">
+    <Build>
+      <Item>Org Setup Full (settings, privacy, retention)</Item>
+      <Item>Telemetry Dashboard</Item>
+    </Build>
+    <Marketing>
+      <Item>Founder Post (blog)</Item>
+      <Item>Thought Leadership posts</Item>
+      <Item>Draft case studies</Item>
+    </Marketing>
+    <Admin>
+      <Item>Telemetry Dashboard</Item>
+    </Admin>
+  </Week>
+  <Week number="9" start="2025-10-06" end="2025-10-12" risk="Medium">
+    <Build>
+      <Item>Performance tuning (≤150ms latency)</Item>
+      <Item>Scale RecallEngine indexing</Item>
+    </Build>
+    <Marketing>
+      <Item>Deep product walkthroughs</Item>
+      <Item>Tech post: How recall works</Item>
+    </Marketing>
+  </Week>
+  <Week number="10" start="2025-10-13" end="2025-10-19" risk="Low">
+    <Build>
+      <Item>Bug fixes + UX polish</Item>
+      <Item>Reactions &amp; file drops</Item>
+    </Build>
+    <Marketing>
+      <Item>Beta Launch Assets</Item>
+      <Item>Social: 'We're almost ready' post</Item>
+    </Marketing>
+  </Week>
+  <Week number="11" start="2025-10-20" end="2025-10-26" risk="Low">
+    <Build>
+      <Item>Finalize Beta Onboarding Flow</Item>
+      <Item>Dry-run beta</Item>
+    </Build>
+    <Marketing>
+      <Item>Community engagement posts</Item>
+      <Item>Invite waitlist top teams</Item>
+    </Marketing>
+  </Week>
+  <Week number="12" start="2025-10-27" end="2025-11-02" risk="Medium">
+    <Build>
+      <Item>Infra Prep for Scale</Item>
+      <Item>Stabilization</Item>
+    </Build>
+    <Marketing>
+      <Item>Public Beta Announcement (blog + video)</Item>
+      <Item>Case Studies (publish)</Item>
+      <Item>Share early metrics</Item>
+    </Marketing>
+    <MilestoneRefs>
+      <MilestoneRef id="P1-M3" date="2025-11-02" title="Open Beta (Gated)" />
+    </MilestoneRefs>
+  </Week>
+</AkariiMasterTimeline>
