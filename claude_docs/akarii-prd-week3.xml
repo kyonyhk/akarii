@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiPRD version="1.0" week="3" xmlns="https://akarii.app/prd">
+  <Product>Akarii</Product>
+  <Phase>1 — Multiplayer Chat · Foundations</Phase>
+  <Timeline start="2025-08-25" end="2025-08-31" timezone="Asia/Singapore"/>
+  <Owner>Kuoloon Chong</Owner>
+  <Dependencies>
+    <Dependency>Next.js (App Router)</Dependency>
+    <Dependency>Convex</Dependency>
+    <Dependency>Clerk (email/password)</Dependency>
+    <Dependency>LLM API (OpenAI or Anthropic TBD; provider abstraction required)</Dependency>
+  </Dependencies>
+
+  <Overview>
+    <Goal>Deliver a working multiplayer chat baseline with channels, threads, mentions, reactions, and a simple AI bot participant.</Goal>
+    <Why>This is the foundation for Phase 1 and feeds Week 4’s ThreadMemory v0 and identity work.</Why>
+    <GuidingPrinciples>
+      <Principle>Fast, optimistic UI; realtime sync by default.</Principle>
+      <Principle>Design schemas today to support memory &amp; recall tomorrow.</Principle>
+      <Principle>AI appears as a teammate in-channel; keep prompts concise.</Principle>
+    </GuidingPrinciples>
+  </Overview>
+
+  <Scope>
+    <In>
+      <Item>Channels, threads, mentions, reactions</Item>
+      <Item>Channel sidebar with channels and members (DM entry)</Item>
+      <Item>AI bot as a visible participant (@akarii) responding inline</Item>
+      <Item>Context window: last 20 messages in channel/thread</Item>
+      <Item>Optimistic message send; Convex live queries for realtime</Item>
+      <Item>Org/Workspace/Role structures scaffolded for future WorkOS</Item>
+    </In>
+    <Out>
+      <Item>ThreadMemory v0 (structured summaries/history)</Item>
+      <Item>RecallEngine v0 (semantic search/embeddings)</Item>
+      <Item>Advanced helpers (tasks/decisions)</Item>
+      <Item>SSO/social logins; external integrations</Item>
+    </Out>
+  </Scope>
+
+  <UserStories>
+    <Story id="U1">As a member, I see a sidebar with channels and members.</Story>
+    <Story id="U2">As a member, I send a message and it appears instantly (optimistic), then confirms.</Story>
+    <Story id="U3">As a member, I start a thread and reply within it.</Story>
+    <Story id="U4">As a member, I @mention teammates and add emoji reactions.</Story>
+    <Story id="U5">As a member, I @mention @akarii and get an inline AI response that considers recent context.</Story>
+  </UserStories>
+
+  <FunctionalRequirements>
+    <Frontend>
+      <Requirement id="F1">Sidebar: channel list, member list (DM entry points).</Requirement>
+      <Requirement id="F2">Channel view: message stream, thread panel, composer with @mentions and emoji reactions.</Requirement>
+      <Requirement id="F3">Optimistic updates with reconciliation on server ack.</Requirement>
+      <Requirement id="F4">Typing indicators and basic presence (optional if time).</Requirement>
+    </Frontend>
+    <Backend>
+      <Requirement id="B1">Convex functions for create/read stream of channels, threads, messages.</Requirement>
+      <Requirement id="B2">Live queries for realtime sync; conflict-safe writes.</Requirement>
+      <Requirement id="B3">AI hook: when @akarii is mentioned, fetch last 20 messages, call provider abstraction, persist response as message.</Requirement>
+      <Requirement id="B4">Auth: Clerk session guard; minimal workspace bootstrap (owner = admin, roles prepared).</Requirement>
+    </Backend>
+    <AI>
+      <Requirement id="A1">Provider abstraction with interchangeable adapters (openai|anthropic).</Requirement>
+      <Requirement id="A2">System prompt: “You are Akarii, an AI teammate. Be concise, cite context from the current thread when useful.”</Requirement>
+      <Requirement id="A3">Context strategy: last 20 messages in the current thread (or channel if no thread).</Requirement>
+      <Requirement id="A4">Timeouts &amp; basic retry/backoff; surface errors to UI.</Requirement>
+    </AI>
+  </FunctionalRequirements>
+
+  <DataModel>
+    <Notes>Schema is future-proofed for ThreadMemory/Recall (Week 4+), without enabling them yet.</Notes>
+    <Schema language="typescript"><![CDATA[
+// Users are from Clerk; store minimal profile mirror if needed.
+
+export type Role = "admin" | "member";
+
+workspaces: {
+  _id: Id<"workspaces">,
+  name: string,
+  createdBy: Id<"users">,
+  members: Id<"users">[],
+  roles: Record<string, Role>, // userId -> role
+  createdAt: number
+};
+
+channels: {
+  _id: Id<"channels">,
+  workspaceId: Id<"workspaces">,
+  name: string,
+  isPrivate: boolean,
+  members: Id<"users">[],
+  createdAt: number
+};
+
+threads: {
+  _id: Id<"threads">,
+  channelId: Id<"channels">,
+  rootMessageId: Id<"messages">,
+  participants: Id<"users">[],
+  createdAt: number,
+  updatedAt: number
+};
+
+messages: {
+  _id: Id<"messages">,
+  channelId: Id<"channels">,
+  threadId?: Id<"threads"> | null,
+  authorId: string, // Clerk user id or "AI:akarii"
+  content: string, // markdown/plain
+  mentions: string[], // Clerk user ids; "AI:akarii" allowed
+  reactions: { userId: string, emoji: string }[],
+  createdAt: number,
+  metadata?: {
+    tags?: string[],
+    embeddingId?: string // placeholder for recall
+  }
+};
+    ]]></Schema>
+  </DataModel>
+
+  <NonFunctional>
+    <Performance>P95 message send/receive ≤ 150ms; UI stays interactive during network jitter.</Performance>
+    <Reliability>Optimistic UI with reconciliation; idempotent writes; error toasts on failure.</Reliability>
+    <Security>Org-scoped access; Clerk session required on all Convex mutations/queries.</Security>
+    <Observability>Basic logs for AI calls (latency, tokens, provider) and message throughput.</Observability>
+  </NonFunctional>
+
+  <Milestones>
+    <Item day="1-2">Scaffold Next.js + Convex + Clerk; workspace/channel schema.</Item>
+    <Item day="3-4">Chat UI (channels, threads, mentions, reactions) + optimistic updates.</Item>
+    <Item day="5">AI provider abstraction + @akarii reply path (last 20 messages).</Item>
+    <Item day="6">Multiplayer QA with 2–3 users; fix race conditions.</Item>
+    <Item day="7">Stabilization and handoff notes for Week 4.</Item>
+  </Milestones>
+
+  <AcceptanceCriteria>
+    <Criterion id="AC1">Two browsers can chat in the same channel with ≤150ms perceived latency.</Criterion>
+    <Criterion id="AC2">@mentions notify and render correctly; reactions aggregate per message.</Criterion>
+    <Criterion id="AC3">@akarii responds inline within 5–10s using recent context.</Criterion>
+    <Criterion id="AC4">Schemas include roles/metadata fields required for Week 4 but are not active features yet.</Criterion>
+  </AcceptanceCriteria>
+</AkariiPRD>

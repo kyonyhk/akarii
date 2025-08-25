@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AkariiPRD version="1.0" week="4" xmlns="https://akarii.app/prd">
+  <Product>Akarii</Product>
+  <Phase>1 — Multiplayer Chat · Foundations</Phase>
+  <Timeline start="2025-09-01" end="2025-09-07" timezone="Asia/Singapore"/>
+  <Owner>Kuoloon Chong</Owner>
+  <Dependencies>
+    <Dependency>Week 3 baseline shipped</Dependency>
+    <Dependency>Next.js, Convex, Clerk</Dependency>
+    <Dependency>LLM API (OpenAI or Anthropic TBD; same abstraction as Week 3)</Dependency>
+  </Dependencies>
+
+  <Overview>
+    <Goal>Upgrade from baseline chat to a persistent, identity-aware workspace by shipping ThreadMemory v0, minimal AI replies backed by stored history, and MVP identity (login, workspace creation, invites &amp; roles).</Goal>
+    <Why>Enable the first step of the intelligence layer: conversations that remember and an org model that governs access.</Why>
+    <GuidingPrinciples>
+      <Principle>Prefer structured summaries to fight context bloat.</Principle>
+      <Principle>Keep role/permission model simple but correct.</Principle>
+      <Principle>Fail safe: degrade AI gracefully on timeout/errors.</Principle>
+    </GuidingPrinciples>
+  </Overview>
+
+  <Scope>
+    <In>
+      <Item>ThreadMemory v0: per-thread history, lightweight auto-summary</Item>
+      <Item>Minimal AI replies using full thread history or summary</Item>
+      <Item>Clerk auth: login/signup; workspace creation; email invites</Item>
+      <Item>Roles: admin, member (enforced on mutations/queries)</Item>
+      <Item>Thread persistence across reloads; AI messages visually distinct</Item>
+    </In>
+    <Out>
+      <Item>RecallEngine v0 (semantic embeddings/search)</Item>
+      <Item>Advanced AI helpers (tasks, decision highlights)</Item>
+      <Item>SSO/social logins; WorkOS integration</Item>
+      <Item>External integrations (Drive, GitHub, Linear)</Item>
+    </Out>
+  </Scope>
+
+  <UserStories>
+    <Story id="U1">As a member, I can log in, enter a workspace, and see persistent thread history.</Story>
+    <Story id="U2">As a member, when I @mention the AI, it can reference prior context (full thread or summary) for better replies.</Story>
+    <Story id="U3">As an admin, I can invite teammates by email and assign roles.</Story>
+    <Story id="U4">As a member, my permissions reflect my role (e.g., only admins can invite/remove).</Story>
+  </UserStories>
+
+  <FunctionalRequirements>
+    <Frontend>
+      <Requirement id="F1">Auth screens (login/signup) and workspace creation flow.</Requirement>
+      <Requirement id="F2">Invite flow: enter email(s), send invites, pending/accepted status UI.</Requirement>
+      <Requirement id="F3">Thread view shows full history; AI messages styled distinctly but inline.</Requirement>
+    </Frontend>
+    <Backend>
+      <Requirement id="B1">ThreadMemory v0: store per-thread metadata (participants, updatedAt, summary).</Requirement>
+      <Requirement id="B2">Summarizer: if thread token size exceeds limit, create/update summary message (metadata.isSummary=true).</Requirement>
+      <Requirement id="B3">AI hook reads full history or summary+tail, then responds inline; apply basic truncation guards.</Requirement>
+      <Requirement id="B4">Workspace invites model + mutations; role enforcement on Convex functions.</Requirement>
+    </Backend>
+    <AI>
+      <Requirement id="A1">Reuse provider abstraction; add summarization helper.</Requirement>
+      <Requirement id="A2">Context strategy: (summary if present) + recent tail (e.g., last 30 messages) + key system prompt.</Requirement>
+      <Requirement id="A3">Timeouts/backoff; structured error returned and logged.</Requirement>
+    </AI>
+  </FunctionalRequirements>
+
+  <DataModel>
+    <Schema language="typescript"><![CDATA[
+threads: {
+  _id: Id<"threads">,
+  channelId: Id<"channels">,
+  rootMessageId: Id<"messages">,
+  participants: Id<"users">[],
+  summary?: string, // auto-maintained lightweight summary
+  createdAt: number,
+  updatedAt: number
+};
+
+messages: {
+  _id: Id<"messages">,
+  channelId: Id<"channels">,
+  threadId?: Id<"threads"> | null,
+  authorId: string, // Clerk user id or "AI:akarii"
+  content: string,
+  mentions: string[],
+  reactions: { userId: string, emoji: string }[],
+  createdAt: number,
+  metadata?: {
+    tags?: string[],
+    embeddingId?: string,
+    isSummary?: boolean
+  }
+};
+
+invites: {
+  _id: Id<"invites">,
+  workspaceId: Id<"workspaces">,
+  email: string,
+  role: "admin" | "member",
+  invitedBy: Id<"users">,
+  status: "pending" | "accepted",
+  createdAt: number
+};
+    ]]></Schema>
+  </DataModel>
+
+  <NonFunctional>
+    <Performance>ThreadMemory lookups ≤ 200ms for threads ≤ 500 messages.</Performance>
+    <Stability>AI calls use timeout + retry/backoff; never block user send.</Stability>
+    <Security>Role checks enforced in Convex; only admins can invite/remove.</Security>
+    <Observability>Event logs for invite flows, AI latency, summary updates.</Observability>
+  </NonFunctional>
+
+  <Milestones>
+    <Item day="1-2">Clerk auth flow + workspace creation.</Item>
+    <Item day="3-4">ThreadMemory v0 schema + persistence + summary job.</Item>
+    <Item day="5">AI hook updated to use summary or full history with truncation.</Item>
+    <Item day="6">Invites + roles + permissions enforcement.</Item>
+    <Item day="7">End-to-end QA; finalize Week 5 plan (RecallEngine v0).</Item>
+  </Milestones>
+
+  <AcceptanceCriteria>
+    <Criterion id="AC1">User can log in, create a workspace, invite a teammate, and both can chat.</Criterion>
+    <Criterion id="AC2">@akarii references context beyond last 20 messages (summary-informed) in replies.</Criterion>
+    <Criterion id="AC3">Role-based permissions enforced (admin-only invites/removals).</Criterion>
+    <Criterion id="AC4">Threads persist across reloads; summaries update when threads grow.</Criterion>
+  </AcceptanceCriteria>
+</AkariiPRD>
